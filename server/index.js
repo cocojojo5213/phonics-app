@@ -12,6 +12,15 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// 简单的请求日志（只记录 API 请求）
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/') && !req.path.includes('/tts/') && !req.path.includes('/health')) {
+    const timestamp = new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+    console.log(`🌐 [${timestamp}] ${req.method} ${req.path}`);
+  }
+  next();
+});
+
 // 中间件
 app.use(cors());
 app.use(express.json());

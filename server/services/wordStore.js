@@ -2,12 +2,48 @@
  * AI 扩展词库存储
  * 
  * 将 AI 生成的单词保存到 JSON 文件中
+ * 支持并发写入保护
  */
 
 const fs = require('fs');
 const path = require('path');
 
 const WORDS_FILE = path.join(__dirname, '../../data/ai-words.json');
+
+// 写入锁，防止并发写入冲突
+let writeLock = false;
+const writeQueue = [];
+
+/**
+ * 带锁的写入操作
+ */
+async function safeWrite(data) {
+    return new Promise((resolve, reject) => {
+        const doWrite = () => {
+            if (writeLock) {
+                // 加入队列等待
+                writeQueue.push({ data, resolve, reject });
+                return;
+            }
+
+            writeLock = true;
+            try {
+                fs.writeFileSync(WORDS_FILE, JSON.stringify(data, null, 2));
+                resolve();
+            } catch (e) {
+                reject(e);
+            } finally {
+                writeLock = false;
+                // 处理队列中的下一个
+                if (writeQueue.length > 0) {
+                    const next = writeQueue.shift();
+                    safeWrite(next.data).then(next.resolve).catch(next.reject);
+                }
+            }
+        };
+        doWrite();
+    });
+}
 
 // 初始化空词库
 function initWordsFile() {
@@ -40,9 +76,9 @@ function getWords(categoryId, pattern) {
 }
 
 /**
- * 保存词到某个模式
+ * 保存词到某个模式（支持并发安全）
  */
-function saveWords(categoryId, pattern, words) {
+async function saveWords(categoryId, pattern, words) {
     const all = getAllWords();
     const key = `${categoryId}/${pattern}`;
 
@@ -53,7 +89,7 @@ function saveWords(categoryId, pattern, words) {
     const newWords = words.filter(w => !existingSet.has(w.word.toLowerCase()));
     all[key] = [...existing, ...newWords];
 
-    fs.writeFileSync(WORDS_FILE, JSON.stringify(all, null, 2));
+    await safeWrite(all);
 
     return {
         added: newWords.length,
@@ -80,18 +116,18 @@ function getStats() {
 /**
  * 清空某个模式的词
  */
-function clearWords(categoryId, pattern) {
+async function clearWords(categoryId, pattern) {
     const all = getAllWords();
     const key = `${categoryId}/${pattern}`;
     delete all[key];
-    fs.writeFileSync(WORDS_FILE, JSON.stringify(all, null, 2));
+    await safeWrite(all);
 }
 
 /**
  * 清空所有词
  */
-function clearAll() {
-    fs.writeFileSync(WORDS_FILE, JSON.stringify({}, null, 2));
+async function clearAll() {
+    await safeWrite({});
 }
 
 module.exports = {

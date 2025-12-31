@@ -300,8 +300,12 @@ router.post('/ai-expand', async (req, res) => {
             phonetic: dictionaryService.getIPA(w.word) || ''
         }));
 
-        // 保存到存储
-        const saveResult = wordStore.saveWords(categoryId, pattern, wordsWithPhonetic);
+        // 保存到存储（异步，支持并发）
+        const saveResult = await wordStore.saveWords(categoryId, pattern, wordsWithPhonetic);
+
+        // 记录日志
+        const timestamp = new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+        console.log(`📝 [${timestamp}] AI扩词: ${pattern} +${saveResult.added}词 (总${saveResult.total})`);
 
         res.json({
             pattern,
@@ -312,7 +316,7 @@ router.post('/ai-expand', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('AI 扩词错误:', error);
+        console.error('❌ AI 扩词错误:', error);
         res.status(500).json({ error: 'AI 扩词失败', message: error.message });
     }
 });
