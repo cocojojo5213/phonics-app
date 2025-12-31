@@ -1,0 +1,135 @@
+/**
+ * TTS 语音合成服务
+ * 
+ * - 发音模式：优先使用真人发音（data/phonics-audio/）
+ * - 单词：使用 Edge TTS
+ */
+
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+const { Communicate } = require('edge-tts-universal');
+
+// 目录
+const PHONICS_AUDIO_DIR = path.join(__dirname, '../../data/phonics-audio');
+const CACHE_DIR = path.join(__dirname, '../../data/audio');
+
+if (!fs.existsSync(PHONICS_AUDIO_DIR)) {
+    fs.mkdirSync(PHONICS_AUDIO_DIR, { recursive: true });
+}
+if (!fs.existsSync(CACHE_DIR)) {
+    fs.mkdirSync(CACHE_DIR, { recursive: true });
+}
+
+class TTSService {
+    constructor() {
+        this.voice = 'en-US-JennyNeural';
+        this.checkPhonicsAudio();
+    }
+
+    checkPhonicsAudio() {
+        const files = fs.readdirSync(PHONICS_AUDIO_DIR);
+        const audioFiles = files.filter(f => f.endsWith('.mp3') || f.endsWith('.wav'));
+        if (audioFiles.length > 0) {
+            console.log(`🎵 已加载 ${audioFiles.length} 个真人发音音频`);
+        } else {
+            console.log('📁 原声音频目录为空');
+        }
+    }
+
+    /**
+     * 查找真人录制的发音音频
+     */
+    findPhonicsAudio(pattern) {
+        const key = pattern.toLowerCase().trim();
+        const keyUpper = pattern.toUpperCase().trim();
+
+        const variants = [key, keyUpper, pattern];
+        const extensions = ['.mp3', '.wav', '.ogg'];
+
+        for (const name of variants) {
+            for (const ext of extensions) {
+                const filePath = path.join(PHONICS_AUDIO_DIR, `${name}${ext}`);
+                if (fs.existsSync(filePath)) {
+                    return filePath;
+                }
+            }
+        }
+        return null;
+    }
+
+    getCachePath(key) {
+        const hash = crypto.createHash('md5').update(key).digest('hex');
+        return path.join(CACHE_DIR, `${hash}.mp3`);
+    }
+
+    /**
+     * 使用 Edge TTS 合成语音
+     */
+    async synthesizeWithEdgeTTS(text) {
+        const cachePath = this.getCachePath(`edge_${text}`);
+
+        if (fs.existsSync(cachePath)) {
+            return { buffer: fs.readFileSync(cachePath), type: 'audio/mpeg' };
+        }
+
+        try {
+            const tts = new Communicate(text, { voice: this.voice });
+            const chunks = [];
+            for await (const chunk of tts.stream()) {
+                if (chunk.type === 'audio') {
+                    chunks.push(Buffer.from(chunk.data, 'base64'));
+                }
+            }
+
+            const buffer = Buffer.concat(chunks);
+            if (buffer.length > 0) {
+                fs.writeFileSync(cachePath, buffer);
+            }
+            return { buffer, type: 'audio/mpeg' };
+        } catch (error) {
+            console.error('Edge TTS 失败:', error.message);
+            throw error;
+        }
+    }
+
+    /**
+     * 生成发音模式的声音
+     * 优先使用真人发音，没有则用 Edge TTS
+     */
+    async generatePhonemeSound(pattern) {
+        // 1. 先查找真人录制的音频
+        const audioPath = this.findPhonicsAudio(pattern);
+        if (audioPath) {
+            const ext = path.extname(audioPath).toLowerCase();
+            const mimeType = ext === '.mp3' ? 'audio/mpeg' : ext === '.wav' ? 'audio/wav' : 'audio/ogg';
+            return {
+                buffer: fs.readFileSync(audioPath),
+                type: mimeType
+            };
+        }
+
+        // 2. 没有预录音频，使用 Edge TTS
+        return await this.synthesizeWithEdgeTTS(pattern);
+    }
+
+    /**
+     * 生成单词发音（始终用 Edge TTS）
+     */
+    async generateWordSpeech(word) {
+        return await this.synthesizeWithEdgeTTS(word);
+    }
+
+    isAvailable() {
+        return true;
+    }
+
+    getAvailablePhonicsAudio() {
+        const files = fs.readdirSync(PHONICS_AUDIO_DIR);
+        return files
+            .filter(f => f.endsWith('.mp3') || f.endsWith('.wav') || f.endsWith('.ogg'))
+            .map(f => path.basename(f, path.extname(f)));
+    }
+}
+
+module.exports = new TTSService();

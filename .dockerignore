@@ -1,0 +1,26 @@
+# 依赖
+node_modules
+
+# Git
+.git
+.gitignore
+
+# 开发文件
+*.md
+.env
+.env.*
+!.env.example
+
+# 编辑器
+.vscode
+.idea
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 缓存
+data/audio/*
+!data/audio/.gitkeep

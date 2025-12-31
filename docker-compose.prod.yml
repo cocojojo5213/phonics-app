@@ -1,0 +1,54 @@
+# 生产环境 Docker Compose 配置
+# 包含 Nginx 反向代理
+
+version: '3.8'
+
+services:
+  phonics-app:
+    build: .
+    container_name: phonics-app
+    restart: always
+    expose:
+      - "3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # 生产环境建议在服务器配置 API Key（可选）
+      # - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # - OPENAI_BASE_URL=${OPENAI_BASE_URL}
+    volumes:
+      - ./data/ai-words.json:/app/data/ai-words.json
+      - phonics-audio-cache:/app/data/audio
+      - ./data/phonics-audio:/app/data/phonics-audio:ro
+    networks:
+      - phonics-network
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health" ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  nginx:
+    image: nginx:alpine
+    container_name: phonics-nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      # SSL 证书（如使用 HTTPS）
+      # - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - phonics-app
+    networks:
+      - phonics-network
+
+networks:
+  phonics-network:
+    driver: bridge
+
+volumes:
+  phonics-audio-cache:
+    name: phonics-audio-cache

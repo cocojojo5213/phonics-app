@@ -1,0 +1,38 @@
+# 依赖
+node_modules/
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 数据文件（用户数据，不随代码分发）
+data/phonics.db
+
+# 真人发音目录（太大，用户自己准备）
+data/phonics-audio/*
+!data/phonics-audio/.gitkeep
+
+# AI 词库（运行时生成的用户数据）
+data/ai-words.json
+
+# TTS 缓存
+data/audio/*
+!data/audio/.gitkeep
+
+# 日志
+*.log
+npm-debug.log*
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 缓存
+.cache/

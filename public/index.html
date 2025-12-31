@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>真正从基础开始学英语</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div id="app">
+    <header class="header">
+      <div class="header-inner">
+        <a href="#/" class="logo">Phonics</a>
+        <nav class="nav">
+          <a href="#/" class="nav-link" data-page="home">首页</a>
+          <a href="#/learn" class="nav-link" data-page="learn">学习</a>
+          <button onclick="openSettings()" class="settings-btn" title="API 设置">⚙️</button>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main"></main>
+
+    <!-- API 设置弹窗 -->
+    <div id="settings-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>🔑 API 设置</h2>
+          <button onclick="closeSettings()" class="close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="privacy-notice">
+            <h3>📜 隐私声明</h3>
+            <ul>
+              <li>✅ 您的 API Key <strong>仅保存在本地浏览器</strong>，绝不上传到服务器</li>
+              <li>✅ AI 生成的单词会保存到服务器，用于丰富词库</li>
+              <li>✅ 您贡献的词汇将帮助其他学习者</li>
+              <li>❌ 我们绝不收集、存储或传输您的 API Key</li>
+            </ul>
+          </div>
+
+          <div class="form-group">
+            <label for="api-key">OpenAI API Key</label>
+            <input type="password" id="api-key" placeholder="sk-..." autocomplete="off">
+            <small>获取方式: <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API Keys</a></small>
+          </div>
+
+          <div class="form-group">
+            <label for="api-base">API 地址 (可选)</label>
+            <input type="text" id="api-base" placeholder="https://api.openai.com/v1">
+            <small>如使用代理，请填写代理地址</small>
+          </div>
+
+          <div class="model-info">
+            <span>🤖 使用模型：<strong>gpt-4o-mini</strong></span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button onclick="saveSettings()" class="btn-primary">保存设置</button>
+          <button onclick="clearSettings()" class="btn-secondary">清除设置</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>

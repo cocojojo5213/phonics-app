@@ -1,0 +1,25 @@
+{
+  "name": "phonics-app",
+  "version": "2.0.0",
+  "description": "真正从基础开始学英语 - 自然拼读练习应用",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "keywords": [
+    "phonics",
+    "english",
+    "learning"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cmu-pronouncing-dictionary": "^3.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "ecdict": "^0.0.4",
+    "edge-tts-universal": "^1.3.3",
+    "express": "^4.21.2"
+  }
+}

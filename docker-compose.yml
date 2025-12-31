@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  phonics-app:
+    build: .
+    container_name: phonics-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # AI 扩词配置（可选，用户也可以在前端配置自己的 Key）
+      # - OPENAI_API_KEY=sk-your-key-here
+      # - OPENAI_BASE_URL=https://api.openai.com/v1
+    volumes:
+      # 持久化 AI 生成的词库
+      - ./data/ai-words.json:/app/data/ai-words.json
+      # 持久化 TTS 缓存
+      - phonics-audio-cache:/app/data/audio
+      # 挂载真人发音音频（如果有）
+      - ./data/phonics-audio:/app/data/phonics-audio:ro
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  phonics-audio-cache:
+    name: phonics-audio-cache
