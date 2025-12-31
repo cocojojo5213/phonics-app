@@ -190,7 +190,6 @@ function renderPractice(data) {
             <div class="word-list">${wordsHtml}</div>
             <div class="load-more">
                 <button onclick="aiExpand()" class="ai-btn">🤖 AI扩词</button>
-                ${data.aiCount > 0 ? `<button onclick="clearAiWords()" class="clear-btn">🧹 清空已扩词</button>` : ''}
             </div>
         </div>
     `;

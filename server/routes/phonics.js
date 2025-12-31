@@ -320,11 +320,12 @@ router.post('/ai-expand', async (req, res) => {
 /**
  * 清空某个模式的 AI 词
  * DELETE /api/phonics/ai-words/:categoryId/:pattern
+ * 
+ * 【已禁用】为防止误操作，此功能已关闭
  */
 router.delete('/ai-words/:categoryId/:pattern', (req, res) => {
-    const { categoryId, pattern } = req.params;
-    wordStore.clearWords(categoryId, pattern);
-    res.json({ success: true });
+    // 禁用删除功能
+    res.status(403).json({ error: '此功能已禁用' });
 });
 
 module.exports = router;
