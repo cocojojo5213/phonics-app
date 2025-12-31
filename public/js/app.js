@@ -186,10 +186,13 @@ function renderPractice(data) {
                 <div class="ipa">${data.pronunciation}</div>
                 <button class="play-btn" onclick="playPatternSound()">▶</button>
             </div>
-            <div class="word-count">共 ${data.words.length} 个单词</div>
+            <div class="word-count">
+                随机展示 ${data.words.length} 个词，词库共 ${data.totalCount || data.words.length} 个词
+                ${data.totalCount > data.words.length ? '（刷新页面换一批）' : ''}
+            </div>
             <div class="word-list">${wordsHtml}</div>
             <div class="load-more">
-                <button onclick="aiExpand()" class="ai-btn">🤖 AI扩词</button>
+                <button onclick="aiExpand()" class="ai-btn">🤖 AI扩词，丰富词库</button>
             </div>
         </div>
     `;
@@ -326,18 +329,6 @@ function openSettings() {
   document.getElementById('api-provider').value = settings.provider || 'openai';
   document.getElementById('api-key').value = settings.apiKey || '';
   document.getElementById('api-base').value = settings.apiBase || '';
-
-  // 根据 provider 显示/隐藏 API 地址选项
-  updateApiBaseVisibility();
-}
-
-// 根据 provider 显示/隐藏 API 地址
-function updateApiBaseVisibility() {
-  const provider = document.getElementById('api-provider').value;
-  const apiBaseGroup = document.getElementById('api-base-group');
-  if (apiBaseGroup) {
-    apiBaseGroup.style.display = provider === 'openai' ? 'block' : 'none';
-  }
 }
 
 // 关闭设置弹窗
@@ -393,9 +384,6 @@ document.getElementById('settings-modal')?.addEventListener('click', (e) => {
     closeSettings();
   }
 });
-
-// provider 切换时显示/隐藏 API 地址
-document.getElementById('api-provider')?.addEventListener('change', updateApiBaseVisibility);
 
 // 启动
 initRouter();

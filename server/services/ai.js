@@ -53,8 +53,8 @@ async function callGemini(prompt, userApi) {
     const apiKey = userApi?.apiKey;
     const model = userApi?.model || DEFAULT_MODELS.gemini;
 
-    // Gemini 支持 OpenAI 兼容格式
-    const baseUrl = 'https://generativelanguage.googleapis.com/v1beta/openai';
+    // 支持自定义地址，否则使用官方地址
+    const baseUrl = userApi?.apiBase || 'https://generativelanguage.googleapis.com/v1beta/openai';
 
     const response = await fetch(`${baseUrl}/chat/completions`, {
         method: 'POST',
@@ -86,7 +86,10 @@ async function callClaude(prompt, userApi) {
     const apiKey = userApi?.apiKey;
     const model = userApi?.model || DEFAULT_MODELS.claude;
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    // 支持自定义地址，否则使用官方地址
+    const baseUrl = userApi?.apiBase || 'https://api.anthropic.com';
+
+    const response = await fetch(`${baseUrl}/v1/messages`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
