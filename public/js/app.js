@@ -250,9 +250,9 @@ async function aiExpand() {
         count: 20,
         // 用户的 API 设置（在服务端使用，不保存）
         userApi: {
+          provider: settings.provider || 'openai',
           apiKey: settings.apiKey,
-          apiBase: settings.apiBase || null,
-          model: settings.model || 'gpt-4o-mini'
+          apiBase: settings.apiBase || null
         }
       })
     });
@@ -323,8 +323,21 @@ function openSettings() {
 
   // 加载已保存的设置
   const settings = getApiSettings();
+  document.getElementById('api-provider').value = settings.provider || 'openai';
   document.getElementById('api-key').value = settings.apiKey || '';
   document.getElementById('api-base').value = settings.apiBase || '';
+
+  // 根据 provider 显示/隐藏 API 地址选项
+  updateApiBaseVisibility();
+}
+
+// 根据 provider 显示/隐藏 API 地址
+function updateApiBaseVisibility() {
+  const provider = document.getElementById('api-provider').value;
+  const apiBaseGroup = document.getElementById('api-base-group');
+  if (apiBaseGroup) {
+    apiBaseGroup.style.display = provider === 'openai' ? 'block' : 'none';
+  }
 }
 
 // 关闭设置弹窗
@@ -335,19 +348,23 @@ function closeSettings() {
 // 保存设置到 localStorage
 function saveSettings() {
   const settings = {
+    provider: document.getElementById('api-provider').value,
     apiKey: document.getElementById('api-key').value.trim(),
     apiBase: document.getElementById('api-base').value.trim()
   };
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
   closeSettings();
-  alert('✅ 设置已保存到本地浏览器');
+
+  const providerNames = { openai: 'OpenAI', gemini: 'Gemini', claude: 'Claude' };
+  alert(`✅ 设置已保存（${providerNames[settings.provider] || settings.provider}）`);
 }
 
 // 清除设置
 function clearSettings() {
   if (confirm('确定清除 API 设置吗？')) {
     localStorage.removeItem(STORAGE_KEY);
+    document.getElementById('api-provider').value = 'openai';
     document.getElementById('api-key').value = '';
     document.getElementById('api-base').value = '';
     alert('设置已清除');
@@ -376,6 +393,9 @@ document.getElementById('settings-modal')?.addEventListener('click', (e) => {
     closeSettings();
   }
 });
+
+// provider 切换时显示/隐藏 API 地址
+document.getElementById('api-provider')?.addEventListener('change', updateApiBaseVisibility);
 
 // 启动
 initRouter();

@@ -44,19 +44,29 @@
           </div>
 
           <div class="form-group">
-            <label for="api-key">OpenAI API Key</label>
-            <input type="password" id="api-key" placeholder="sk-..." autocomplete="off">
-            <small>获取方式: <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API Keys</a></small>
+            <label for="api-provider">API 服务商</label>
+            <select id="api-provider">
+              <option value="openai">OpenAI (GPT-4o-mini)</option>
+              <option value="gemini">Google Gemini</option>
+              <option value="claude">Anthropic Claude</option>
+            </select>
           </div>
 
           <div class="form-group">
-            <label for="api-base">API 地址 (可选)</label>
-            <input type="text" id="api-base" placeholder="https://api.openai.com/v1">
-            <small>如使用代理，请填写代理地址</small>
+            <label for="api-key">API Key</label>
+            <input type="password" id="api-key" placeholder="sk-... / AIza... / sk-ant-..." autocomplete="off">
+            <small id="api-help">
+              获取方式:
+              <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI</a> |
+              <a href="https://aistudio.google.com/apikey" target="_blank">Gemini</a> |
+              <a href="https://console.anthropic.com/" target="_blank">Claude</a>
+            </small>
           </div>
 
-          <div class="model-info">
-            <span>🤖 使用模型：<strong>gpt-4o-mini</strong></span>
+          <div class="form-group" id="api-base-group">
+            <label for="api-base">API 地址 (可选，仅 OpenAI)</label>
+            <input type="text" id="api-base" placeholder="https://api.openai.com/v1">
+            <small>如使用代理，请填写代理地址</small>
           </div>
         </div>
         <div class="modal-footer">
