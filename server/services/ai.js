@@ -16,50 +16,65 @@ async function callOpenAI(prompt, userApi) {
     const baseUrl = userApi?.apiBase || 'https://api.openai.com/v1';
     const model = userApi?.model || DEFAULT_MODEL;
 
-    const response = await fetch(`${baseUrl}/chat/completions`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-            model,
-            messages: [{ role: 'user', content: prompt }],
-            temperature: 0.5,
-            max_tokens: 2000,
-            stream: false
-        })
-    });
+    // 创建 AbortController 用于超时控制
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000); // 30秒超时
 
-    if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`API 错误: ${error}`);
-    }
+    try {
+        const response = await fetch(`${baseUrl}/chat/completions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                model,
+                messages: [{ role: 'user', content: prompt }],
+                temperature: 0.5,
+                max_tokens: 2000,
+                stream: false
+            }),
+            signal: controller.signal
+        });
 
-    const text = await response.text();
+        clearTimeout(timeout);
 
-    // 检查是否是 SSE 流式响应（以 "data:" 开头）
-    if (text.startsWith('data:')) {
-        // 解析 SSE 流式响应，合并所有 content
-        let content = '';
-        const lines = text.split('\n');
-        for (const line of lines) {
-            if (line.startsWith('data:') && !line.includes('[DONE]')) {
-                try {
-                    const json = JSON.parse(line.slice(5).trim());
-                    const delta = json.choices?.[0]?.delta?.content;
-                    if (delta) content += delta;
-                } catch (e) {
-                    // 忽略解析错误
+        if (!response.ok) {
+            const error = await response.text();
+            throw new Error(`API 错误: ${error}`);
+        }
+
+        const text = await response.text();
+
+        // 检查是否是 SSE 流式响应（以 "data:" 开头）
+        if (text.startsWith('data:')) {
+            // 解析 SSE 流式响应，合并所有 content
+            let content = '';
+            const lines = text.split('\n');
+            for (const line of lines) {
+                if (line.startsWith('data:') && !line.includes('[DONE]')) {
+                    try {
+                        const json = JSON.parse(line.slice(5).trim());
+                        const delta = json.choices?.[0]?.delta?.content;
+                        if (delta) content += delta;
+                    } catch (e) {
+                        // 忽略解析错误
+                    }
                 }
             }
+            return content;
         }
-        return content;
-    }
 
-    // 普通 JSON 响应
-    const data = JSON.parse(text);
-    return data.choices?.[0]?.message?.content || '';
+        // 普通 JSON 响应
+        const data = JSON.parse(text);
+        return data.choices?.[0]?.message?.content || '';
+    } catch (error) {
+        clearTimeout(timeout);
+        if (error.name === 'AbortError') {
+            throw new Error('API 请求超时（30秒）');
+        }
+        throw error;
+    }
 }
 
 /**

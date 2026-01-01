@@ -39,17 +39,28 @@ class TTSService {
 
     /**
      * 查找真人录制的发音音频
+     * 增加路径安全检查，防止路径遍历攻击
      */
     findPhonicsAudio(pattern) {
-        const key = pattern.toLowerCase().trim();
-        const keyUpper = pattern.toUpperCase().trim();
+        // 安全检查：只允许字母、数字、下划线
+        const safePattern = pattern.replace(/[^a-zA-Z0-9_-]/g, '');
+        if (!safePattern || safePattern !== pattern.replace(/[^a-zA-Z0-9_-]/g, '')) {
+            return null;
+        }
 
-        const variants = [key, keyUpper, pattern];
+        const key = safePattern.toLowerCase().trim();
+        const keyUpper = safePattern.toUpperCase().trim();
+
+        const variants = [key, keyUpper, safePattern];
         const extensions = ['.mp3', '.wav', '.ogg'];
 
         for (const name of variants) {
             for (const ext of extensions) {
                 const filePath = path.join(PHONICS_AUDIO_DIR, `${name}${ext}`);
+                // 确保路径在允许的目录内
+                if (!filePath.startsWith(PHONICS_AUDIO_DIR)) {
+                    return null;
+                }
                 if (fs.existsSync(filePath)) {
                     return filePath;
                 }
