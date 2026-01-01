@@ -580,3 +580,66 @@ button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* 词数控制区 */
+.word-controls {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.word-controls .word-count {
+  margin-bottom: 12px;
+}
+
+.limit-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.limit-selector span {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.limit-btn {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.limit-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.limit-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.shuffle-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: none;
+  color: white;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 8px;
+}
+
+.shuffle-btn:hover {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  transform: scale(1.02);
+}

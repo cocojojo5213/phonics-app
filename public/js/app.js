@@ -11,6 +11,8 @@ const state = {
   currentPronunciation: null,
   patterns: [],
   words: [],
+  allWords: [],  // 保存所有词，用于重新抽取
+  wordLimit: 10, // 每次显示的词数
   expanded: false
 };
 
@@ -150,18 +152,49 @@ async function loadWords(pattern, expand = false) {
   container.innerHTML = '<div class="loading">加载中...</div>';
 
   try {
-    const url = `${API}/pattern/${state.currentCategory}/${pattern}${expand ? '?expand=true&limit=30' : ''}`;
+    // 请求更多词（100个），让前端来控制显示数量
+    const url = `${API}/pattern/${state.currentCategory}/${pattern}?limit=100`;
     const res = await fetch(url);
     const data = await res.json();
-    state.words = data.words;
+
+    // 保存所有词
+    state.allWords = data.words || [];
     state.currentPronunciation = data.pronunciation;
 
-    renderPractice(data);
+    // 按当前限制随机抽取
+    shuffleAndDisplay();
   } catch (e) {
     console.error('加载单词失败:', e);
     container.innerHTML = '<div class="empty">加载失败</div>';
   }
 }
+
+// 随机抽取并显示词汇
+function shuffleAndDisplay() {
+  // Fisher-Yates 洗牌
+  const shuffled = [...state.allWords];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  // 按限制截取
+  state.words = shuffled.slice(0, state.wordLimit);
+
+  renderPractice({
+    pattern: state.currentPattern,
+    pronunciation: state.currentPronunciation,
+    words: state.words,
+    totalCount: state.allWords.length
+  });
+}
+
+// 设置词数并刷新
+function setWordLimit(limit) {
+  state.wordLimit = limit;
+  shuffleAndDisplay();
+}
+
 
 // 渲染练习区域
 function renderPractice(data) {
@@ -181,6 +214,11 @@ function renderPractice(data) {
         `;
   }).join('');
 
+  // 词数选择按钮
+  const limitBtns = [5, 10, 15, 30].map(n =>
+    `<button class="limit-btn ${state.wordLimit === n ? 'active' : ''}" onclick="setWordLimit(${n})">${n}</button>`
+  ).join('');
+
   container.innerHTML = `
         <div class="practice-area">
             <div class="practice-header">
@@ -188,9 +226,14 @@ function renderPractice(data) {
                 <div class="ipa">${data.pronunciation}</div>
                 <button class="play-btn" onclick="playPatternSound()">▶</button>
             </div>
-            <div class="word-count">
-                随机展示 ${data.words.length} 个词，词库共 ${data.totalCount || data.words.length} 个词
-                ${data.totalCount > data.words.length ? '（刷新页面换一批）' : ''}
+            <div class="word-controls">
+                <div class="word-count">
+                    显示 ${data.words.length} 个词，词库共 ${data.totalCount || data.words.length} 个词
+                </div>
+                <div class="limit-selector">
+                    <span>每次显示：</span>${limitBtns}
+                    <button class="shuffle-btn" onclick="shuffleAndDisplay()">🔀 换一批</button>
+                </div>
             </div>
             <div class="word-list">${wordsHtml}</div>
             <div class="load-more">

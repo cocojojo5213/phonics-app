@@ -263,13 +263,16 @@ router.get('/pattern/:categoryId/:pattern', (req, res) => {
     // 合并所有词
     const allWords = [...baseWords, ...aiWords];
 
-    // 随机抽取最多 30 个词（使用 Fisher-Yates 洗牌算法）
+    // 获取 limit 参数（默认30，最大100）
+    const limit = Math.min(parseInt(req.query.limit) || 30, 100);
+
+    // 随机抽取词（使用 Fisher-Yates 洗牌算法）
     const shuffled = [...allWords];
     for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
-    const displayWords = shuffled.slice(0, 30);
+    const displayWords = shuffled.slice(0, limit);
 
     res.json({
         pattern: patternData.pattern,
