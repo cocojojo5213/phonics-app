@@ -15,6 +15,7 @@ const aiService = require('../services/ai');
 const wordStore = require('../services/wordStore');
 const audioScanner = require('../services/audioScanner');
 const categoryCache = require('../services/categoryCache');
+const aiClassifier = require('../services/aiClassifier');
 
 /**
  * 获取所有发音模式分类
@@ -140,9 +141,14 @@ router.get('/category/:categoryId', (req, res) => {
     // 添加已分类的额外模式
     for (const extraPattern of classifiedExtras) {
         const aiWords = wordStore.getWords(categoryId, extraPattern);
+        // 从缓存或预定义获取发音
+        const cachedPronunciation = categoryCache.getPatternPronunciation(extraPattern);
+        const knownPronunciation = aiClassifier.getKnownPronunciation(extraPattern);
+        const pronunciation = cachedPronunciation || knownPronunciation || '';
+
         patterns.push({
             pattern: extraPattern,
-            pronunciation: '',  // 需要 AI 或手动补充
+            pronunciation: pronunciation,
             baseCount: 0,
             aiCount: aiWords.length,
             totalCount: aiWords.length,
@@ -214,9 +220,14 @@ router.get('/pattern/:categoryId/:pattern', (req, res) => {
                 source: 'ai'
             }));
 
+            // 从缓存获取发音，如果没有则尝试从预定义获取
+            const cachedPronunciation = categoryCache.getPatternPronunciation(pattern);
+            const knownPronunciation = aiClassifier.getKnownPronunciation(pattern);
+            const pronunciation = cachedPronunciation || knownPronunciation || '';
+
             return res.json({
                 pattern: pattern,
-                pronunciation: '',  // 额外模式暂无发音标注
+                pronunciation: pronunciation,
                 categoryId,
                 words: aiWords,
                 baseCount: 0,
@@ -468,7 +479,7 @@ router.post('/classify', (req, res) => {
 });
 
 /**
- * AI 自动分类未分类的模式
+ * AI 自动分类未分类的模式（同时生成发音）
  * POST /api/phonics/auto-classify
  */
 router.post('/auto-classify', async (req, res) => {
@@ -487,10 +498,12 @@ router.post('/auto-classify', async (req, res) => {
 
     for (const pattern of unclassified) {
         try {
-            const categoryId = await aiClassifier.classifyPattern(pattern);
-            if (categoryId) {
-                categoryCache.setPatternCategory(pattern, categoryId);
-                results.push({ pattern, categoryId });
+            // 使用完整分类（分类 + 发音）
+            const { category, pronunciation } = await aiClassifier.classifyPatternFull(pattern);
+            if (category) {
+                // 保存分类和发音信息
+                categoryCache.setPatternInfo(pattern, category, pronunciation);
+                results.push({ pattern, category, pronunciation });
                 classified++;
             }
         } catch (e) {

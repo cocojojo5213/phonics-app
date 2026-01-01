@@ -1,7 +1,7 @@
 /**
  * AI 分类服务
  * 
- * 自动识别新的发音模式应该归到哪个分类
+ * 自动识别新的发音模式应该归到哪个分类，并生成 IPA 发音
  */
 
 require('dotenv').config();
@@ -16,6 +16,53 @@ const CATEGORIES = {
     consonant_blends: '辅音组合（如 bl, ch, sh, th, ck, ng, nk, wh, ph 等）',
     r_controlled: 'R控制元音（如 ar, er, ir, or, ur）',
     other_vowels: '其他元音（如 ow, ou, oo, oi, oy, aw, au 等）'
+};
+
+// 预定义的发音（常见模式）
+const KNOWN_PRONUNCIATIONS = {
+    // 单字母
+    'a': '/æ/', 'b': '/b/', 'c': '/k/', 'd': '/d/', 'e': '/ɛ/',
+    'f': '/f/', 'g': '/g/', 'h': '/h/', 'i': '/ɪ/', 'j': '/dʒ/',
+    'k': '/k/', 'l': '/l/', 'm': '/m/', 'n': '/n/', 'o': '/ɒ/',
+    'p': '/p/', 'q': '/kw/', 'r': '/r/', 's': '/s/', 't': '/t/',
+    'u': '/ʌ/', 'v': '/v/', 'w': '/w/', 'x': '/ks/', 'y': '/j/', 'z': '/z/',
+
+    // 短元音 - a 族
+    'ad': '/æd/', 'ag': '/æg/', 'am': '/æm/', 'an': '/æn/',
+    'ap': '/æp/', 'at': '/æt/', 'ax': '/æks/',
+
+    // 短元音 - e 族
+    'ed': '/ɛd/', 'eg': '/ɛg/', 'en': '/ɛn/', 'et': '/ɛt/',
+    'ell': '/ɛl/', 'ess': '/ɛs/',
+
+    // 短元音 - i 族
+    'ib': '/ɪb/', 'id': '/ɪd/', 'ig': '/ɪg/', 'ill': '/ɪl/',
+    'im': '/ɪm/', 'in': '/ɪn/', 'ip': '/ɪp/', 'it': '/ɪt/', 'ix': '/ɪks/',
+
+    // 短元音 - o 族
+    'ob': '/ɒb/', 'od': '/ɒd/', 'og': '/ɒg/', 'op': '/ɒp/',
+    'ot': '/ɒt/', 'ox': '/ɒks/',
+
+    // 短元音 - u 族
+    'ub': '/ʌb/', 'ud': '/ʌd/', 'ug': '/ʌg/', 'ull': '/ʌl/',
+    'um': '/ʌm/', 'un': '/ʌn/', 'up': '/ʌp/', 'us': '/ʌs/', 'ut': '/ʌt/',
+
+    // Magic-E 长元音
+    'a_e': '/eɪ/', 'e_e': '/iː/', 'i_e': '/aɪ/', 'o_e': '/oʊ/', 'u_e': '/juː/',
+
+    // R 控制元音
+    'ar': '/ɑːr/', 'er': '/ər/', 'ir': '/ɜːr/', 'or': '/ɔːr/', 'ur': '/ɜːr/',
+
+    // 长元音组合
+    'ai': '/eɪ/', 'ay': '/eɪ/', 'ee': '/iː/', 'ea': '/iː/',
+    'oa': '/oʊ/', 'ow': '/oʊ/', 'igh': '/aɪ/', 'oo': '/uː/',
+
+    // 其他元音
+    'ou': '/aʊ/', 'oi': '/ɔɪ/', 'oy': '/ɔɪ/', 'aw': '/ɔː/', 'au': '/ɔː/',
+
+    // 辅音组合
+    'sh': '/ʃ/', 'ch': '/tʃ/', 'th': '/θ/', 'ng': '/ŋ/', 'nk': '/ŋk/',
+    'wh': '/w/', 'ph': '/f/', 'ck': '/k/'
 };
 
 // 预分类规则（不需要 AI 直接判断的情况）
@@ -51,6 +98,64 @@ function preClassify(pattern) {
         if (result) return result;
     }
     return null;
+}
+
+/**
+ * 获取已知的发音
+ */
+function getKnownPronunciation(pattern) {
+    return KNOWN_PRONUNCIATIONS[pattern.toLowerCase()] || null;
+}
+
+/**
+ * 使用 AI 获取发音（当预定义不存在时）
+ */
+async function getPronunciationFromAI(pattern) {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) return null;
+
+    const prompt = `给出英语发音模式 "${pattern}" 的 IPA 音标。
+
+例如：
+- "at" 的 IPA 是 /æt/
+- "ee" 的 IPA 是 /iː/
+- "sh" 的 IPA 是 /ʃ/
+
+只返回 IPA 音标（包含斜杠），不要其他文字。
+例如: /æt/`;
+
+    try {
+        const userApi = {
+            apiKey,
+            apiBase: process.env.OPENAI_BASE_URL || null,
+            model: process.env.OPENAI_CLASSIFY_MODEL || 'gpt-5.2'
+        };
+
+        const response = await aiService.callOpenAI(prompt, userApi);
+        const pronunciation = response.trim();
+
+        // 验证返回格式
+        if (pronunciation.startsWith('/') && pronunciation.endsWith('/')) {
+            console.log(`🎵 AI 发音: ${pattern} → ${pronunciation}`);
+            return pronunciation;
+        }
+
+        console.log(`⚠️ AI 发音格式错误: ${pattern} (返回: ${response})`);
+        return null;
+    } catch (error) {
+        console.error('AI 获取发音失败:', error.message);
+        return null;
+    }
+}
+
+/**
+ * 获取发音（优先使用预定义，否则调用 AI）
+ */
+async function getPronunciation(pattern) {
+    const known = getKnownPronunciation(pattern);
+    if (known) return known;
+
+    return await getPronunciationFromAI(pattern);
 }
 
 /**
@@ -122,6 +227,20 @@ ${categoryDescriptions}
 }
 
 /**
+ * 完整分类（分类 + 发音）
+ * 返回 { category, pronunciation }
+ */
+async function classifyPatternFull(pattern) {
+    const category = await classifyPattern(pattern);
+    const pronunciation = await getPronunciation(pattern);
+
+    return {
+        category,
+        pronunciation: pronunciation || ''
+    };
+}
+
+/**
  * 检查发音模式是否已经在 phonicsData 中定义
  */
 function isPatternDefined(pattern) {
@@ -153,7 +272,11 @@ function getPatternCategory(pattern) {
 
 module.exports = {
     classifyPattern,
+    classifyPatternFull,
+    getPronunciation,
+    getKnownPronunciation,
     isPatternDefined,
     getPatternCategory,
-    CATEGORIES
+    CATEGORIES,
+    KNOWN_PRONUNCIATIONS
 };
