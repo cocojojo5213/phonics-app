@@ -14,17 +14,37 @@ const dictionaryService = require('../services/dictionary');
 const aiService = require('../services/ai');
 const wordStore = require('../services/wordStore');
 const audioScanner = require('../services/audioScanner');
+const categoryCache = require('../services/categoryCache');
 
 /**
  * 获取所有发音模式分类
  * GET /api/phonics/categories
  * 
  * 只返回有真人发音的分类
+ * 新上传的音频如果已被 AI 分类，会合并到对应分类中
  */
 router.get('/categories', (req, res) => {
-    // 计算每个分类中有真人发音的模式数量
-    const countWithAudio = (categoryData) => {
-        return categoryData.filter(p => audioScanner.hasAudio(p.pattern)).length;
+    // 获取所有有音频但未在 phonicsData 中的模式
+    const extraPatterns = audioScanner.getExtraPatterns().all;
+
+    // 按分类统计额外模式
+    const extraCountByCategory = {};
+    const unclassifiedPatterns = [];
+
+    for (const pattern of extraPatterns) {
+        const cachedCategory = categoryCache.getPatternCategory(pattern);
+        if (cachedCategory && cachedCategory !== 'supplementary') {
+            extraCountByCategory[cachedCategory] = (extraCountByCategory[cachedCategory] || 0) + 1;
+        } else {
+            unclassifiedPatterns.push(pattern);
+        }
+    }
+
+    // 计算每个分类中有真人发音的模式数量（包括缓存分类的额外模式）
+    const countWithAudio = (categoryData, categoryId) => {
+        const baseCount = categoryData.filter(p => audioScanner.hasAudio(p.pattern)).length;
+        const extraCount = extraCountByCategory[categoryId] || 0;
+        return baseCount + extraCount;
     };
 
     const allCategories = [
@@ -41,17 +61,16 @@ router.get('/categories', (req, res) => {
         .map(cat => ({
             id: cat.id,
             name: cat.name,
-            count: countWithAudio(cat.data)
+            count: countWithAudio(cat.data, cat.id)
         }))
         .filter(cat => cat.count > 0);
 
-    // 检查是否有补充内容
-    const supplementary = audioScanner.getSupplementaryCategory();
-    if (supplementary && supplementary.patterns.length > 0) {
+    // 如果有未分类的模式，显示补充内容
+    if (unclassifiedPatterns.length > 0) {
         categories.push({
             id: 'supplementary',
-            name: '📁 补充内容',
-            count: supplementary.patterns.length,
+            name: '📁 待分类',
+            count: unclassifiedPatterns.length,
             isExtra: true
         });
     }
@@ -66,19 +85,25 @@ router.get('/categories', (req, res) => {
 router.get('/category/:categoryId', (req, res) => {
     const { categoryId } = req.params;
 
-    // 处理补充分类
-    if (categoryId === 'supplementary') {
-        const supplementary = audioScanner.getSupplementaryCategory();
-        if (!supplementary) {
-            return res.json({ categoryId, patterns: [] });
-        }
+    // 获取此分类的额外音频模式（通过 AI 或手动分类的）
+    const extraPatterns = audioScanner.getExtraPatterns().all;
+    const classifiedExtras = extraPatterns.filter(p =>
+        categoryCache.getPatternCategory(p) === categoryId
+    );
 
-        const patterns = supplementary.patterns.map(p => {
-            const aiWords = wordStore.getWords(categoryId, p.pattern);
+    // 处理补充分类（未分类的）
+    if (categoryId === 'supplementary') {
+        const unclassified = extraPatterns.filter(p => {
+            const cached = categoryCache.getPatternCategory(p);
+            return !cached || cached === 'supplementary';
+        });
+
+        const patterns = unclassified.map(pattern => {
+            const aiWords = wordStore.getWords(categoryId, pattern);
             return {
-                pattern: p.pattern,
-                displayName: p.displayName,
-                pronunciation: p.pronunciation || '',
+                pattern: pattern,
+                displayName: pattern,
+                pronunciation: '',
                 baseCount: 0,
                 aiCount: aiWords.length,
                 totalCount: aiWords.length,
@@ -96,7 +121,7 @@ router.get('/category/:categoryId', (req, res) => {
         return res.status(404).json({ error: '分类不存在' });
     }
 
-    // 只返回有真人发音的模式
+    // 只返回有真人发音的模式（来自 phonicsData）
     const patterns = data
         .filter(p => audioScanner.hasAudio(p.pattern))
         .map(p => {
@@ -111,6 +136,20 @@ router.get('/category/:categoryId', (req, res) => {
                 hasAudio: true
             };
         });
+
+    // 添加已分类的额外模式
+    for (const extraPattern of classifiedExtras) {
+        const aiWords = wordStore.getWords(categoryId, extraPattern);
+        patterns.push({
+            pattern: extraPattern,
+            pronunciation: '',  // 需要 AI 或手动补充
+            baseCount: 0,
+            aiCount: aiWords.length,
+            totalCount: aiWords.length,
+            hasAudio: true,
+            isExtra: true
+        });
+    }
 
     res.json({
         categoryId,
@@ -380,6 +419,74 @@ router.post('/auto-expand/stop', (req, res) => {
 router.get('/auto-expand/status', (req, res) => {
     const status = autoExpand.getStatus();
     res.json(status);
+});
+
+// ========== 模式分类 API ==========
+
+const aiClassifier = require('../services/aiClassifier');
+
+/**
+ * 手动设置模式分类
+ * POST /api/phonics/classify
+ * body: { pattern: "tion", categoryId: "consonant_blends" }
+ */
+router.post('/classify', (req, res) => {
+    const { pattern, categoryId } = req.body;
+
+    if (!pattern || !categoryId) {
+        return res.status(400).json({ error: '缺少参数' });
+    }
+
+    categoryCache.setPatternCategory(pattern, categoryId);
+    res.json({ success: true, pattern, categoryId });
+});
+
+/**
+ * AI 自动分类未分类的模式
+ * POST /api/phonics/auto-classify
+ */
+router.post('/auto-classify', async (req, res) => {
+    const extraPatterns = audioScanner.getExtraPatterns().all;
+    const unclassified = extraPatterns.filter(p => {
+        const cached = categoryCache.getPatternCategory(p);
+        return !cached || cached === 'supplementary';
+    });
+
+    if (unclassified.length === 0) {
+        return res.json({ success: true, message: '没有需要分类的模式', classified: 0 });
+    }
+
+    let classified = 0;
+    const results = [];
+
+    for (const pattern of unclassified) {
+        try {
+            const categoryId = await aiClassifier.classifyPattern(pattern);
+            if (categoryId) {
+                categoryCache.setPatternCategory(pattern, categoryId);
+                results.push({ pattern, categoryId });
+                classified++;
+            }
+        } catch (e) {
+            console.error(`分类 ${pattern} 失败:`, e.message);
+        }
+    }
+
+    res.json({ success: true, classified, results });
+});
+
+/**
+ * 获取未分类的模式列表
+ * GET /api/phonics/unclassified
+ */
+router.get('/unclassified', (req, res) => {
+    const extraPatterns = audioScanner.getExtraPatterns().all;
+    const unclassified = extraPatterns.filter(p => {
+        const cached = categoryCache.getPatternCategory(p);
+        return !cached || cached === 'supplementary';
+    });
+
+    res.json({ patterns: unclassified });
 });
 
 module.exports = router;
