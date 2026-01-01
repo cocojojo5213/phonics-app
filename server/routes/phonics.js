@@ -460,8 +460,6 @@ router.get('/auto-expand/status', (req, res) => {
 
 // ========== 模式分类 API ==========
 
-const aiClassifier = require('../services/aiClassifier');
-
 /**
  * 手动设置模式分类
  * POST /api/phonics/classify
