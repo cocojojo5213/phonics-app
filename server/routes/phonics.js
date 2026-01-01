@@ -18,16 +18,32 @@ const audioScanner = require('../services/audioScanner');
 /**
  * 获取所有发音模式分类
  * GET /api/phonics/categories
+ * 
+ * 只返回有真人发音的分类
  */
 router.get('/categories', (req, res) => {
-    const categories = [
-        { id: 'letters', name: '26个字母', count: phonicsData.letters.length },
-        { id: 'short_vowels', name: '短元音组合', count: phonicsData.short_vowels.length },
-        { id: 'long_vowels', name: '长元音组合', count: phonicsData.long_vowels.length },
-        { id: 'consonant_blends', name: '辅音组合', count: phonicsData.consonant_blends.length },
-        { id: 'r_controlled', name: 'R控制元音', count: phonicsData.r_controlled.length },
-        { id: 'other_vowels', name: '其他元音', count: phonicsData.other_vowels.length },
+    // 计算每个分类中有真人发音的模式数量
+    const countWithAudio = (categoryData) => {
+        return categoryData.filter(p => audioScanner.hasAudio(p.pattern)).length;
+    };
+
+    const allCategories = [
+        { id: 'letters', name: '26个字母', data: phonicsData.letters },
+        { id: 'short_vowels', name: '短元音组合', data: phonicsData.short_vowels },
+        { id: 'long_vowels', name: '长元音组合', data: phonicsData.long_vowels },
+        { id: 'consonant_blends', name: '辅音组合', data: phonicsData.consonant_blends },
+        { id: 'r_controlled', name: 'R控制元音', data: phonicsData.r_controlled },
+        { id: 'other_vowels', name: '其他元音', data: phonicsData.other_vowels },
     ];
+
+    // 只返回有真人发音模式的分类
+    const categories = allCategories
+        .map(cat => ({
+            id: cat.id,
+            name: cat.name,
+            count: countWithAudio(cat.data)
+        }))
+        .filter(cat => cat.count > 0);
 
     // 检查是否有补充内容
     const supplementary = audioScanner.getSupplementaryCategory();
@@ -80,18 +96,21 @@ router.get('/category/:categoryId', (req, res) => {
         return res.status(404).json({ error: '分类不存在' });
     }
 
-    const patterns = data.map(p => {
-        const aiWords = wordStore.getWords(categoryId, p.pattern);
-        return {
-            pattern: p.pattern,
-            pronunciation: p.pronunciation,
-            baseCount: p.words.length,
-            aiCount: aiWords.length,
-            totalCount: p.words.length + aiWords.length,
-            exampleWord: p.words[0]?.word || '',
-            hasAudio: audioScanner.hasAudio(p.pattern)
-        };
-    });
+    // 只返回有真人发音的模式
+    const patterns = data
+        .filter(p => audioScanner.hasAudio(p.pattern))
+        .map(p => {
+            const aiWords = wordStore.getWords(categoryId, p.pattern);
+            return {
+                pattern: p.pattern,
+                pronunciation: p.pronunciation,
+                baseCount: p.words.length,
+                aiCount: aiWords.length,
+                totalCount: p.words.length + aiWords.length,
+                exampleWord: p.words[0]?.word || '',
+                hasAudio: true
+            };
+        });
 
     res.json({
         categoryId,
