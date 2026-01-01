@@ -10,7 +10,7 @@
 // 默认配置
 const DEFAULT_MODELS = {
     openai: 'gpt-4o-mini',
-    gemini: 'gemini-2.0-flash-exp',
+    gemini: 'gemini-2.0-flash',  // 稳定版本
     claude: 'claude-3-5-haiku-latest'
 };
 
