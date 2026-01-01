@@ -79,6 +79,7 @@ async function loadCategories() {
     const container = document.getElementById('categories');
     container.innerHTML = data.categories.map(cat => `
             <div class="category-card ${state.currentCategory === cat.id ? 'active' : ''}" 
+                 data-category="${cat.id}"
                  onclick="selectCategory('${cat.id}')">
                 <h3>${cat.name}</h3>
                 <span>${cat.count} 个发音</span>
@@ -99,9 +100,9 @@ async function selectCategory(categoryId) {
   state.currentCategory = categoryId;
   state.currentPattern = null;
 
-  // 更新分类卡片状态
+  // 更新分类卡片状态 - 使用 data-category 精确匹配
   document.querySelectorAll('.category-card').forEach(card => {
-    card.classList.toggle('active', card.onclick.toString().includes(categoryId));
+    card.classList.toggle('active', card.dataset.category === categoryId);
   });
 
   // 加载该分类的发音模式
@@ -113,8 +114,9 @@ async function selectCategory(categoryId) {
     const container = document.getElementById('patterns');
     container.innerHTML = data.patterns.map(p => `
             <div class="pattern-chip ${state.currentPattern === p.pattern ? 'active' : ''}"
+                 data-pattern="${p.pattern}"
                  onclick="selectPattern('${p.pattern}')">
-                <span>${p.pattern}</span>
+                <span class="pattern-text">${p.pattern}</span>
                 <span class="ipa">${p.pronunciation}</span>
             </div>
         `).join('');
@@ -133,9 +135,9 @@ async function selectPattern(pattern, expand = false) {
   state.currentPattern = pattern;
   state.expanded = expand;
 
-  // 更新芯片状态
+  // 更新芯片状态 - 使用 data-pattern 精确匹配
   document.querySelectorAll('.pattern-chip').forEach(chip => {
-    chip.classList.toggle('active', chip.textContent.includes(pattern));
+    chip.classList.toggle('active', chip.dataset.pattern === pattern);
   });
 
   // 加载单词
