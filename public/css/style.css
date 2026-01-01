@@ -6,36 +6,51 @@
 }
 
 :root {
-  --bg: #fafafa;
-  --text: #1a1a1a;
-  --text-secondary: #666;
-  --border: #e5e5e5;
+  --bg: #f8fafc;
+  --text: #0f172a;
+  --text-secondary: #64748b;
+  --border: #e2e8f0;
   --primary: #2563eb;
-  --primary-light: #dbeafe;
+  --primary-hover: #1d4ed8;
+  --primary-light: #eff6ff;
   --accent: #f97316;
-  --card-bg: #fff;
-  --radius: 8px;
+  --card-bg: #ffffff;
+  --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --card-shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --radius: 12px;
 }
 
 /* 深色模式 */
 [data-theme="dark"] {
-  --bg: #0f172a;
-  --text: #f1f5f9;
+  --bg: #0b1120;
+  --text: #e2e8f0;
   --text-secondary: #94a3b8;
-  --border: #334155;
+  --border: #1e293b;
   --primary: #3b82f6;
-  --primary-light: #1e3a5f;
+  --primary-hover: #60a5fa;
+  --primary-light: #172554;
   --accent: #fb923c;
   --card-bg: #1e293b;
+  --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+  --card-shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4);
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
   min-height: 100vh;
-  transition: background 0.3s, color 0.3s;
+  transition: background 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 统一按钮和输入框字体 */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 
 /* 头部 */
@@ -45,13 +60,25 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
+  backdrop-filter: blur(8px);
+  background-color: transparent;
+  /* 支持背景模糊 */
+}
+
+/* 深色模式下的头部背景 */
+[data-theme="dark"] .header {
+  background-color: rgba(30, 41, 59, 0.8);
+}
+
+[data-theme="light"] .header {
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .header-inner {
-  max-width: 960px;
+  max-width: 1024px;
   margin: 0 auto;
-  padding: 0 20px;
-  height: 56px;
+  padding: 0 24px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -87,15 +114,15 @@ body {
 
 /* 主内容区 */
 main {
-  max-width: 960px;
+  max-width: 1024px;
   margin: 0 auto;
-  padding: 32px 20px;
+  padding: 40px 24px;
 }
 
 /* 首页 */
 .home {
   text-align: center;
-  padding: 60px 0;
+  padding: 80px 0;
 }
 
 .home h1 {
@@ -185,14 +212,16 @@ main {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 20px;
+  padding: 24px;
   cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: var(--card-shadow);
 }
 
 .category-card:hover {
   border-color: var(--primary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--card-shadow-hover);
+  transform: translateY(-2px);
 }
 
 .category-card.active {
@@ -256,7 +285,8 @@ main {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 32px;
+  padding: 40px;
+  box-shadow: var(--card-shadow);
 }
 
 .practice-header {
@@ -315,6 +345,7 @@ main {
   padding: 16px;
   cursor: pointer;
   transition: all 0.2s;
+  border: 1px solid transparent;
 }
 
 .word-card:hover {
@@ -453,13 +484,14 @@ main {
 }
 
 .modal-content {
-  background: white;
-  border-radius: 12px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
   width: 90%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--card-shadow-hover);
+  border: 1px solid var(--border);
 }
 
 .modal-header {
@@ -553,10 +585,13 @@ main {
 .form-group input,
 .form-group select {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px 16px;
   border: 1px solid var(--border);
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: var(--radius);
+  font-size: 15px;
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-group input:focus,
@@ -578,19 +613,22 @@ main {
 }
 
 /* 按钮 */
+/* 按钮 */
 .btn-primary {
   background: var(--primary);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 12px 24px;
+  border-radius: var(--radius);
+  font-size: 15px;
   cursor: pointer;
   font-weight: 500;
+  transition: background 0.2s;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .btn-primary:hover {
-  background: #1d4ed8;
+  background: var(--primary-hover);
 }
 
 .btn-secondary {
@@ -698,28 +736,13 @@ button:disabled {
 }
 
 /* 深色模式补充样式 */
-[data-theme="dark"] .header {
-  border-bottom-color: var(--border);
-}
-
-[data-theme="dark"] .modal-content {
-  background: var(--card-bg);
-}
-
 [data-theme="dark"] .privacy-notice {
-  background: #1e3a5f;
-  border-color: #3b82f6;
+  background: rgba(30, 58, 138, 0.4);
+  border-color: #1e40af;
 }
 
 [data-theme="dark"] .privacy-notice h3 {
   color: #60a5fa;
-}
-
-[data-theme="dark"] input,
-[data-theme="dark"] select {
-  background: var(--bg);
-  color: var(--text);
-  border-color: var(--border);
 }
 
 [data-theme="dark"] input:focus,
