@@ -17,12 +17,25 @@
   --radius: 8px;
 }
 
+/* 深色模式 */
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --text: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --border: #334155;
+  --primary: #3b82f6;
+  --primary-light: #1e3a5f;
+  --accent: #fb923c;
+  --card-bg: #1e293b;
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
   min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
 }
 
 /* 头部 */
@@ -682,4 +695,52 @@ button:disabled {
 .shuffle-btn:hover {
   background: var(--primary);
   color: white;
+}
+
+/* 深色模式补充样式 */
+[data-theme="dark"] .header {
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .modal-content {
+  background: var(--card-bg);
+}
+
+[data-theme="dark"] .privacy-notice {
+  background: #1e3a5f;
+  border-color: #3b82f6;
+}
+
+[data-theme="dark"] .privacy-notice h3 {
+  color: #60a5fa;
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] select {
+  background: var(--bg);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* 主题切换按钮 */
+.theme-btn {
+  min-width: 36px;
+}
+
+/* 过渡效果 */
+.header,
+.category-card,
+.pattern-chip,
+.practice-area,
+.word-card,
+.modal-content,
+input,
+select {
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
 }

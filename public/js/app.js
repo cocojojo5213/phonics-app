@@ -19,6 +19,36 @@ const state = {
 // DOM
 const main = document.getElementById('main');
 
+// 主题管理
+function initTheme() {
+  const saved = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = saved || (prefersDark ? 'dark' : 'light');
+  setTheme(theme);
+}
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+  updateThemeButton(theme);
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  setTheme(next);
+}
+
+function updateThemeButton(theme) {
+  const btn = document.getElementById('theme-btn');
+  if (btn) {
+    btn.textContent = theme === 'dark' ? '暗' : '亮';
+  }
+}
+
+// 初始化主题
+initTheme();
+
 // 路由
 function initRouter() {
   window.addEventListener('hashchange', handleRoute);
