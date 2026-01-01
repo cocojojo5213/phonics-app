@@ -46,7 +46,8 @@ ${categoryDescriptions}
         const userApi = {
             apiKey,
             apiBase: process.env.OPENAI_BASE_URL || null,
-            model: process.env.OPENAI_MODEL || 'gpt-4o-mini'
+            // 分类用最强模型，反正调用少
+            model: process.env.OPENAI_CLASSIFY_MODEL || 'gpt-5.2'
         };
 
         const response = await aiService.callOpenAI(prompt, userApi);
