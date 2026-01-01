@@ -46,27 +46,28 @@
           <div class="form-group">
             <label for="api-provider">API 服务商</label>
             <select id="api-provider">
-              <option value="openai">OpenAI (GPT-4o-mini)</option>
+              <option value="openai">OpenAI 兼容</option>
               <option value="gemini">Google Gemini</option>
               <option value="claude">Anthropic Claude</option>
             </select>
+            <small>代理服务通常选 OpenAI 兼容</small>
           </div>
 
           <div class="form-group">
             <label for="api-key">API Key</label>
-            <input type="password" id="api-key" placeholder="sk-... / AIza... / sk-ant-..." autocomplete="off">
-            <small id="api-help">
-              获取方式:
-              <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI</a> |
-              <a href="https://aistudio.google.com/apikey" target="_blank">Gemini</a> |
-              <a href="https://console.anthropic.com/" target="_blank">Claude</a>
-            </small>
+            <input type="password" id="api-key" placeholder="你的 API Key" autocomplete="off">
           </div>
 
           <div class="form-group">
-            <label for="api-base">API 代理地址 (可选)</label>
+            <label for="api-base">API 地址 (可选)</label>
             <input type="text" id="api-base" placeholder="留空使用官方地址">
-            <small>如需代理，请填写完整地址</small>
+            <small>代理示例: https://api.example.com</small>
+          </div>
+
+          <div class="form-group">
+            <label for="api-model">模型名称 (可选)</label>
+            <input type="text" id="api-model" placeholder="留空使用默认模型">
+            <small>如: gpt-4.1, claude-3-opus, gemini-pro</small>
           </div>
         </div>
         <div class="modal-footer">

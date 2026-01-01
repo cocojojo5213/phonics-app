@@ -257,7 +257,8 @@ async function aiExpand() {
         userApi: {
           provider: settings.provider || 'openai',
           apiKey: settings.apiKey,
-          apiBase: settings.apiBase || null
+          apiBase: settings.apiBase || null,
+          model: settings.model || null
         }
       })
     });
@@ -331,6 +332,7 @@ function openSettings() {
   document.getElementById('api-provider').value = settings.provider || 'openai';
   document.getElementById('api-key').value = settings.apiKey || '';
   document.getElementById('api-base').value = settings.apiBase || '';
+  document.getElementById('api-model').value = settings.model || '';
 }
 
 // 关闭设置弹窗
@@ -343,14 +345,16 @@ function saveSettings() {
   const settings = {
     provider: document.getElementById('api-provider').value,
     apiKey: document.getElementById('api-key').value.trim(),
-    apiBase: document.getElementById('api-base').value.trim()
+    apiBase: document.getElementById('api-base').value.trim(),
+    model: document.getElementById('api-model').value.trim()
   };
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
   closeSettings();
 
   const providerNames = { openai: 'OpenAI', gemini: 'Gemini', claude: 'Claude' };
-  alert(`✅ 设置已保存（${providerNames[settings.provider] || settings.provider}）`);
+  const modelInfo = settings.model ? ` - ${settings.model}` : '';
+  alert(`✅ 设置已保存（${providerNames[settings.provider] || settings.provider}${modelInfo}）`);
 }
 
 // 清除设置
@@ -360,6 +364,7 @@ function clearSettings() {
     document.getElementById('api-provider').value = 'openai';
     document.getElementById('api-key').value = '';
     document.getElementById('api-base').value = '';
+    document.getElementById('api-model').value = '';
     alert('设置已清除');
   }
 }
@@ -380,11 +385,17 @@ function hasApiKey() {
   return !!settings.apiKey;
 }
 
-// 点击弹窗外部关闭
-document.getElementById('settings-modal')?.addEventListener('click', (e) => {
-  if (e.target.classList.contains('modal')) {
+// 点击弹窗背景关闭（不是拖拽）
+let modalMouseDownTarget = null;
+document.getElementById('settings-modal')?.addEventListener('mousedown', (e) => {
+  modalMouseDownTarget = e.target;
+});
+document.getElementById('settings-modal')?.addEventListener('mouseup', (e) => {
+  // 只有当 mousedown 和 mouseup 都在背景上时才关闭
+  if (e.target.classList.contains('modal') && modalMouseDownTarget?.classList.contains('modal')) {
     closeSettings();
   }
+  modalMouseDownTarget = null;
 });
 
 // 启动
