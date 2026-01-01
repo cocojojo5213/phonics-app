@@ -77,7 +77,7 @@ function switchToNextKey() {
 }
 
 /**
- * 获取所有需要扩词的模式
+ * 获取所有需要扩词的模式（按词汇量从少到多排序）
  */
 function getAllPatterns() {
     const patterns = [];
@@ -90,15 +90,23 @@ function getAllPatterns() {
         for (const p of data) {
             // 只处理有真人发音的模式
             if (audioScanner.hasAudio(p.pattern)) {
+                const baseWords = p.words.map(w => w.word);
+                const aiWords = wordStore.getWords(categoryId, p.pattern);
+                const totalCount = baseWords.length + aiWords.length;
+
                 patterns.push({
                     categoryId,
                     pattern: p.pattern,
                     pronunciation: p.pronunciation,
-                    existingWords: p.words.map(w => w.word)
+                    existingWords: baseWords,
+                    totalCount
                 });
             }
         }
     }
+
+    // 按词汇量从少到多排序
+    patterns.sort((a, b) => a.totalCount - b.totalCount);
 
     return patterns;
 }
@@ -124,12 +132,18 @@ async function expandSinglePattern(patternInfo) {
     const aiWords = wordStore.getWords(categoryId, pattern);
     const allExisting = [...existingWords, ...aiWords.map(w => w.word)];
 
+    // 如果已有词汇超过50个，跳过
+    if (allExisting.length >= 50) {
+        console.log(`⏭️ ${pattern}: 已有 ${allExisting.length} 词，跳过`);
+        return 0;
+    }
+
     try {
         const newWords = await aiService.expandWords(
             pattern,
             pronunciation,
             allExisting,
-            10,  // 每次扩展 10 个词
+            20,  // 每次扩展 20 个词
             userApi
         );
 
@@ -186,16 +200,23 @@ function start() {
     currentKeyIndex = 0;
     callsWithCurrentKey = 0;
 
-    console.log(`🚀 开始自动扩词，共 ${keyPool.length} 个 Key`);
+    console.log(`开始自动扩词，共 ${keyPool.length} 个 Key`);
 
     const patterns = getAllPatterns();
-    console.log(`📋 共 ${patterns.length} 个模式需要处理`);
+
+    // 过滤掉已经足够多的模式
+    const needExpand = patterns.filter(p => p.totalCount < 50);
+    console.log(`共 ${patterns.length} 个模式，${needExpand.length} 个需要扩展（词汇量<50）`);
+
+    if (needExpand.length > 0) {
+        console.log(`优先处理: ${needExpand.slice(0, 5).map(p => `${p.pattern}(${p.totalCount}词)`).join(', ')}...`);
+    }
 
     // 异步执行，不阻塞
     (async () => {
-        for (const pattern of patterns) {
+        for (const pattern of needExpand) {
             if (shouldStop) {
-                console.log('⏹️ 用户停止');
+                console.log('用户停止');
                 break;
             }
 
@@ -207,7 +228,7 @@ function start() {
         }
 
         isRunning = false;
-        console.log(`✅ 自动扩词完成，共添加 ${stats.totalWords} 个词`);
+        console.log(`自动扩词完成，共添加 ${stats.totalWords} 个词`);
     })();
 
     return { success: true, message: '已开始', keyCount: keyPool.length };
