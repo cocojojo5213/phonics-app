@@ -32,7 +32,8 @@ async function callOpenAI(prompt, userApi) {
             model,
             messages: [{ role: 'user', content: prompt }],
             temperature: 0.5,
-            max_tokens: 2000
+            max_tokens: 2000,
+            stream: false  // 禁用流式响应
         })
     });
 
