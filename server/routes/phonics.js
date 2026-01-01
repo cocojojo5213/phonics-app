@@ -164,7 +164,7 @@ router.get('/category/:categoryId', (req, res) => {
 router.get('/pattern/:categoryId/:pattern', (req, res) => {
     const { categoryId, pattern } = req.params;
 
-    // 处理补充分类
+    // 处理补充分类（待分类）
     if (categoryId === 'supplementary') {
         const supplementary = audioScanner.getSupplementaryCategory();
         const patternInfo = supplementary?.patterns.find(p => p.pattern === pattern);
@@ -188,6 +188,7 @@ router.get('/pattern/:categoryId/:pattern', (req, res) => {
             words: aiWords,
             baseCount: 0,
             aiCount: aiWords.length,
+            totalCount: aiWords.length,
             isExtra: true,
             hasAudio: true
         });
@@ -200,7 +201,32 @@ router.get('/pattern/:categoryId/:pattern', (req, res) => {
     }
 
     const patternData = category.find(p => p.pattern === pattern);
+
+    // 如果模式不在 phonicsData 中，检查是否是已分类的额外模式
     if (!patternData) {
+        // 检查是否是通过 categoryCache 被分类到此分类的额外模式
+        const cachedCategory = categoryCache.getPatternCategory(pattern);
+        if (cachedCategory === categoryId && audioScanner.hasAudio(pattern)) {
+            // 这是一个已分类的额外模式（只有 AI 词）
+            const aiWords = wordStore.getWords(categoryId, pattern).map(w => ({
+                ...w,
+                phonetic: dictionaryService.getIPA(w.word),
+                source: 'ai'
+            }));
+
+            return res.json({
+                pattern: pattern,
+                pronunciation: '',  // 额外模式暂无发音标注
+                categoryId,
+                words: aiWords,
+                baseCount: 0,
+                aiCount: aiWords.length,
+                totalCount: aiWords.length,
+                isExtra: true,
+                hasAudio: true
+            });
+        }
+
         return res.status(404).json({ error: '发音模式不存在' });
     }
 
