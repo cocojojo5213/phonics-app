@@ -94,7 +94,47 @@ main {
 .home p {
   color: var(--text-secondary);
   font-size: 16px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
+}
+
+/* 首页词汇统计 */
+.vocab-stats {
+  margin: 32px 0;
+  padding: 24px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stats-loading {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.stats-card {
+  margin-bottom: 16px;
+}
+
+.stats-number {
+  font-size: 48px;
+  font-weight: 600;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.stats-label {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.stats-info {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .home .btn-start {
@@ -313,14 +353,14 @@ main {
 }
 
 .load-more .ai-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--primary);
   border: none;
   color: #fff;
   margin-left: 12px;
 }
 
 .load-more .ai-btn:hover {
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  background: #1d4ed8;
   color: #fff;
 }
 
@@ -628,9 +668,9 @@ button:disabled {
 }
 
 .shuffle-btn {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  border: none;
-  color: white;
+  background: none;
+  border: 1px solid var(--primary);
+  color: var(--primary);
   border-radius: 6px;
   padding: 6px 14px;
   font-size: 14px;
@@ -640,6 +680,6 @@ button:disabled {
 }
 
 .shuffle-btn:hover {
-  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-  transform: scale(1.02);
+  background: var(--primary);
+  color: white;
 }

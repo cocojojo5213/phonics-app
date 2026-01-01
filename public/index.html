@@ -18,8 +18,8 @@
         <nav class="nav">
           <a href="#/" class="nav-link" data-page="home">首页</a>
           <a href="#/learn" class="nav-link" data-page="learn">学习</a>
-          <button onclick="openAutoExpand()" class="settings-btn" title="自动扩词">🤖</button>
-          <button onclick="openSettings()" class="settings-btn" title="API 设置">⚙️</button>
+          <button onclick="openAutoExpand()" class="settings-btn" title="自动扩词">扩</button>
+          <button onclick="openSettings()" class="settings-btn" title="API 设置">设置</button>
         </nav>
       </div>
     </header>
@@ -30,17 +30,16 @@
     <div id="settings-modal" class="modal" style="display: none;">
       <div class="modal-content">
         <div class="modal-header">
-          <h2>🔑 API 设置</h2>
+          <h2>API 设置</h2>
           <button onclick="closeSettings()" class="close-btn">&times;</button>
         </div>
         <div class="modal-body">
           <div class="privacy-notice">
-            <h3>📜 隐私声明</h3>
+            <h3>隐私声明</h3>
             <ul>
-              <li>✅ 您的 API Key <strong>仅保存在本地浏览器</strong>，绝不上传到服务器</li>
-              <li>✅ AI 生成的单词会保存到服务器，用于丰富词库</li>
-              <li>✅ 您贡献的词汇将帮助其他学习者</li>
-              <li>❌ 我们绝不收集、存储或传输您的 API Key</li>
+              <li>您的 API Key <strong>仅保存在本地浏览器</strong>，绝不上传到服务器</li>
+              <li>AI 生成的单词会保存到服务器，用于丰富词库</li>
+              <li>您贡献的词汇将帮助其他学习者</li>
             </ul>
           </div>
 
@@ -73,7 +72,7 @@
     <div id="auto-expand-modal" class="modal" style="display: none;">
       <div class="modal-content">
         <div class="modal-header">
-          <h2>🤖 自动扩词</h2>
+          <h2>自动扩词</h2>
           <button onclick="closeAutoExpand()" class="close-btn">&times;</button>
         </div>
         <div class="modal-body">
@@ -88,8 +87,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button onclick="startAutoExpand()" id="ae-start-btn" class="btn-primary">▶️ 开始扩词</button>
-          <button onclick="stopAutoExpand()" id="ae-stop-btn" class="btn-secondary" disabled>⏹️ 停止</button>
+          <button onclick="startAutoExpand()" id="ae-start-btn" class="btn-primary">开始扩词</button>
+          <button onclick="stopAutoExpand()" id="ae-stop-btn" class="btn-secondary" disabled>停止</button>
         </div>
       </div>
     </div>

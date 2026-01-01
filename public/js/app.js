@@ -48,15 +48,68 @@ function handleRoute() {
 }
 
 // 首页
-function renderHome() {
+async function renderHome() {
   main.innerHTML = `
         <div class="home">
             <h1>真正从基础开始学英语</h1>
             <p>通过自然拼读规则，学会「看词能读、听音能写」</p>
+            <div id="vocab-stats" class="vocab-stats">
+                <div class="stats-loading">加载词库统计中...</div>
+            </div>
             <a href="#/learn" class="btn-start">开始学习</a>
         </div>
     `;
+
+  // 加载词汇统计
+  loadVocabStats();
 }
+
+// 加载词汇统计
+async function loadVocabStats() {
+  try {
+    const res = await fetch(`${API}/stats`);
+    const stats = await res.json();
+    const totalWords = stats.aiWords?.totalWords || 0;
+
+    // 根据词汇量估算分数
+    const scoreInfo = estimateScore(totalWords);
+
+    const container = document.getElementById('vocab-stats');
+    if (container) {
+      container.innerHTML = `
+        <div class="stats-card">
+            <div class="stats-number">${totalWords.toLocaleString()}</div>
+            <div class="stats-label">词库总词汇</div>
+        </div>
+        <div class="stats-info">
+            ${scoreInfo.message}
+        </div>
+      `;
+    }
+  } catch (e) {
+    console.error('加载统计失败:', e);
+  }
+}
+
+// 估算分数
+function estimateScore(wordCount) {
+  if (wordCount < 500) {
+    return { message: `再积累 ${500 - wordCount} 词，词库将达到基础水平，加油！` };
+  } else if (wordCount < 2000) {
+    return { message: `相当于高考词汇量，继续扩展可达四级水平！` };
+  } else if (wordCount < 4000) {
+    return { message: `相当于CET-4词汇量，已可应对日常英语！` };
+  } else if (wordCount < 6000) {
+    return { message: `相当于CET-6词汇量，接近雅思5.5分水平！` };
+  } else if (wordCount < 8000) {
+    return { message: `相当于雅思6分、托福80分词汇量！` };
+  } else if (wordCount < 10000) {
+    return { message: `相当于雅思6.5分、托福90分词汇量，很棒！` };
+  } else {
+    return { message: `超过万词，相当于雅思7分+、托福100分+，太厉害了！` };
+  }
+}
+
 
 // 学习页面
 async function renderLearn() {
@@ -232,12 +285,12 @@ function renderPractice(data) {
                 </div>
                 <div class="limit-selector">
                     <span>每次显示：</span>${limitBtns}
-                    <button class="shuffle-btn" onclick="shuffleAndDisplay()">🔀 换一批</button>
+                    <button class="shuffle-btn" onclick="shuffleAndDisplay()">换一批</button>
                 </div>
             </div>
             <div class="word-list">${wordsHtml}</div>
             <div class="load-more">
-                <button onclick="aiExpand()" class="ai-btn">🤖 AI扩词，丰富词库</button>
+                <button onclick="aiExpand()" class="ai-btn">AI 扩词</button>
             </div>
         </div>
     `;
