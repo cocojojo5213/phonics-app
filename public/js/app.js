@@ -393,5 +393,78 @@ document.getElementById('settings-modal')?.addEventListener('mouseup', (e) => {
   modalMouseDownTarget = null;
 });
 
+// ============== 自动扩词控制 ==============
+
+let autoExpandInterval = null;
+
+function openAutoExpand() {
+  document.getElementById('auto-expand-modal').style.display = 'flex';
+  refreshAutoExpandStatus();
+}
+
+function closeAutoExpand() {
+  document.getElementById('auto-expand-modal').style.display = 'none';
+  if (autoExpandInterval) {
+    clearInterval(autoExpandInterval);
+    autoExpandInterval = null;
+  }
+}
+
+async function refreshAutoExpandStatus() {
+  try {
+    const res = await fetch(`${API}/auto-expand/status`);
+    const status = await res.json();
+
+    document.getElementById('ae-running').textContent = status.isRunning ? '运行中' : '未运行';
+    document.getElementById('ae-running').style.color = status.isRunning ? '#4CAF50' : '#888';
+    document.getElementById('ae-keys').textContent = status.keyCount || '0';
+    document.getElementById('ae-pattern').textContent = status.currentPattern || '-';
+    document.getElementById('ae-words').textContent = status.totalWords || '0';
+
+    document.getElementById('ae-start-btn').disabled = status.isRunning;
+    document.getElementById('ae-stop-btn').disabled = !status.isRunning;
+  } catch (e) {
+    console.error('获取状态失败:', e);
+  }
+}
+
+async function startAutoExpand() {
+  try {
+    const res = await fetch(`${API}/auto-expand/start`, { method: 'POST' });
+    const result = await res.json();
+
+    if (result.success) {
+      alert(`✅ 已开始自动扩词，共 ${result.keyCount} 个 Key`);
+      // 定时刷新状态
+      autoExpandInterval = setInterval(refreshAutoExpandStatus, 2000);
+      refreshAutoExpandStatus();
+    } else {
+      alert(`❌ ${result.message}`);
+    }
+  } catch (e) {
+    alert('启动失败: ' + e.message);
+  }
+}
+
+async function stopAutoExpand() {
+  try {
+    const res = await fetch(`${API}/auto-expand/stop`, { method: 'POST' });
+    const result = await res.json();
+
+    if (result.success) {
+      alert('✅ 正在停止...');
+      if (autoExpandInterval) {
+        clearInterval(autoExpandInterval);
+        autoExpandInterval = null;
+      }
+      setTimeout(refreshAutoExpandStatus, 1000);
+    } else {
+      alert(`❌ ${result.message}`);
+    }
+  } catch (e) {
+    alert('停止失败: ' + e.message);
+  }
+}
+
 // 启动
 initRouter();

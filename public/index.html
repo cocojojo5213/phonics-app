@@ -18,6 +18,7 @@
         <nav class="nav">
           <a href="#/" class="nav-link" data-page="home">首页</a>
           <a href="#/learn" class="nav-link" data-page="learn">学习</a>
+          <button onclick="openAutoExpand()" class="settings-btn" title="自动扩词">🤖</button>
           <button onclick="openSettings()" class="settings-btn" title="API 设置">⚙️</button>
         </nav>
       </div>
@@ -64,6 +65,31 @@
         <div class="modal-footer">
           <button onclick="saveSettings()" class="btn-primary">保存设置</button>
           <button onclick="clearSettings()" class="btn-secondary">清除设置</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 自动扩词弹窗 -->
+    <div id="auto-expand-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>🤖 自动扩词</h2>
+          <button onclick="closeAutoExpand()" class="close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>使用服务器配置的 Key 池自动为所有发音模式扩展词汇。</p>
+          <p>每个 Key 轮流使用，避免频率限制。</p>
+
+          <div id="auto-expand-status" class="auto-expand-status">
+            <div class="status-item">状态: <span id="ae-running">未运行</span></div>
+            <div class="status-item">Key 池: <span id="ae-keys">-</span> 个</div>
+            <div class="status-item">当前模式: <span id="ae-pattern">-</span></div>
+            <div class="status-item">已添加: <span id="ae-words">0</span> 个词</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button onclick="startAutoExpand()" id="ae-start-btn" class="btn-primary">▶️ 开始扩词</button>
+          <button onclick="stopAutoExpand()" id="ae-stop-btn" class="btn-secondary" disabled>⏹️ 停止</button>
         </div>
       </div>
     </div>

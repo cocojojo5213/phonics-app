@@ -553,3 +553,30 @@ main {
 .btn-secondary:hover {
   background: #f5f5f5;
 }
+
+/* 自动扩词状态面板 */
+.auto-expand-status {
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.status-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+}
+
+.status-item:last-child {
+  border-bottom: none;
+}
+
+.status-item span {
+  font-weight: 600;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

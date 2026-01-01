@@ -351,4 +351,35 @@ router.delete('/ai-words/:categoryId/:pattern', (req, res) => {
     res.status(403).json({ error: '此功能已禁用' });
 });
 
+// ========== 自动扩词 API ==========
+
+const autoExpand = require('../services/autoExpand');
+
+/**
+ * 开始自动扩词
+ * POST /api/phonics/auto-expand/start
+ */
+router.post('/auto-expand/start', (req, res) => {
+    const result = autoExpand.start();
+    res.json(result);
+});
+
+/**
+ * 停止自动扩词
+ * POST /api/phonics/auto-expand/stop
+ */
+router.post('/auto-expand/stop', (req, res) => {
+    const result = autoExpand.stop();
+    res.json(result);
+});
+
+/**
+ * 获取自动扩词状态
+ * GET /api/phonics/auto-expand/status
+ */
+router.get('/auto-expand/status', (req, res) => {
+    const status = autoExpand.getStatus();
+    res.json(status);
+});
+
 module.exports = router;
