@@ -1,18 +1,11 @@
 /**
  * AI 扩词服务
  * 
- * 支持三种 API：
- * - OpenAI (GPT-4o-mini)
- * - Google Gemini
- * - Anthropic Claude
+ * 使用 OpenAI 兼容 API（支持官方和各种代理）
  */
 
-// 默认配置
-const DEFAULT_MODELS = {
-    openai: 'gpt-4o-mini',
-    gemini: 'gemini-2.0-flash',  // 稳定版本
-    claude: 'claude-3-5-haiku-latest'
-};
+// 默认模型
+const DEFAULT_MODEL = 'gpt-4o-mini';
 
 /**
  * 调用 OpenAI 兼容 API
@@ -21,7 +14,7 @@ const DEFAULT_MODELS = {
 async function callOpenAI(prompt, userApi) {
     const apiKey = userApi?.apiKey;
     const baseUrl = userApi?.apiBase || 'https://api.openai.com/v1';
-    const model = userApi?.model || DEFAULT_MODELS.openai;
+    const model = userApi?.model || DEFAULT_MODEL;
 
     const response = await fetch(`${baseUrl}/chat/completions`, {
         method: 'POST',
@@ -40,7 +33,7 @@ async function callOpenAI(prompt, userApi) {
 
     if (!response.ok) {
         const error = await response.text();
-        throw new Error(`OpenAI API 错误: ${error}`);
+        throw new Error(`API 错误: ${error}`);
     }
 
     const text = await response.text();
@@ -67,92 +60,6 @@ async function callOpenAI(prompt, userApi) {
     // 普通 JSON 响应
     const data = JSON.parse(text);
     return data.choices?.[0]?.message?.content || '';
-}
-
-/**
- * 调用 Google Gemini API
- * 使用原生 Gemini API 格式
- */
-async function callGemini(prompt, userApi) {
-    const apiKey = userApi?.apiKey;
-    const model = userApi?.model || DEFAULT_MODELS.gemini;
-
-    // 支持自定义地址，否则使用官方地址
-    const baseUrl = userApi?.apiBase || 'https://generativelanguage.googleapis.com/v1beta';
-
-    const response = await fetch(`${baseUrl}/models/${model}:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            contents: [{
-                parts: [{ text: prompt }]
-            }],
-            generationConfig: {
-                temperature: 0.5,
-                maxOutputTokens: 2000
-            }
-        })
-    });
-
-    if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`Gemini API 错误: ${error}`);
-    }
-
-    const data = await response.json();
-    return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-}
-
-/**
- * 调用 Anthropic Claude API
- */
-async function callClaude(prompt, userApi) {
-    const apiKey = userApi?.apiKey;
-    const model = userApi?.model || DEFAULT_MODELS.claude;
-
-    // 支持自定义地址，否则使用官方地址
-    const baseUrl = userApi?.apiBase || 'https://api.anthropic.com';
-
-    const response = await fetch(`${baseUrl}/v1/messages`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': apiKey,
-            'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({
-            model,
-            max_tokens: 2000,
-            messages: [{ role: 'user', content: prompt }]
-        })
-    });
-
-    if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`Claude API 错误: ${error}`);
-    }
-
-    const data = await response.json();
-    return data.content?.[0]?.text || '';
-}
-
-/**
- * 根据 provider 调用对应的 API
- */
-async function callAI(prompt, userApi) {
-    const provider = userApi?.provider || 'openai';
-
-    switch (provider) {
-        case 'gemini':
-            return await callGemini(prompt, userApi);
-        case 'claude':
-            return await callClaude(prompt, userApi);
-        case 'openai':
-        default:
-            return await callOpenAI(prompt, userApi);
-    }
 }
 
 /**
@@ -184,7 +91,7 @@ ${existingList || '（暂无）'}
 生成 ${count} 个不重复的新单词。只输出 JSON，不要其他文字。`;
 
     try {
-        const response = await callAI(prompt, userApi);
+        const response = await callOpenAI(prompt, userApi);
         console.log('AI 响应长度:', response?.length);
 
         // 解析 JSON
@@ -235,11 +142,12 @@ ${existingList || '（暂无）'}
 }
 
 function isAvailable() {
-    return true; // 用户自己配置 API Key
+    return true;
 }
 
 module.exports = {
     expandWords,
     isAvailable,
-    DEFAULT_MODELS
+    callOpenAI,
+    DEFAULT_MODEL
 };

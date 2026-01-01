@@ -255,7 +255,6 @@ async function aiExpand() {
         count: 20,
         // 用户的 API 设置（在服务端使用，不保存）
         userApi: {
-          provider: settings.provider || 'openai',
           apiKey: settings.apiKey,
           apiBase: settings.apiBase || null,
           model: settings.model || null
@@ -329,7 +328,6 @@ function openSettings() {
 
   // 加载已保存的设置
   const settings = getApiSettings();
-  document.getElementById('api-provider').value = settings.provider || 'openai';
   document.getElementById('api-key').value = settings.apiKey || '';
   document.getElementById('api-base').value = settings.apiBase || '';
   document.getElementById('api-model').value = settings.model || '';
@@ -343,7 +341,6 @@ function closeSettings() {
 // 保存设置到 localStorage
 function saveSettings() {
   const settings = {
-    provider: document.getElementById('api-provider').value,
     apiKey: document.getElementById('api-key').value.trim(),
     apiBase: document.getElementById('api-base').value.trim(),
     model: document.getElementById('api-model').value.trim()
@@ -352,16 +349,14 @@ function saveSettings() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
   closeSettings();
 
-  const providerNames = { openai: 'OpenAI', gemini: 'Gemini', claude: 'Claude' };
-  const modelInfo = settings.model ? ` - ${settings.model}` : '';
-  alert(`✅ 设置已保存（${providerNames[settings.provider] || settings.provider}${modelInfo}）`);
+  const modelInfo = settings.model || 'gpt-4o-mini';
+  alert(`✅ 设置已保存（${modelInfo}）`);
 }
 
 // 清除设置
 function clearSettings() {
   if (confirm('确定清除 API 设置吗？')) {
     localStorage.removeItem(STORAGE_KEY);
-    document.getElementById('api-provider').value = 'openai';
     document.getElementById('api-key').value = '';
     document.getElementById('api-base').value = '';
     document.getElementById('api-model').value = '';

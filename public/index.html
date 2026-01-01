@@ -44,30 +44,21 @@
           </div>
 
           <div class="form-group">
-            <label for="api-provider">API 服务商</label>
-            <select id="api-provider">
-              <option value="openai">OpenAI 兼容</option>
-              <option value="gemini">Google Gemini</option>
-              <option value="claude">Anthropic Claude</option>
-            </select>
-            <small>代理服务通常选 OpenAI 兼容</small>
-          </div>
-
-          <div class="form-group">
             <label for="api-key">API Key</label>
             <input type="password" id="api-key" placeholder="你的 API Key" autocomplete="off">
+            <small>支持 OpenAI 官方或兼容代理</small>
           </div>
 
           <div class="form-group">
             <label for="api-base">API 地址 (可选)</label>
-            <input type="text" id="api-base" placeholder="留空使用官方地址">
-            <small>代理示例: https://api.example.com</small>
+            <input type="text" id="api-base" placeholder="留空使用 OpenAI 官方">
+            <small>代理示例: https://api.proxy.com</small>
           </div>
 
           <div class="form-group">
             <label for="api-model">模型名称 (可选)</label>
-            <input type="text" id="api-model" placeholder="留空使用默认模型">
-            <small>如: gpt-4.1, claude-3-opus, gemini-pro</small>
+            <input type="text" id="api-model" placeholder="留空使用 gpt-4o-mini">
+            <small>常用: gpt-4o-mini, gpt-4.1, gpt-3.5-turbo</small>
           </div>
         </div>
         <div class="modal-footer">
