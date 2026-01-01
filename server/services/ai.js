@@ -47,26 +47,28 @@ async function callOpenAI(prompt, userApi) {
 
 /**
  * 调用 Google Gemini API
- * 使用 OpenAI 兼容接口
+ * 使用原生 Gemini API 格式
  */
 async function callGemini(prompt, userApi) {
     const apiKey = userApi?.apiKey;
     const model = userApi?.model || DEFAULT_MODELS.gemini;
 
     // 支持自定义地址，否则使用官方地址
-    const baseUrl = userApi?.apiBase || 'https://generativelanguage.googleapis.com/v1beta/openai';
+    const baseUrl = userApi?.apiBase || 'https://generativelanguage.googleapis.com/v1beta';
 
-    const response = await fetch(`${baseUrl}/chat/completions`, {
+    const response = await fetch(`${baseUrl}/models/${model}:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            model,
-            messages: [{ role: 'user', content: prompt }],
-            temperature: 0.5,
-            max_tokens: 2000
+            contents: [{
+                parts: [{ text: prompt }]
+            }],
+            generationConfig: {
+                temperature: 0.5,
+                maxOutputTokens: 2000
+            }
         })
     });
 
@@ -76,7 +78,7 @@ async function callGemini(prompt, userApi) {
     }
 
     const data = await response.json();
-    return data.choices?.[0]?.message?.content || '';
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
 
 /**
