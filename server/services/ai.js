@@ -16,6 +16,7 @@ const DEFAULT_MODELS = {
 
 /**
  * 调用 OpenAI 兼容 API
+ * 支持普通响应和 SSE 流式响应（有些代理强制流式）
  */
 async function callOpenAI(prompt, userApi) {
     const apiKey = userApi?.apiKey;
@@ -33,7 +34,7 @@ async function callOpenAI(prompt, userApi) {
             messages: [{ role: 'user', content: prompt }],
             temperature: 0.5,
             max_tokens: 2000,
-            stream: false  // 禁用流式响应
+            stream: false
         })
     });
 
@@ -42,7 +43,29 @@ async function callOpenAI(prompt, userApi) {
         throw new Error(`OpenAI API 错误: ${error}`);
     }
 
-    const data = await response.json();
+    const text = await response.text();
+
+    // 检查是否是 SSE 流式响应（以 "data:" 开头）
+    if (text.startsWith('data:')) {
+        // 解析 SSE 流式响应，合并所有 content
+        let content = '';
+        const lines = text.split('\n');
+        for (const line of lines) {
+            if (line.startsWith('data:') && !line.includes('[DONE]')) {
+                try {
+                    const json = JSON.parse(line.slice(5).trim());
+                    const delta = json.choices?.[0]?.delta?.content;
+                    if (delta) content += delta;
+                } catch (e) {
+                    // 忽略解析错误
+                }
+            }
+        }
+        return content;
+    }
+
+    // 普通 JSON 响应
+    const data = JSON.parse(text);
     return data.choices?.[0]?.message?.content || '';
 }
 
