@@ -170,7 +170,7 @@ async function expandSinglePattern(patternInfo) {
 /**
  * 开始自动扩词
  */
-async function start() {
+function start() {
     if (isRunning) {
         return { success: false, message: '已经在运行中' };
     }
