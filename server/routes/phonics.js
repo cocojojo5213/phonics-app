@@ -343,10 +343,21 @@ router.post('/ai-expand', async (req, res) => {
 
         const patternData = category.find(p => p.pattern === pattern);
         if (!patternData) {
-            return res.status(404).json({ error: '发音模式不存在' });
+            // 检查是否是通过 categoryCache 分类的额外模式（如 "up"）
+            const cachedCategory = categoryCache.getPatternCategory(pattern);
+            if (cachedCategory === categoryId) {
+                // 是额外模式，从缓存或预定义获取发音
+                const cachedPronunciation = categoryCache.getPatternPronunciation(pattern);
+                const knownPronunciation = aiClassifier.getKnownPronunciation(pattern);
+                pronunciation = cachedPronunciation || knownPronunciation || '';
+                baseWords = [];
+            } else {
+                return res.status(404).json({ error: '发音模式不存在' });
+            }
+        } else {
+            pronunciation = patternData.pronunciation;
+            baseWords = patternData.words.map(w => w.word);
         }
-        pronunciation = patternData.pronunciation;
-        baseWords = patternData.words.map(w => w.word);
     }
 
     // 获取已保存的 AI 词
