@@ -24,3 +24,7 @@ Thumbs.db
 # 缓存
 data/audio/*
 !data/audio/.gitkeep
+
+# 大文件（通过 volume 挂载）
+data/ai-words.json
+data/pattern-categories.json

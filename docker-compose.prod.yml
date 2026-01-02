@@ -21,6 +21,7 @@ services:
       # - OPENAI_MODEL=${OPENAI_MODEL}
     volumes:
       - ./data/ai-words.json:/app/data/ai-words.json
+      - ./data/pattern-categories.json:/app/data/pattern-categories.json
       - phonics-audio-cache:/app/data/audio
       - ./data/phonics-audio:/app/data/phonics-audio:ro
     networks:
