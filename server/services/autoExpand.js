@@ -167,7 +167,7 @@ async function expandSinglePattern(patternInfo) {
             pattern,
             pronunciation,
             allExisting,
-            100,  // 每次扩展 100 个词
+            30,  // 每次扩展 30 个词（避免超时）
             userApi
         );
 
