@@ -123,11 +123,31 @@ ${existingList || '（暂无）'}
         const existingSet = new Set(existingWords.map(w => w.toLowerCase()));
         const patternLower = pattern.toLowerCase();
 
+        // 检查是否是 Magic E 模式（如 a_e, i_e, o_e, u_e）
+        const isMagicE = /^[aeiou]_e$/i.test(pattern);
+        const vowel = isMagicE ? patternLower[0] : null;
+
         const processed = rawWords
             .filter(w => w.word && !existingSet.has(w.word.toLowerCase()))
             .map(w => {
                 const word = w.word.toLowerCase();
-                const idx = word.indexOf(patternLower);
+                let idx = -1;
+                let matchLength = pattern.length;
+
+                if (isMagicE) {
+                    // Magic E 模式：匹配 "元音 + 辅音 + e"（辅音不能是元音）
+                    // 例如 a_e 匹配 cake 中的 "ake"
+                    const magicERegex = new RegExp(`${vowel}[^aeiou]e`, 'i');
+                    const match = word.match(magicERegex);
+                    if (match) {
+                        idx = match.index;
+                        matchLength = match[0].length;  // 通常是 3（如 "ake"）
+                    }
+                } else {
+                    // 普通模式：直接查找字符串
+                    idx = word.indexOf(patternLower);
+                    matchLength = patternLower.length;
+                }
 
                 // 必须包含目标字母组合
                 if (idx === -1) {
@@ -140,7 +160,7 @@ ${existingList || '（暂无）'}
                     meaning: w.meaning || '',
                     highlight: pattern,
                     prefix: word.substring(0, idx),
-                    suffix: word.substring(idx + pattern.length),
+                    suffix: word.substring(idx + matchLength),
                     source: 'ai',
                     phonetic: ''
                 };

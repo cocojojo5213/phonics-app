@@ -10,12 +10,15 @@ services:
     restart: always
     expose:
       - "3000"
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
       - PORT=3000
-      # 生产环境建议在服务器配置 API Key（可选）
+      # 以下环境变量已通过 .env 文件加载
       # - OPENAI_API_KEY=${OPENAI_API_KEY}
       # - OPENAI_BASE_URL=${OPENAI_BASE_URL}
+      # - OPENAI_MODEL=${OPENAI_MODEL}
     volumes:
       - ./data/ai-words.json:/app/data/ai-words.json
       - phonics-audio-cache:/app/data/audio
