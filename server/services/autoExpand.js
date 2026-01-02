@@ -24,7 +24,7 @@ let stats = {
 };
 
 // 每个 Key 调用的次数上限
-const CALLS_PER_KEY = 10;
+const CALLS_PER_KEY = 1;
 // 每次调用间隔（毫秒）
 const CALL_INTERVAL = 3000;
 
@@ -132,18 +132,14 @@ async function expandSinglePattern(patternInfo) {
     const aiWords = wordStore.getWords(categoryId, pattern);
     const allExisting = [...existingWords, ...aiWords.map(w => w.word)];
 
-    // 如果已有词汇超过50个，跳过
-    if (allExisting.length >= 50) {
-        console.log(`⏭️ ${pattern}: 已有 ${allExisting.length} 词，跳过`);
-        return 0;
-    }
+    // 不限制词汇上限，持续扩词
 
     try {
         const newWords = await aiService.expandWords(
             pattern,
             pronunciation,
             allExisting,
-            20,  // 每次扩展 20 个词
+            100,  // 每次扩展 100 个词
             userApi
         );
 
@@ -204,9 +200,9 @@ function start() {
 
     const patterns = getAllPatterns();
 
-    // 过滤掉已经足够多的模式
-    const needExpand = patterns.filter(p => p.totalCount < 50);
-    console.log(`共 ${patterns.length} 个模式，${needExpand.length} 个需要扩展（词汇量<50）`);
+    // 所有模式都需要扩展（无上限）
+    const needExpand = patterns;
+    console.log(`共 ${patterns.length} 个模式需要扩展`);
 
     if (needExpand.length > 0) {
         console.log(`优先处理: ${needExpand.slice(0, 5).map(p => `${p.pattern}(${p.totalCount}词)`).join(', ')}...`);
@@ -243,7 +239,9 @@ function stop() {
     }
 
     shouldStop = true;
-    return { success: true, message: '正在停止...' };
+    isRunning = false;  // 立即标记为停止
+    console.log('🛑 自动扩词已停止');
+    return { success: true, message: '已停止', stats };
 }
 
 /**
