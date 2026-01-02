@@ -102,6 +102,35 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 // 启动服务器
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`🚀 Phonics App 服务器运行在 http://localhost:${PORT}`);
+
+  // 启动时自动分类未归类的模式
+  try {
+    const audioScanner = require('./services/audioScanner');
+    const categoryCache = require('./services/categoryCache');
+    const aiClassifier = require('./services/aiClassifier');
+
+    const extraPatterns = audioScanner.getExtraPatterns().all;
+    let classified = 0;
+
+    for (const pattern of extraPatterns) {
+      const cached = categoryCache.getPatternCategory(pattern);
+      if (!cached || cached === 'supplementary') {
+        // 尝试使用预分类规则（不调用 AI）
+        const { category, pronunciation } = await aiClassifier.classifyPatternFull(pattern);
+        if (category) {
+          categoryCache.setPatternInfo(pattern, category, pronunciation);
+          classified++;
+          console.log(`🏷️ 自动分类: ${pattern} → ${category}`);
+        }
+      }
+    }
+
+    if (classified > 0) {
+      console.log(`✅ 启动时自动分类了 ${classified} 个模式`);
+    }
+  } catch (err) {
+    console.error('⚠️ 启动时自动分类失败:', err.message);
+  }
 });
