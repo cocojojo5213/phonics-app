@@ -10,6 +10,8 @@ const wordStore = require('./wordStore');
 const audioScanner = require('./audioScanner');
 const phonicsData = require('../../data/phonicsData');
 const dictionaryService = require('./dictionary');
+const categoryCache = require('./categoryCache');
+const aiClassifier = require('./aiClassifier');
 
 // 状态管理
 let isRunning = false;
@@ -81,8 +83,9 @@ function switchToNextKey() {
  */
 function getAllPatterns() {
     const patterns = [];
+    const processedPatterns = new Set();  // 避免重复
 
-    // 遍历所有分类
+    // 1. 遍历 phonicsData 中的模式
     for (const categoryId of Object.keys(phonicsData)) {
         const data = phonicsData[categoryId];
         if (!Array.isArray(data)) continue;
@@ -101,7 +104,32 @@ function getAllPatterns() {
                     existingWords: baseWords,
                     totalCount
                 });
+                processedPatterns.add(p.pattern.toLowerCase());
             }
+        }
+    }
+
+    // 2. 添加通过 AI 分类的额外模式（不在 phonicsData 中）
+    const extraPatterns = audioScanner.getExtraPatterns().all;
+    for (const pattern of extraPatterns) {
+        if (processedPatterns.has(pattern.toLowerCase())) continue;
+
+        const cachedCategory = categoryCache.getPatternCategory(pattern);
+        if (cachedCategory && cachedCategory !== 'supplementary') {
+            // 获取发音
+            const cachedPronunciation = categoryCache.getPatternPronunciation(pattern);
+            const knownPronunciation = aiClassifier.getKnownPronunciation(pattern);
+            const pronunciation = cachedPronunciation || knownPronunciation || '';
+
+            const aiWords = wordStore.getWords(cachedCategory, pattern);
+            patterns.push({
+                categoryId: cachedCategory,
+                pattern: pattern,
+                pronunciation: pronunciation,
+                existingWords: [],
+                totalCount: aiWords.length
+            });
+            processedPatterns.add(pattern.toLowerCase());
         }
     }
 
