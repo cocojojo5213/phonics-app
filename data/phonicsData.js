@@ -11,6 +11,42 @@
 
 const phonicsData = {
     // ==========================================
+    // 分类教学说明
+    // ==========================================
+    categoryDescriptions: {
+        letters: {
+            name: '26个字母基础发音',
+            description: '每个字母都有一个最常见的基础发音。掌握这26个发音是自然拼读的第一步。',
+            tip: '元音有5个：A E I O U，其余都是辅音。'
+        },
+        short_vowels: {
+            name: '短元音组合',
+            description: '辅音+元音+辅音（CVC结构），中间的元音发"短音"。短音是元音最基础、最常见的发音。',
+            tip: '短音听起来短促有力，如 cat 的 /æ/、dog 的 /ɒ/。'
+        },
+        long_vowels: {
+            name: '长元音',
+            description: '长元音就是元音字母"说出自己的名字"。有两种方式让元音变长音：魔法E（Magic-E）和元音组合（Vowel Teams）。',
+            tip: 'A说/eɪ/，E说/iː/，I说/aɪ/，O说/oʊ/，U说/juː/。'
+        },
+        consonant_blends: {
+            name: '辅音组合',
+            description: '两个辅音字母组合在一起，发出一个全新的、独立的音（Digraphs）。注意：这不是两个音拼起来，而是一个新的音。',
+            tip: 'sh、ch、th、ng 各发一个独立的音，需要单独记忆。'
+        },
+        r_controlled: {
+            name: 'R控制元音（Bossy R）',
+            description: '当元音后面跟着字母r时，r会"霸道"地改变元音的发音，形成独特的音。',
+            tip: 'er, ir, ur 这三个发音完全一样，都是 /ɜːr/。'
+        },
+        other_vowels: {
+            name: '其他元音组合',
+            description: '一些特殊的元音组合，发出的是"双元音"——发音时嘴型会有明显的变化。',
+            tip: 'ou/ow 发 /aʊ/（啊呜），oi/oy 发 /ɔɪ/（哦伊）。'
+        }
+    },
+
+    // ==========================================
     // 第一部分：26个字母的基本发音
     // ==========================================
     letters: [
@@ -431,6 +467,8 @@ const phonicsData = {
     long_vowels: [
         {
             pattern: 'a_e', pronunciation: '/eɪ/',
+            rule: '魔法E（Magic-E）：结尾的e不发音，但让前面的a发长音 /eɪ/（字母A的名字）。',
+            tip: '对比：cap（帽子）→ cape（披风），加了e，a就变长音了。',
             words: [
                 { word: 'cake', highlight: 'a_e', prefix: 'c', suffix: '' },
                 { word: 'bake', highlight: 'a_e', prefix: 'b', suffix: '' },
@@ -442,6 +480,8 @@ const phonicsData = {
         },
         {
             pattern: 'i_e', pronunciation: '/aɪ/',
+            rule: '魔法E：结尾的e让i发长音 /aɪ/（字母I的名字）。',
+            tip: '对比：kit（工具包）→ kite（风筝）。',
             words: [
                 { word: 'bike', highlight: 'i_e', prefix: 'b', suffix: '' },
                 { word: 'kite', highlight: 'i_e', prefix: 'k', suffix: '' },
@@ -455,6 +495,8 @@ const phonicsData = {
         },
         {
             pattern: 'o_e', pronunciation: '/oʊ/',
+            rule: '魔法E：结尾的e让o发长音 /oʊ/（字母O的名字）。',
+            tip: '对比：hop（跳）→ hope（希望）。',
             words: [
                 { word: 'bone', highlight: 'o_e', prefix: 'b', suffix: '' },
                 { word: 'cone', highlight: 'o_e', prefix: 'c', suffix: '' },
@@ -468,6 +510,8 @@ const phonicsData = {
         },
         {
             pattern: 'u_e', pronunciation: '/juː/',
+            rule: '魔法E：结尾的e让u发长音 /juː/（字母U的名字）。',
+            tip: '对比：cub（幼兽）→ cube（立方体）。',
             words: [
                 { word: 'cube', highlight: 'u_e', prefix: 'c', suffix: '' },
                 { word: 'tube', highlight: 'u_e', prefix: 't', suffix: '' },
@@ -479,6 +523,8 @@ const phonicsData = {
         },
         {
             pattern: 'ai', pronunciation: '/eɪ/',
+            rule: '元音组合：两个元音在一起，第一个发长音，第二个不发音。',
+            tip: '口诀：When two vowels go walking, the first one does the talking.',
             words: [
                 { word: 'rain', highlight: 'ai', prefix: 'r', suffix: 'n' },
                 { word: 'tail', highlight: 'ai', prefix: 't', suffix: 'l' },
@@ -488,6 +534,8 @@ const phonicsData = {
         },
         {
             pattern: 'ay', pronunciation: '/eɪ/',
+            rule: '元音组合：ay和ai发音相同，ay通常出现在词尾。',
+            tip: 'ai在词中，ay在词尾，如 rain vs play。',
             words: [
                 { word: 'bay', highlight: 'ay', prefix: 'b', suffix: '' },
                 { word: 'day', highlight: 'ay', prefix: 'd', suffix: '' },
@@ -497,6 +545,8 @@ const phonicsData = {
         },
         {
             pattern: 'ee', pronunciation: '/iː/',
+            rule: '双元音组合：两个e在一起，发字母E的名字 /iː/。',
+            tip: '这是最常见的长 E 音组合。',
             words: [
                 { word: 'bee', highlight: 'ee', prefix: 'b', suffix: '' },
                 { word: 'tree', highlight: 'ee', prefix: 'tr', suffix: '' },
@@ -506,6 +556,8 @@ const phonicsData = {
         },
         {
             pattern: 'ea', pronunciation: '/iː/',
+            rule: '元音组合：ea通常发 /iː/，e发音，a不发音。',
+            tip: '注意：ea有时也发 /ɛ/，如 bread, head。',
             words: [
                 { word: 'tea', highlight: 'ea', prefix: 't', suffix: '' },
                 { word: 'sea', highlight: 'ea', prefix: 's', suffix: '' },
@@ -515,6 +567,8 @@ const phonicsData = {
         },
         {
             pattern: 'oa', pronunciation: '/oʊ/',
+            rule: '元音组合：o发长音 /oʊ/，a不发音。',
+            tip: '第一个元音说话，第二个不出声。',
             words: [
                 { word: 'coat', highlight: 'oa', prefix: 'c', suffix: 't' },
                 { word: 'goat', highlight: 'oa', prefix: 'g', suffix: 't' },
@@ -524,6 +578,8 @@ const phonicsData = {
         },
         {
             pattern: 'ow', pronunciation: '/oʊ/',
+            rule: 'ow有两种发音：/oʊ/（如snow）或 /aʊ/（如cow）。这里是 /oʊ/。',
+            tip: '词尾ow发 /oʊ/ 还是 /aʊ/ 需要记忆，没有固定规则。',
             words: [
                 { word: 'snow', highlight: 'ow', prefix: 'sn', suffix: '' },
                 { word: 'row', highlight: 'ow', prefix: 'r', suffix: '' },
@@ -533,6 +589,8 @@ const phonicsData = {
         },
         {
             pattern: 'igh', pronunciation: '/aɪ/',
+            rule: '特殊组合：igh中只有i发音，gh完全不发音。',
+            tip: 'gh是沉默字母，不发任何声音。',
             words: [
                 { word: 'light', highlight: 'igh', prefix: 'l', suffix: 't' },
                 { word: 'high', highlight: 'igh', prefix: 'h', suffix: '' },
@@ -541,6 +599,8 @@ const phonicsData = {
         },
         {
             pattern: 'oo', pronunciation: '/uː/',
+            rule: '双O组合：通常发长音 /uː/，但有时发短音 /ʊ/。',
+            tip: '短音的词需要单独记：book, look, good, foot, wood。',
             words: [
                 { word: 'moon', highlight: 'oo', prefix: 'm', suffix: 'n' },
                 { word: 'zoo', highlight: 'oo', prefix: 'z', suffix: '' },
@@ -556,6 +616,8 @@ const phonicsData = {
     consonant_blends: [
         {
             pattern: 'sh', pronunciation: '/ʃ/',
+            rule: '辅音组合（Digraph）：sh发一个全新的音，像让人安静的“嘘”声。',
+            tip: 's和h合起来发一个音，不是两个音拼起来。',
             words: [
                 { word: 'ship', highlight: 'sh', prefix: '', suffix: 'ip' },
                 { word: 'shop', highlight: 'sh', prefix: '', suffix: 'op' },
@@ -565,6 +627,8 @@ const phonicsData = {
         },
         {
             pattern: 'ch', pronunciation: '/tʃ/',
+            rule: '辅音组合：ch发类似“吐”的音，独立的一个音。',
+            tip: '发音时舌头抵住上颅然后释放。',
             words: [
                 { word: 'chip', highlight: 'ch', prefix: '', suffix: 'ip' },
                 { word: 'chop', highlight: 'ch', prefix: '', suffix: 'op' },
@@ -574,6 +638,8 @@ const phonicsData = {
         },
         {
             pattern: 'th', pronunciation: '/θ/',
+            rule: '辅音组合：舔头放在上下齿之间吹气。',
+            tip: 'th有清音/θ/（think）和浊音/ð/（the）两种。',
             words: [
                 { word: 'think', highlight: 'th', prefix: '', suffix: 'ink' },
                 { word: 'thank', highlight: 'th', prefix: '', suffix: 'ank' },
@@ -583,6 +649,8 @@ const phonicsData = {
         },
         {
             pattern: 'ng', pronunciation: '/ŋ/',
+            rule: '辅音组合：鼻音，气流从鼻子出来。',
+            tip: '注意不要发成 n + g 两个音。',
             words: [
                 { word: 'king', highlight: 'ng', prefix: 'ki', suffix: '' },
                 { word: 'sing', highlight: 'ng', prefix: 'si', suffix: '' },
@@ -592,6 +660,8 @@ const phonicsData = {
         },
         {
             pattern: 'nk', pronunciation: '/ŋk/',
+            rule: '辅音组合：ng + k，先发鼻音再加/k/。',
+            tip: '这个nk比ng多了一个/k/的结尾。',
             words: [
                 { word: 'ink', highlight: 'nk', prefix: 'i', suffix: '' },
                 { word: 'bank', highlight: 'nk', prefix: 'ba', suffix: '' },
@@ -607,6 +677,8 @@ const phonicsData = {
     r_controlled: [
         {
             pattern: 'ar', pronunciation: '/ɑːr/',
+            rule: 'R控制元音（Bossy R）：r让前面的a发开口的卷舔音。',
+            tip: 'ar是最常见的R控制元音，像海盗说的“ARRR”。',
             words: [
                 { word: 'star', highlight: 'ar', prefix: 'st', suffix: '' },
                 { word: 'card', highlight: 'ar', prefix: 'c', suffix: 'd' },
@@ -616,6 +688,8 @@ const phonicsData = {
         },
         {
             pattern: 'ir', pronunciation: '/ɜːr/',
+            rule: 'R控制元音：er, ir, ur发音完全相同。',
+            tip: '这三个组合都发 /ɜːr/，只是拼写不同。',
             words: [
                 { word: 'bird', highlight: 'ir', prefix: 'b', suffix: 'd' },
                 { word: 'girl', highlight: 'ir', prefix: 'g', suffix: 'l' },
@@ -625,6 +699,8 @@ const phonicsData = {
         },
         {
             pattern: 'ur', pronunciation: '/ɜːr/',
+            rule: 'R控制元音：ur和er, ir发音相同。',
+            tip: '记住：er, ir, ur是“三胞胎”，声音一样。',
             words: [
                 { word: 'nurse', highlight: 'ur', prefix: 'n', suffix: 'se' },
                 { word: 'purple', highlight: 'ur', prefix: 'p', suffix: 'ple' },
@@ -634,6 +710,8 @@ const phonicsData = {
         },
         {
             pattern: 'or', pronunciation: '/ɔːr/',
+            rule: 'R控制元音：or发圆唇的卷舔音。',
+            tip: 'or的发音和ar不同，嘴唇更圆。',
             words: [
                 { word: 'horse', highlight: 'or', prefix: 'h', suffix: 'se' },
                 { word: 'fork', highlight: 'or', prefix: 'f', suffix: 'k' },
@@ -643,6 +721,8 @@ const phonicsData = {
         },
         {
             pattern: 'er', pronunciation: '/ər/',
+            rule: 'R控制元音：er在非重读音节发弱化的 /ər/。',
+            tip: '词尾的er通常发轻音，不像词中的er那么重。',
             words: [
                 { word: 'water', highlight: 'er', prefix: 'wat', suffix: '' },
                 { word: 'sister', highlight: 'er', prefix: 'sist', suffix: '' },
@@ -658,6 +738,8 @@ const phonicsData = {
     other_vowels: [
         {
             pattern: 'ou', pronunciation: '/aʊ/',
+            rule: '双元音：嘴巴张大，从“啊”滑向“呜”。',
+            tip: '像的到疼时喊的“ouch”。',
             words: [
                 { word: 'mouse', highlight: 'ou', prefix: 'm', suffix: 'se' },
                 { word: 'house', highlight: 'ou', prefix: 'h', suffix: 'se' },
@@ -667,6 +749,8 @@ const phonicsData = {
         },
         {
             pattern: 'ow', pronunciation: '/aʊ/',
+            rule: '双元音：ow在这里发 /aʊ/（和ou相同）。',
+            tip: 'ow有两个发音：/aʊ/（cow）和 /oʊ/（snow），需要分别记忆。',
             words: [
                 { word: 'cow', highlight: 'ow', prefix: 'c', suffix: '' },
                 { word: 'owl', highlight: 'ow', prefix: '', suffix: 'l' },
@@ -676,6 +760,8 @@ const phonicsData = {
         },
         {
             pattern: 'oi', pronunciation: '/ɔɪ/',
+            rule: '双元音：像惊讶地喚“哦伊”。',
+            tip: 'oi通常在词中，oy通常在词尾。',
             words: [
                 { word: 'coin', highlight: 'oi', prefix: 'c', suffix: 'n' },
                 { word: 'soil', highlight: 'oi', prefix: 's', suffix: 'l' },
@@ -685,6 +771,8 @@ const phonicsData = {
         },
         {
             pattern: 'oy', pronunciation: '/ɔɪ/',
+            rule: '双元音：oy和oi发音相同，通常出现在词尾。',
+            tip: 'oi在词中，oy在词尾，如 coin vs boy。',
             words: [
                 { word: 'toy', highlight: 'oy', prefix: 't', suffix: '' },
                 { word: 'boy', highlight: 'oy', prefix: 'b', suffix: '' },
@@ -694,6 +782,8 @@ const phonicsData = {
         },
         {
             pattern: 'aw', pronunciation: '/ɔː/',
+            rule: '元音组合：嘴巴张圆，发“奥”的音。',
+            tip: 'aw和au发音相同，都是 /ɔː/。',
             words: [
                 { word: 'law', highlight: 'aw', prefix: 'l', suffix: '' },
                 { word: 'saw', highlight: 'aw', prefix: 's', suffix: '' },
@@ -703,6 +793,8 @@ const phonicsData = {
         },
         {
             pattern: 'au', pronunciation: '/ɔː/',
+            rule: '元音组合：au和aw发音相同。',
+            tip: 'au通常在词中，aw通常在词尾。',
             words: [
                 { word: 'August', highlight: 'Au', prefix: '', suffix: 'gust' },
                 { word: 'auto', highlight: 'au', prefix: '', suffix: 'to' },
