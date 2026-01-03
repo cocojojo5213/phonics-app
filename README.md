@@ -11,6 +11,7 @@
 ## 功能介绍
 
 - **系统化学习**：26个字母、短元音、长元音、辅音组合等完整拼读体系
+- **规则说明**：每个分类和发音模式都有教学规则说明（如魔法E、元音组合、Bossy R等）
 - **真人发音**：支持真人录制的发音音频，没有音频时使用微软 Edge TTS
 - **AI 扩词**：用 GPT 智能扩展词汇，需要配置自己的 API Key
 - **自动扩词**：服务器端 Key 池批量扩词，优先扩展词汇少的模式
@@ -118,7 +119,8 @@ phonics-app/
 │   ├── routes/           # API 路由
 │   └── services/         # 核心服务
 ├── data/
-│   ├── phonicsData.js    # 发音规则数据
+│   ├── phonicsData.js    # 发音规则数据（含教学说明）
+│   ├── phonics-rules.md  # 完整规则文档（参考用）
 │   ├── phonics-audio/    # 真人发音音频
 │   ├── ai-words.json     # AI 扩展词库
 │   └── pattern-categories.json  # 分类缓存
