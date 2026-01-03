@@ -59,11 +59,17 @@ router.get('/categories', (req, res) => {
 
     // 只返回有真人发音模式的分类
     const categories = allCategories
-        .map(cat => ({
-            id: cat.id,
-            name: cat.name,
-            count: countWithAudio(cat.data, cat.id)
-        }))
+        .map(cat => {
+            // 获取分类描述
+            const desc = phonicsData.categoryDescriptions?.[cat.id] || {};
+            return {
+                id: cat.id,
+                name: cat.name,
+                count: countWithAudio(cat.data, cat.id),
+                description: desc.description || '',
+                tip: desc.tip || ''
+            };
+        })
         .filter(cat => cat.count > 0);
 
     // 如果有未分类的模式，显示补充内容
@@ -130,6 +136,8 @@ router.get('/category/:categoryId', (req, res) => {
             return {
                 pattern: p.pattern,
                 pronunciation: p.pronunciation,
+                rule: p.rule || '',
+                tip: p.tip || '',
                 baseCount: p.words.length,
                 aiCount: aiWords.length,
                 totalCount: p.words.length + aiWords.length,
@@ -277,6 +285,8 @@ router.get('/pattern/:categoryId/:pattern', (req, res) => {
     res.json({
         pattern: patternData.pattern,
         pronunciation: patternData.pronunciation,
+        rule: patternData.rule || '',
+        tip: patternData.tip || '',
         categoryId,
         words: displayWords,
         baseCount: baseWords.length,

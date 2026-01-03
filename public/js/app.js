@@ -9,6 +9,9 @@ const state = {
   currentCategory: null,
   currentPattern: null,
   currentPronunciation: null,
+  currentRule: null,       // 当前发音模式的规则说明
+  currentTip: null,        // 当前发音模式的学习提示
+  categoryInfo: null,      // 当前分类的说明信息
   patterns: [],
   words: [],
   allWords: [],  // 保存所有词，用于重新抽取
@@ -147,6 +150,7 @@ async function renderLearn() {
         <div class="learn-page">
             <h2>选择学习内容</h2>
             <div class="categories" id="categories"></div>
+            <div class="category-intro" id="category-intro"></div>
             <div class="patterns" id="patterns"></div>
             <div id="practice"></div>
         </div>
@@ -196,10 +200,30 @@ async function selectCategory(categoryId) {
     const data = await res.json();
     state.patterns = data.patterns;
 
+    // 保存分类信息（从 categories 接口获取）
+    const catRes = await fetch(`${API}/categories`);
+    const catData = await catRes.json();
+    state.categoryInfo = catData.categories.find(c => c.id === categoryId) || null;
+
+    // 显示分类介绍
+    const introContainer = document.getElementById('category-intro');
+    if (state.categoryInfo && state.categoryInfo.description) {
+      introContainer.innerHTML = `
+        <div class="category-description">
+          <p class="desc-text">${state.categoryInfo.description}</p>
+          ${state.categoryInfo.tip ? `<p class="desc-tip">${state.categoryInfo.tip}</p>` : ''}
+        </div>
+      `;
+    } else {
+      introContainer.innerHTML = '';
+    }
+
     const container = document.getElementById('patterns');
     container.innerHTML = data.patterns.map(p => `
             <div class="pattern-chip ${state.currentPattern === p.pattern ? 'active' : ''}"
                  data-pattern="${p.pattern}"
+                 data-rule="${encodeURIComponent(p.rule || '')}"
+                 data-tip="${encodeURIComponent(p.tip || '')}"
                  onclick="selectPattern('${p.pattern}')">
                 <span class="pattern-text">${p.pattern}</span>
                 <span class="ipa">${p.pronunciation}</span>
@@ -243,6 +267,8 @@ async function loadWords(pattern, expand = false) {
     // 保存所有词
     state.allWords = data.words || [];
     state.currentPronunciation = data.pronunciation;
+    state.currentRule = data.rule || '';
+    state.currentTip = data.tip || '';
 
     // 按当前限制随机抽取
     shuffleAndDisplay();
@@ -267,6 +293,8 @@ function shuffleAndDisplay() {
   renderPractice({
     pattern: state.currentPattern,
     pronunciation: state.currentPronunciation,
+    rule: state.currentRule,
+    tip: state.currentTip,
     words: state.words,
     totalCount: state.allWords.length
   });
@@ -302,6 +330,14 @@ function renderPractice(data) {
     `<button class="limit-btn ${state.wordLimit === n ? 'active' : ''}" onclick="setWordLimit(${n})">${n}</button>`
   ).join('');
 
+  // 规则说明区域
+  const ruleHtml = (data.rule || data.tip) ? `
+    <div class="rule-section">
+      ${data.rule ? `<div class="rule-text">${data.rule}</div>` : ''}
+      ${data.tip ? `<div class="rule-tip">${data.tip}</div>` : ''}
+    </div>
+  ` : '';
+
   container.innerHTML = `
         <div class="practice-area">
             <div class="practice-header">
@@ -309,6 +345,7 @@ function renderPractice(data) {
                 <div class="ipa">${data.pronunciation}</div>
                 <button class="play-btn" onclick="playPatternSound()">▶</button>
             </div>
+            ${ruleHtml}
             <div class="word-controls">
                 <div class="word-count">
                     显示 ${data.words.length} 个词，词库共 ${data.totalCount || data.words.length} 个词

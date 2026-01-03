@@ -767,3 +767,70 @@ input,
 select {
   transition: background 0.3s, border-color 0.3s, color 0.3s;
 }
+
+/* 分类介绍区域 */
+.category-intro {
+  margin-bottom: 24px;
+}
+
+.category-description {
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg) 100%);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+}
+
+.category-description .desc-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+  margin: 0;
+}
+
+.category-description .desc-tip {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 8px 0 0 0;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border);
+}
+
+/* 发音规则说明区域 */
+.rule-section {
+  background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+  border: 1px solid #fcd34d;
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+[data-theme="dark"] .rule-section {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(251, 191, 36, 0.05) 100%);
+  border-color: rgba(251, 191, 36, 0.4);
+}
+
+.rule-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #92400e;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .rule-text {
+  color: #fcd34d;
+}
+
+.rule-tip {
+  font-size: 13px;
+  color: #b45309;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(180, 83, 9, 0.3);
+}
+
+[data-theme="dark"] .rule-tip {
+  color: #fbbf24;
+  border-top-color: rgba(251, 191, 36, 0.3);
+}
