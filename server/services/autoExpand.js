@@ -177,9 +177,19 @@ async function expandSinglePattern(patternInfo) {
         stats.totalCalls++;
 
         if (newWords.length > 0) {
-            // 验证并添加音标
+            console.log(`🔍 AI 返回 ${newWords.length} 个词，开始验证...`);
+
+            // 词典验证（如果验证后为空，也保存未验证的词）
             const validatedWords = newWords.filter(w => dictionaryService.hasWord(w.word));
-            const wordsWithPhonetic = validatedWords.map(w => ({
+            console.log(`✅ 词典验证通过: ${validatedWords.length} 个`);
+
+            // 如果词典验证后没有词，使用原始词（可能是词典不完整）
+            const wordsToSave = validatedWords.length > 0 ? validatedWords : newWords;
+            if (validatedWords.length === 0) {
+                console.log(`⚠️ 词典验证全部失败，保存未验证的词`);
+            }
+
+            const wordsWithPhonetic = wordsToSave.map(w => ({
                 ...w,
                 phonetic: dictionaryService.getIPA(w.word) || ''
             }));

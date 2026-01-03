@@ -93,9 +93,9 @@ async function expandWords(pattern, pronunciation, existingWords = [], count = 2
 要求：
 - 单词必须包含字母组合 "${pattern}"
 - 这个 "${pattern}" 在单词中发 ${pronunciation || pattern} 的音
-- 选择儿童常用词（动物、食物、玩具、颜色、动作等）
-- 简单易记，3-7个字母优先
-- 避免：人名地名、缩写、生僻词、专业术语
+- 真实存在的英语单词（可在词典中找到）
+- 涵盖各类主题：日常生活、动植物、工作学习、科技、自然等
+- 避免：脏话、侮辱性词汇、人名地名、缩写、虚构词
 
 【重要】以下单词已经存在，不要重复生成：
 ${existingList || '（暂无）'}
