@@ -27,8 +27,10 @@ let stats = {
 
 // 每个 Key 调用的次数上限
 const CALLS_PER_KEY = 1;
-// 每次调用间隔（毫秒）
-const CALL_INTERVAL = 3000;
+// 每次调用间隔（毫秒）- 可通过环境变量配置，默认 60 秒适合免费层
+const CALL_INTERVAL = parseInt(process.env.EXPAND_INTERVAL || '60000');
+// 遇到 429 限速时的等待时间（毫秒）- 默认 2 分钟
+const RATE_LIMIT_WAIT = parseInt(process.env.RATE_LIMIT_WAIT || '120000');
 
 /**
  * 获取 Key 池
@@ -196,9 +198,11 @@ async function expandSinglePattern(patternInfo) {
         console.error(`❌ ${pattern} 扩词失败:`, error.message);
         stats.errors.push({ pattern, error: error.message });
 
-        // 尝试切换 Key
-        if (error.message.includes('429') || error.message.includes('quota')) {
-            switchToNextKey();
+        // 遇到 429 限速，等待后重试
+        if (error.message.includes('429') || error.message.includes('rate') || error.message.includes('quota')) {
+            console.log(`⏳ 遇到限速，等待 ${RATE_LIMIT_WAIT / 1000} 秒后重试...`);
+            await new Promise(r => setTimeout(r, RATE_LIMIT_WAIT));
+            return -1;  // 返回 -1 表示需要重试
         }
 
         return 0;
@@ -224,35 +228,51 @@ function start() {
     currentKeyIndex = 0;
     callsWithCurrentKey = 0;
 
-    console.log(`开始自动扩词，共 ${keyPool.length} 个 Key`);
-
-    const patterns = getAllPatterns();
-
-    // 所有模式都需要扩展（无上限）
-    const needExpand = patterns;
-    console.log(`共 ${patterns.length} 个模式需要扩展`);
-
-    if (needExpand.length > 0) {
-        console.log(`优先处理: ${needExpand.slice(0, 5).map(p => `${p.pattern}(${p.totalCount}词)`).join(', ')}...`);
-    }
+    console.log(`🚀 开始自动扩词（持续循环模式），共 ${keyPool.length} 个 Key`);
+    console.log(`⏱️ 请求间隔: ${CALL_INTERVAL / 1000}秒，限速等待: ${RATE_LIMIT_WAIT / 1000}秒`);
 
     // 异步执行，不阻塞
     (async () => {
-        for (const pattern of needExpand) {
-            if (shouldStop) {
-                console.log('用户停止');
-                break;
+        let round = 1;
+
+        // 持续循环直到手动停止
+        while (!shouldStop) {
+            const patterns = getAllPatterns();
+            console.log(`\n🔄 第 ${round} 轮，共 ${patterns.length} 个模式`);
+
+            for (let i = 0; i < patterns.length; i++) {
+                if (shouldStop) {
+                    console.log('🛑 用户停止');
+                    break;
+                }
+
+                const pattern = patterns[i];
+                stats.currentPattern = pattern.pattern;
+
+                // 扩词，处理重试
+                const result = await expandSinglePattern(pattern);
+
+                // 如果返回 -1，表示遇到限速需要重试当前模式
+                if (result === -1) {
+                    i--;  // 重试当前模式
+                    continue;
+                }
+
+                // 等待间隔（免费层 60 秒）
+                if (!shouldStop && i < patterns.length - 1) {
+                    console.log(`⏱️ 等待 ${CALL_INTERVAL / 1000} 秒后继续...`);
+                    await new Promise(r => setTimeout(r, CALL_INTERVAL));
+                }
             }
 
-            stats.currentPattern = pattern.pattern;
-            await expandSinglePattern(pattern);
-
-            // 等待间隔
-            await new Promise(r => setTimeout(r, CALL_INTERVAL));
+            if (!shouldStop) {
+                round++;
+                console.log(`✅ 第 ${round - 1} 轮完成，共添加 ${stats.totalWords} 词，继续下一轮...`);
+            }
         }
 
         isRunning = false;
-        console.log(`自动扩词完成，共添加 ${stats.totalWords} 个词`);
+        console.log(`🏁 自动扩词已停止，共添加 ${stats.totalWords} 个词`);
     })();
 
     return { success: true, message: '已开始', keyCount: keyPool.length };
