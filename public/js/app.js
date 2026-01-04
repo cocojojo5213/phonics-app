@@ -312,9 +312,40 @@ function renderPractice(data) {
   const container = document.getElementById('practice');
 
   const wordsHtml = data.words.map(w => {
-    const wordDisplay = w.prefix +
-      `<span class="highlight">${w.highlight}</span>` +
-      w.suffix;
+    // 处理 Magic-E 模式（含下划线的 pattern，如 a_e, i_e, o_e, u_e）
+    let wordDisplay;
+    const pattern = state.currentPattern;
+
+    if (pattern && pattern.includes('_') && w.word) {
+      // Magic-E 模式：直接在单词中高亮元音和结尾的e
+      const vowel = pattern[0]; // 取第一个字符作为元音
+      const word = w.word;
+
+      // 找到元音位置和最后的e
+      const vowelIndex = word.indexOf(vowel);
+      const lastE = word.lastIndexOf('e');
+
+      if (vowelIndex !== -1 && lastE > vowelIndex && lastE === word.length - 1) {
+        // 高亮元音和结尾的e
+        const prefix = word.substring(0, vowelIndex);
+        const middle = word.substring(vowelIndex, lastE);
+        const suffix = word.substring(lastE);
+        wordDisplay = prefix +
+          `<span class="highlight">${middle}</span>` +
+          `<span class="highlight">${suffix}</span>`;
+      } else {
+        // 找不到匹配，直接显示单词
+        wordDisplay = w.word;
+      }
+    } else if (w.highlight && !w.highlight.includes('_')) {
+      // 正常模式：使用 prefix + highlight + suffix
+      wordDisplay = (w.prefix || '') +
+        `<span class="highlight">${w.highlight}</span>` +
+        (w.suffix || '');
+    } else {
+      // 回退：直接显示单词
+      wordDisplay = w.word || '';
+    }
 
     return `
             <div class="word-card" onclick="playWord('${w.word}')">
