@@ -60,9 +60,40 @@ const KNOWN_PRONUNCIATIONS = {
     // 其他元音
     'ou': '/aʊ/', 'oi': '/ɔɪ/', 'oy': '/ɔɪ/', 'aw': '/ɔː/', 'au': '/ɔː/',
 
-    // 辅音组合
+    // 辅音组合 - 基础
     'sh': '/ʃ/', 'ch': '/tʃ/', 'th': '/θ/', 'ng': '/ŋ/', 'nk': '/ŋk/',
-    'wh': '/w/', 'ph': '/f/', 'ck': '/k/'
+    'wh': '/w/', 'ph': '/f/', 'ck': '/k/',
+
+    // 辅音组合 - L-Blends
+    'bl': '/bl/', 'cl': '/kl/', 'fl': '/fl/', 'gl': '/gl/', 'pl': '/pl/', 'sl': '/sl/',
+
+    // 辅音组合 - R-Blends
+    'br': '/br/', 'cr': '/kr/', 'dr': '/dr/', 'fr': '/fr/', 'gr': '/gr/',
+    'pr': '/pr/', 'tr': '/tr/', 'str': '/str/',
+
+    // 辅音组合 - S-Blends
+    'sc': '/sk/', 'sk': '/sk/', 'sm': '/sm/', 'sn': '/sn/',
+    'sp': '/sp/', 'st': '/st/', 'sw': '/sw/',
+
+    // 辅音组合 - 其他
+    'tch': '/tʃ/', 'gh': '/g/', 'kn': '/n/', 'mb': '/m/', 'qu': '/kw/', 'wr': '/r/',
+
+    // 软音 (Soft C and G)
+    'softc': '/s/', 'softg': '/dʒ/',
+
+    // R控制元音 - 扩展
+    'air': '/eər/', 'are': '/eər/', 'ear': '/ɪər/', 'eer': '/ɪər/', 'ere': '/ɪər/',
+
+    // 长元音 - 扩展
+    'ew': '/juː/', 'ey': '/iː/', 'ie': '/iː/', 'ue': '/uː/', 'ui': '/uː/',
+
+    // 其他元音 - 扩展
+    'al': '/ɔːl/', 'all': '/ɔːl/',
+
+    // 后缀发音
+    'tion': '/ʃən/', 'sion': '/ʃən/', 'cian': '/ʃən/',
+    'ture': '/tʃər/', 'sure': '/ʒər/',
+    'ful': '/fəl/', 'ous': '/əs/'
 };
 
 // 预分类规则（不需要 AI 直接判断的情况）
@@ -85,8 +116,47 @@ const PRE_CLASSIFY_RULES = {
     // Magic-E 长元音
     magicE: (pattern) => /^[aeiou]_e$/i.test(pattern) ? 'long_vowels' : null,
 
-    // R 控制元音
-    rControlled: (pattern) => /^[aeiou]r$/i.test(pattern) ? 'r_controlled' : null
+    // R 控制元音（基础）
+    rControlled: (pattern) => /^[aeiou]r$/i.test(pattern) ? 'r_controlled' : null,
+
+    // R 控制元音（扩展）- air, are, ear, eer, ere
+    rControlledExtended: (pattern) => {
+        const rControlledPatterns = ['air', 'are', 'ear', 'eer', 'ere'];
+        return rControlledPatterns.includes(pattern.toLowerCase()) ? 'r_controlled' : null;
+    },
+
+    // 长元音（扩展）- ew, ey, ie, ue, ui
+    longVowelExtended: (pattern) => {
+        const longVowelPatterns = ['ew', 'ey', 'ie', 'ue', 'ui'];
+        return longVowelPatterns.includes(pattern.toLowerCase()) ? 'long_vowels' : null;
+    },
+
+    // 其他元音（扩展）- al, all
+    otherVowelExtended: (pattern) => {
+        const otherVowelPatterns = ['al', 'all'];
+        return otherVowelPatterns.includes(pattern.toLowerCase()) ? 'other_vowels' : null;
+    },
+
+    // 辅音组合 - 全部整合
+    consonantBlends: (pattern) => {
+        const consonantBlendPatterns = [
+            // L-Blends
+            'bl', 'cl', 'fl', 'gl', 'pl', 'sl',
+            // R-Blends
+            'br', 'cr', 'dr', 'fr', 'gr', 'pr', 'tr', 'str',
+            // S-Blends
+            'sc', 'sk', 'sm', 'sn', 'sp', 'st', 'sw',
+            // W-Blends
+            'wh', 'wr',
+            // 特殊辅音
+            'ck', 'tch', 'ph', 'gh', 'kn', 'mb', 'qu',
+            // 软音
+            'softc', 'softg',
+            // 后缀（发音上属于辅音模式）
+            'tion', 'sion', 'cian', 'ture', 'sure', 'ful', 'ous'
+        ];
+        return consonantBlendPatterns.includes(pattern.toLowerCase()) ? 'consonant_blends' : null;
+    }
 };
 
 /**
