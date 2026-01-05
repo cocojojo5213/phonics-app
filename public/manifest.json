@@ -1,0 +1,30 @@
+{
+    "name": "Phonics - 自然拼读学英语",
+    "short_name": "Phonics",
+    "description": "通过自然拼读规则，学会「看词能读、听音能写」",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0d1117",
+    "theme_color": "#58a6ff",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "education",
+        "kids"
+    ],
+    "lang": "zh-CN",
+    "dir": "ltr"
+}

@@ -24,6 +24,9 @@ data/ai-words.json
 data/audio/*
 !data/audio/.gitkeep
 
+# TTS 生成的音频（太大，不上传到主库）
+public/audio/*.mp3
+
 # 日志
 *.log
 npm-debug.log*

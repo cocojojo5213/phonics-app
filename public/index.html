@@ -3,9 +3,17 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Phonics - 真正从基础开始学英语</title>
   <meta name="description" content="通过自然拼读规则，学会「看词能读、听音能写」。支持真人发音、AI 智能扩词、词汇统计和深色模式。">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#58a6ff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Phonics">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
@@ -112,6 +120,15 @@
   </div>
 
   <script src="js/app.js"></script>
+
+  <!-- 注册 Service Worker (PWA) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('PWA: Service Worker 已注册'))
+        .catch(err => console.log('PWA: 注册失败', err));
+    }
+  </script>
 </body>
 
 </html>

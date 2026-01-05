@@ -435,22 +435,140 @@ main {
   color: var(--text-secondary);
 }
 
-/* 响应式 */
+/* 响应式 - 平板 */
+@media (max-width: 768px) {
+  .header-inner {
+    padding: 0 16px;
+    height: 56px;
+  }
+
+  .nav {
+    gap: 16px;
+  }
+
+  .nav-link {
+    font-size: 13px;
+  }
+
+  main {
+    padding: 24px 16px;
+  }
+
+  .practice-area {
+    padding: 24px 16px;
+  }
+}
+
+/* 响应式 - 手机 */
 @media (max-width: 640px) {
+
+  /* PWA 安全区域 */
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  .home {
+    padding: 40px 0;
+  }
+
   .home h1 {
     font-size: 24px;
+  }
+
+  .home p {
+    font-size: 14px;
   }
 
   .categories {
     grid-template-columns: 1fr;
   }
 
+  .category-card {
+    padding: 16px;
+  }
+
+  .patterns {
+    gap: 8px;
+  }
+
+  .pattern-chip {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
   .practice-header .pattern {
     font-size: 36px;
   }
 
+  .practice-header .ipa {
+    font-size: 20px;
+  }
+
   .word-list {
     grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .word-card {
+    padding: 12px;
+  }
+
+  .word-card .word {
+    font-size: 16px;
+  }
+
+  .word-card .meaning {
+    font-size: 12px;
+  }
+
+  /* 触控优化 - 增大点击区域 */
+  .pattern-chip,
+  .category-card,
+  .word-card,
+  .limit-btn,
+  .shuffle-btn {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-link {
+    padding: 12px 8px;
+  }
+
+  /* 词数选择器移动端优化 */
+  .limit-selector {
+    gap: 6px;
+  }
+
+  .limit-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .shuffle-btn {
+    margin-left: 4px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  /* 底部留白，避免被手机底部操作条遮挡 */
+  main {
+    padding-bottom: 80px;
+  }
+
+  /* 统计卡片 */
+  .vocab-stats {
+    margin: 24px 0;
+    padding: 20px;
+  }
+
+  .stats-number {
+    font-size: 40px;
   }
 }
 
