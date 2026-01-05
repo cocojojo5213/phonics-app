@@ -21,8 +21,7 @@ const CONFIG = {
     // TTS 配置
     voice: {
         languageCode: 'en-US',
-        name: 'en-US-Wavenet-D',  // WaveNet 男声，音质好
-        // 其他选择: en-US-Wavenet-A (女声), en-US-Wavenet-B (男声)
+        name: 'en-US-Chirp3-HD-Achernar',  // Chirp3 HD 女声，2025最新最自然
     },
     audioConfig: {
         audioEncoding: 'MP3',
