@@ -15,8 +15,8 @@ const CONFIG = {
     // 词库文件路径
     wordsFilePath: path.join(__dirname, '..', 'data', 'ai-words.json'),
 
-    // 输出目录
-    outputDir: path.join(__dirname, '..', 'public', 'audio'),
+    // 输出目录 (输出到静态站点)
+    outputDir: path.join(__dirname, '..', '..', 'phonics-static', 'audio'),
 
     // TTS 配置
     voice: {
