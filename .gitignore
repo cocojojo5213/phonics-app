@@ -6,6 +6,10 @@ node_modules/
 .env.local
 .env.*.local
 
+# Google Cloud 密钥（绝对不要提交！）
+google-tts-key.json
+*-key.json
+
 # 数据文件（用户数据，不随代码分发）
 data/phonics.db
 
