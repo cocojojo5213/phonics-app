@@ -1013,3 +1013,76 @@ select {
 [data-theme="dark"] .rule-tip.clickable-audio:hover {
   background: rgba(251, 191, 36, 0.2);
 }
+
+/* ========== 例句样式 ========== */
+.sentence-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 8px;
+  background: var(--primary-light);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-wrap: wrap;
+}
+
+.sentence-row:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.sentence-row:hover .sentence-en,
+.sentence-row:hover .sentence-zh,
+.sentence-row:hover .sentence-icon {
+  color: white;
+}
+
+.sentence-icon {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--primary);
+  transition: color 0.2s;
+}
+
+.sentence-en {
+  font-size: 12px;
+  color: var(--text);
+  font-style: italic;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+
+.sentence-zh {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+
+/* 手机端例句优化 */
+@media (max-width: 640px) {
+  .sentence-row {
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px 8px;
+  }
+
+  .sentence-en {
+    font-size: 11px;
+  }
+
+  .sentence-zh {
+    font-size: 10px;
+  }
+}
+
+/* 深色模式例句 */
+[data-theme="dark"] .sentence-row {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+[data-theme="dark"] .sentence-row:hover {
+  background: var(--primary);
+}

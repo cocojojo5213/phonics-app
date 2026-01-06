@@ -16,6 +16,7 @@ const wordStore = require('../services/wordStore');
 const audioScanner = require('../services/audioScanner');
 const categoryCache = require('../services/categoryCache');
 const aiClassifier = require('../services/aiClassifier');
+const sentenceService = require('../services/sentenceService');
 
 /**
  * 获取所有发音模式分类
@@ -550,4 +551,59 @@ router.get('/unclassified', (req, res) => {
     res.json({ patterns: unclassified });
 });
 
+// ========== 例句 API ==========
+
+/**
+ * 获取单词的例句
+ * GET /api/phonics/sentence/:word
+ */
+router.get('/sentence/:word', (req, res) => {
+    const { word } = req.params;
+    const sentence = sentenceService.getSentence(word);
+
+    if (!sentence) {
+        return res.status(404).json({
+            error: '例句不存在',
+            word: word
+        });
+    }
+
+    res.json({
+        word: word.toLowerCase(),
+        ...sentence
+    });
+});
+
+/**
+ * 批量获取例句
+ * POST /api/phonics/sentences
+ * Body: { words: ["cat", "dog", "cake"] }
+ */
+router.post('/sentences', (req, res) => {
+    const { words } = req.body;
+
+    if (!Array.isArray(words)) {
+        return res.status(400).json({ error: '参数错误：words 必须是数组' });
+    }
+
+    const sentences = sentenceService.getSentences(words);
+
+    res.json({
+        count: Object.keys(sentences).length,
+        sentences
+    });
+});
+
+/**
+ * 获取例句统计
+ * GET /api/phonics/sentences/stats
+ */
+router.get('/sentences/stats', (req, res) => {
+    res.json({
+        count: sentenceService.getCount(),
+        words: sentenceService.getWords().slice(0, 100)  // 只返回前100个词
+    });
+});
+
 module.exports = router;
+

@@ -1,0 +1,478 @@
+{
+    "cat": {
+        "en": "The cat is sleeping.",
+        "zh": "猫在睡觉。"
+    },
+    "dog": {
+        "en": "The dog is running.",
+        "zh": "狗在跑。"
+    },
+    "hat": {
+        "en": "I have a red hat.",
+        "zh": "我有一顶红帽子。"
+    },
+    "bag": {
+        "en": "This is my bag.",
+        "zh": "这是我的包。"
+    },
+    "bat": {
+        "en": "A bat flies at night.",
+        "zh": "蝙蝠在夜里飞。"
+    },
+    "mat": {
+        "en": "Sit on the mat.",
+        "zh": "坐在垫子上。"
+    },
+    "rat": {
+        "en": "The rat is small.",
+        "zh": "老鼠很小。"
+    },
+    "pan": {
+        "en": "Mom uses a pan.",
+        "zh": "妈妈用平底锅。"
+    },
+    "can": {
+        "en": "I can do it.",
+        "zh": "我能做到。"
+    },
+    "fan": {
+        "en": "The fan is on.",
+        "zh": "风扇开着。"
+    },
+    "man": {
+        "en": "The man is tall.",
+        "zh": "这个男人很高。"
+    },
+    "van": {
+        "en": "We ride in a van.",
+        "zh": "我们坐面包车。"
+    },
+    "sun": {
+        "en": "The sun is bright.",
+        "zh": "太阳很明亮。"
+    },
+    "run": {
+        "en": "I like to run.",
+        "zh": "我喜欢跑步。"
+    },
+    "fun": {
+        "en": "This is so fun!",
+        "zh": "这太好玩了！"
+    },
+    "bun": {
+        "en": "I eat a bun.",
+        "zh": "我吃一个包子。"
+    },
+    "cup": {
+        "en": "I have a cup.",
+        "zh": "我有一个杯子。"
+    },
+    "bus": {
+        "en": "Take the school bus.",
+        "zh": "坐校车。"
+    },
+    "bug": {
+        "en": "A bug is on leaf.",
+        "zh": "一只虫在叶子上。"
+    },
+    "mug": {
+        "en": "This is my mug.",
+        "zh": "这是我的马克杯。"
+    },
+    "rug": {
+        "en": "Sit on the rug.",
+        "zh": "坐在地毯上。"
+    },
+    "bed": {
+        "en": "Go to bed now.",
+        "zh": "现在去睡觉。"
+    },
+    "red": {
+        "en": "The apple is red.",
+        "zh": "苹果是红色的。"
+    },
+    "pen": {
+        "en": "I need a pen.",
+        "zh": "我需要一支笔。"
+    },
+    "hen": {
+        "en": "The hen lays eggs.",
+        "zh": "母鸡下蛋。"
+    },
+    "ten": {
+        "en": "I count to ten.",
+        "zh": "我数到十。"
+    },
+    "leg": {
+        "en": "My leg hurts.",
+        "zh": "我的腿疼。"
+    },
+    "egg": {
+        "en": "I eat an egg.",
+        "zh": "我吃一个鸡蛋。"
+    },
+    "sit": {
+        "en": "Please sit down.",
+        "zh": "请坐下。"
+    },
+    "hit": {
+        "en": "Hit the ball.",
+        "zh": "打球。"
+    },
+    "big": {
+        "en": "This is a big tree.",
+        "zh": "这是一棵大树。"
+    },
+    "pig": {
+        "en": "The pig is pink.",
+        "zh": "猪是粉色的。"
+    },
+    "wig": {
+        "en": "She wears a wig.",
+        "zh": "她戴着假发。"
+    },
+    "dig": {
+        "en": "Dogs like to dig.",
+        "zh": "狗喜欢挖洞。"
+    },
+    "pin": {
+        "en": "I use a pin.",
+        "zh": "我用一根针。"
+    },
+    "bin": {
+        "en": "Put it in the bin.",
+        "zh": "把它放进垃圾桶。"
+    },
+    "tin": {
+        "en": "Open the tin can.",
+        "zh": "打开罐头。"
+    },
+    "win": {
+        "en": "I want to win.",
+        "zh": "我想赢。"
+    },
+    "lip": {
+        "en": "She has red lips.",
+        "zh": "她有红唇。"
+    },
+    "zip": {
+        "en": "Zip up your coat.",
+        "zh": "拉上你的外套拉链。"
+    },
+    "hot": {
+        "en": "The tea is hot.",
+        "zh": "茶很烫。"
+    },
+    "pot": {
+        "en": "Cook in the pot.",
+        "zh": "在锅里煮。"
+    },
+    "dot": {
+        "en": "Draw a small dot.",
+        "zh": "画一个小点。"
+    },
+    "top": {
+        "en": "Go to the top.",
+        "zh": "去顶部。"
+    },
+    "hop": {
+        "en": "The frog can hop.",
+        "zh": "青蛙会跳。"
+    },
+    "mop": {
+        "en": "Mop the floor.",
+        "zh": "拖地。"
+    },
+    "box": {
+        "en": "Open the box.",
+        "zh": "打开盒子。"
+    },
+    "fox": {
+        "en": "The fox is clever.",
+        "zh": "狐狸很聪明。"
+    },
+    "cake": {
+        "en": "I love chocolate cake.",
+        "zh": "我喜欢巧克力蛋糕。"
+    },
+    "bake": {
+        "en": "Mom will bake cookies.",
+        "zh": "妈妈会烤饼干。"
+    },
+    "make": {
+        "en": "Let's make a cake.",
+        "zh": "我们来做蛋糕吧。"
+    },
+    "lake": {
+        "en": "Swim in the lake.",
+        "zh": "在湖里游泳。"
+    },
+    "name": {
+        "en": "What is your name?",
+        "zh": "你叫什么名字？"
+    },
+    "game": {
+        "en": "Let's play a game.",
+        "zh": "我们来玩游戏吧。"
+    },
+    "tape": {
+        "en": "I need some tape.",
+        "zh": "我需要一些胶带。"
+    },
+    "bike": {
+        "en": "I ride my bike.",
+        "zh": "我骑自行车。"
+    },
+    "like": {
+        "en": "I like ice cream.",
+        "zh": "我喜欢冰淇淋。"
+    },
+    "time": {
+        "en": "What time is it?",
+        "zh": "现在几点了？"
+    },
+    "kite": {
+        "en": "Fly a kite today.",
+        "zh": "今天放风筝。"
+    },
+    "five": {
+        "en": "I have five books.",
+        "zh": "我有五本书。"
+    },
+    "nine": {
+        "en": "I am nine years old.",
+        "zh": "我九岁了。"
+    },
+    "ride": {
+        "en": "I like to ride.",
+        "zh": "我喜欢骑车。"
+    },
+    "hide": {
+        "en": "Let's play hide and seek.",
+        "zh": "我们玩捉迷藏吧。"
+    },
+    "home": {
+        "en": "I am going home.",
+        "zh": "我要回家了。"
+    },
+    "bone": {
+        "en": "The dog has a bone.",
+        "zh": "狗有一根骨头。"
+    },
+    "cone": {
+        "en": "I want an ice cream cone.",
+        "zh": "我想要一个冰淇淋甜筒。"
+    },
+    "rope": {
+        "en": "Jump over the rope.",
+        "zh": "跳过绳子。"
+    },
+    "hole": {
+        "en": "There is a hole here.",
+        "zh": "这里有个洞。"
+    },
+    "note": {
+        "en": "Write me a note.",
+        "zh": "给我写张便条。"
+    },
+    "rose": {
+        "en": "The rose is beautiful.",
+        "zh": "玫瑰很美。"
+    },
+    "cube": {
+        "en": "This is an ice cube.",
+        "zh": "这是一块冰块。"
+    },
+    "tube": {
+        "en": "Open the toothpaste tube.",
+        "zh": "打开牙膏管。"
+    },
+    "cute": {
+        "en": "The baby is cute.",
+        "zh": "宝宝很可爱。"
+    },
+    "rain": {
+        "en": "It is raining outside.",
+        "zh": "外面在下雨。"
+    },
+    "tail": {
+        "en": "The dog wags its tail.",
+        "zh": "狗摇尾巴。"
+    },
+    "wait": {
+        "en": "Please wait for me.",
+        "zh": "请等等我。"
+    },
+    "day": {
+        "en": "Today is a good day.",
+        "zh": "今天是美好的一天。"
+    },
+    "play": {
+        "en": "Let's go play outside.",
+        "zh": "我们出去玩吧。"
+    },
+    "say": {
+        "en": "What did you say?",
+        "zh": "你说什么？"
+    },
+    "way": {
+        "en": "This is the way.",
+        "zh": "这是路。"
+    },
+    "bee": {
+        "en": "The bee makes honey.",
+        "zh": "蜜蜂酿蜜。"
+    },
+    "tree": {
+        "en": "Climb the tall tree.",
+        "zh": "爬那棵高树。"
+    },
+    "see": {
+        "en": "I can see you.",
+        "zh": "我能看见你。"
+    },
+    "sea": {
+        "en": "I love the sea.",
+        "zh": "我爱大海。"
+    },
+    "tea": {
+        "en": "Drink some hot tea.",
+        "zh": "喝点热茶。"
+    },
+    "eat": {
+        "en": "Time to eat lunch.",
+        "zh": "该吃午饭了。"
+    },
+    "meat": {
+        "en": "I like to eat meat.",
+        "zh": "我喜欢吃肉。"
+    },
+    "read": {
+        "en": "I like to read books.",
+        "zh": "我喜欢读书。"
+    },
+    "boat": {
+        "en": "Sail the small boat.",
+        "zh": "驾驶小船。"
+    },
+    "goat": {
+        "en": "The goat eats grass.",
+        "zh": "山羊吃草。"
+    },
+    "road": {
+        "en": "Walk down the road.",
+        "zh": "沿着路走。"
+    },
+    "snow": {
+        "en": "It is snowing today.",
+        "zh": "今天下雪了。"
+    },
+    "grow": {
+        "en": "Plants need sun to grow.",
+        "zh": "植物需要阳光生长。"
+    },
+    "show": {
+        "en": "Show me your drawing.",
+        "zh": "给我看你的画。"
+    },
+    "light": {
+        "en": "Turn on the light.",
+        "zh": "开灯。"
+    },
+    "night": {
+        "en": "Good night, sleep well.",
+        "zh": "晚安，睡个好觉。"
+    },
+    "moon": {
+        "en": "The moon is bright.",
+        "zh": "月亮很亮。"
+    },
+    "food": {
+        "en": "The food is delicious.",
+        "zh": "食物很美味。"
+    },
+    "book": {
+        "en": "Read this book.",
+        "zh": "读这本书。"
+    },
+    "look": {
+        "en": "Look at the sky.",
+        "zh": "看天空。"
+    },
+    "ship": {
+        "en": "The ship sails far.",
+        "zh": "船驶向远方。"
+    },
+    "shop": {
+        "en": "I go to the shop.",
+        "zh": "我去商店。"
+    },
+    "fish": {
+        "en": "I caught a fish.",
+        "zh": "我抓到一条鱼。"
+    },
+    "chip": {
+        "en": "I eat potato chips.",
+        "zh": "我吃薯片。"
+    },
+    "chop": {
+        "en": "Chop the vegetables.",
+        "zh": "切蔬菜。"
+    },
+    "think": {
+        "en": "Let me think about it.",
+        "zh": "让我想想。"
+    },
+    "thank": {
+        "en": "Thank you very much.",
+        "zh": "非常感谢你。"
+    },
+    "king": {
+        "en": "The king wears a crown.",
+        "zh": "国王戴着王冠。"
+    },
+    "sing": {
+        "en": "I like to sing songs.",
+        "zh": "我喜欢唱歌。"
+    },
+    "ring": {
+        "en": "She wears a ring.",
+        "zh": "她戴着戒指。"
+    },
+    "star": {
+        "en": "Look at the star.",
+        "zh": "看那颗星星。"
+    },
+    "car": {
+        "en": "Dad drives the car.",
+        "zh": "爸爸开车。"
+    },
+    "bird": {
+        "en": "The bird can fly.",
+        "zh": "鸟会飞。"
+    },
+    "girl": {
+        "en": "The girl is happy.",
+        "zh": "这个女孩很开心。"
+    },
+    "cow": {
+        "en": "The cow gives milk.",
+        "zh": "牛产奶。"
+    },
+    "house": {
+        "en": "I live in a house.",
+        "zh": "我住在房子里。"
+    },
+    "mouse": {
+        "en": "A mouse is small.",
+        "zh": "老鼠很小。"
+    },
+    "boy": {
+        "en": "The boy plays soccer.",
+        "zh": "男孩踢足球。"
+    },
+    "toy": {
+        "en": "This is my toy.",
+        "zh": "这是我的玩具。"
+    }
+}

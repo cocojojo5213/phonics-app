@@ -16,7 +16,8 @@ const state = {
   words: [],
   allWords: [],  // 保存所有词，用于重新抽取
   wordLimit: 10, // 每次显示的词数
-  expanded: false
+  expanded: false,
+  sentences: {}  // 例句数据 { word: { en, zh } }
 };
 
 // DOM
@@ -279,7 +280,7 @@ async function loadWords(pattern, expand = false) {
 }
 
 // 随机抽取并显示词汇
-function shuffleAndDisplay() {
+async function shuffleAndDisplay() {
   // Fisher-Yates 洗牌
   const shuffled = [...state.allWords];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -289,6 +290,9 @@ function shuffleAndDisplay() {
 
   // 按限制截取
   state.words = shuffled.slice(0, state.wordLimit);
+
+  // 加载例句数据
+  await loadSentences(state.words);
 
   renderPractice({
     pattern: state.currentPattern,
@@ -347,11 +351,22 @@ function renderPractice(data) {
       wordDisplay = w.word || '';
     }
 
+    // 获取例句
+    const sentence = state.sentences[w.word?.toLowerCase()];
+    const sentenceHtml = sentence ? `
+      <div class="sentence-row" onclick="event.stopPropagation(); playSentence('${escapeHtml(sentence.en)}')">
+        <span class="sentence-icon">📖</span>
+        <span class="sentence-en">${escapeHtml(sentence.en)}</span>
+        <span class="sentence-zh">${escapeHtml(sentence.zh)}</span>
+      </div>
+    ` : '';
+
     return `
             <div class="word-card" onclick="playWord('${w.word}')">
                 <div class="word">${wordDisplay}</div>
                 ${w.meaning ? `<div class="meaning">${w.meaning}</div>` : ''}
                 ${w.phonetic ? `<div class="phonetic">${w.phonetic}</div>` : ''}
+                ${sentenceHtml}
             </div>
         `;
   }).join('');
@@ -419,6 +434,50 @@ async function playSound(text) {
 // 播放单词
 async function playWord(word) {
   await playSound(word);
+}
+
+// 播放例句
+async function playSentence(sentence) {
+  if (!sentence) return;
+  try {
+    const audio = new Audio(`/api/tts/sentence/${encodeURIComponent(sentence)}?t=${Date.now()}`);
+    await audio.play();
+  } catch (e) {
+    console.error('播放例句失败:', e);
+  }
+}
+
+// HTML 转义，防止 XSS
+function escapeHtml(str) {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// 加载例句数据
+async function loadSentences(words) {
+  if (!words || words.length === 0) return;
+
+  const wordList = words.map(w => w.word?.toLowerCase()).filter(Boolean);
+  if (wordList.length === 0) return;
+
+  try {
+    const res = await fetch(`${API}/sentences`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ words: wordList })
+    });
+    const data = await res.json();
+
+    // 合并到 state
+    Object.assign(state.sentences, data.sentences || {});
+  } catch (e) {
+    console.error('加载例句失败:', e);
+  }
 }
 
 // 播放规则/提示语音（中文 Google TTS）

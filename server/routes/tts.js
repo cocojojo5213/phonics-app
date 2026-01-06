@@ -93,4 +93,22 @@ router.get('/status', (req, res) => {
     });
 });
 
+// GET /api/tts/sentence/:text - 例句发音（英语 TTS）
+router.get('/sentence/:text', async (req, res) => {
+    try {
+        // 使用 Edge TTS 生成英语例句发音
+        const result = await ttsService.generateWordSpeech(req.params.text);
+        res.set({
+            'Content-Type': result.type,
+            'Content-Length': result.buffer.length,
+            'Cache-Control': 'public, max-age=31536000'
+        });
+        res.send(result.buffer);
+    } catch (error) {
+        console.error('例句 TTS 错误:', error.message);
+        res.status(500).json({ error: 'TTS Failed', message: error.message });
+    }
+});
+
 module.exports = router;
+
