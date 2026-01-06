@@ -1,0 +1,19 @@
+{
+    "name": "tts-tools",
+    "version": "1.0.0",
+    "description": "Phonics TTS 生成工具 - 规则讲解和例句音频",
+    "scripts": {
+        "rules": "node generate-rules-tts.js",
+        "sentences": "node generate-sentences.js",
+        "sentences-tts": "node generate-sentences-tts.js",
+        "test-voice": "node test-voice.js"
+    },
+    "dependencies": {
+        "@andresaya/edge-tts": "^1.8.0",
+        "@google-cloud/text-to-speech": "^5.0.0",
+        "@google-cloud/vertexai": "^1.10.0",
+        "edge-tts-node": "^1.5.7",
+        "edge-tts-universal": "^1.3.3",
+        "microsoft-cognitiveservices-speech-sdk": "^1.47.0"
+    }
+}

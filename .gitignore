@@ -50,3 +50,9 @@ Thumbs.db
 
 # 本地开发计划文档（仅供参考，不提交）
 VERTEX_AI_PLAN.md
+
+# TTS 工具配置和输出（包含密钥，不要提交）
+tts-tools/config.js
+tts-tools/output/
+tts-tools/node_modules/
+tts-tools/data/
