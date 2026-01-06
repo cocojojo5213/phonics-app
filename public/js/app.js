@@ -361,11 +361,11 @@ function renderPractice(data) {
     `<button class="limit-btn ${state.wordLimit === n ? 'active' : ''}" onclick="setWordLimit(${n})">${n}</button>`
   ).join('');
 
-  // 规则说明区域
+  // 规则说明区域（点击可播放语音）
   const ruleHtml = (data.rule || data.tip) ? `
     <div class="rule-section">
-      ${data.rule ? `<div class="rule-text">${data.rule}</div>` : ''}
-      ${data.tip ? `<div class="rule-tip">${data.tip}</div>` : ''}
+      ${data.rule ? `<div class="rule-text clickable-audio" onclick="playRuleAudio('rule')" title="点击播放语音"><span class="audio-icon">🔊</span>${data.rule}</div>` : ''}
+      ${data.tip ? `<div class="rule-tip clickable-audio" onclick="playRuleAudio('tip')" title="点击播放语音"><span class="audio-icon">🔊</span>${data.tip}</div>` : ''}
     </div>
   ` : '';
 
@@ -419,6 +419,22 @@ async function playSound(text) {
 // 播放单词
 async function playWord(word) {
   await playSound(word);
+}
+
+// 播放规则/提示语音（中文 Google TTS）
+async function playRuleAudio(type) {
+  const pattern = state.currentPattern;
+  if (!pattern) return;
+
+  try {
+    // pattern 中的下划线需要保留，API 会处理
+    const url = `/api/tts/rule/${encodeURIComponent(pattern)}/${type}?t=${Date.now()}`;
+    const audio = new Audio(url);
+    await audio.play();
+  } catch (e) {
+    console.error('播放规则语音失败:', e);
+    // 如果预生成的语音不存在，可以考虑回退方案（但目前不做）
+  }
 }
 
 // AI 扩词

@@ -20,6 +20,10 @@ data/phonics-audio/*
 # AI 词库（运行时生成的用户数据）
 data/ai-words.json
 
+# 规则语音（Google TTS 生成，太大不上传）
+data/rules-audio/*
+!data/rules-audio/.gitkeep
+
 # TTS 缓存
 data/audio/*
 !data/audio/.gitkeep
@@ -43,3 +47,6 @@ Thumbs.db
 
 # 缓存
 .cache/
+
+# 本地开发计划文档（仅供参考，不提交）
+VERTEX_AI_PLAN.md

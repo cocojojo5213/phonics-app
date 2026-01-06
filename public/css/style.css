@@ -963,3 +963,53 @@ select {
   color: #fbbf24;
   border-top-color: rgba(251, 191, 36, 0.3);
 }
+
+/* 可点击播放语音的文字 */
+.clickable-audio {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  padding-left: 28px;
+}
+
+.clickable-audio:hover {
+  transform: translateX(2px);
+}
+
+.clickable-audio:active {
+  transform: scale(0.98);
+}
+
+.clickable-audio .audio-icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 14px;
+  opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.clickable-audio:hover .audio-icon {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* 规则文字可点击状态 */
+.rule-text.clickable-audio:hover {
+  background: rgba(251, 191, 36, 0.15);
+  border-radius: 6px;
+  margin: -4px -8px;
+  padding: 4px 8px 4px 36px;
+}
+
+.rule-tip.clickable-audio:hover {
+  background: rgba(251, 191, 36, 0.1);
+  border-radius: 6px;
+  margin: 4px -8px -4px;
+  padding: 12px 8px 4px 36px;
+}
+
+[data-theme="dark"] .rule-text.clickable-audio:hover,
+[data-theme="dark"] .rule-tip.clickable-audio:hover {
+  background: rgba(251, 191, 36, 0.2);
+}

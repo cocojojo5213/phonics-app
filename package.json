@@ -5,7 +5,9 @@
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
-    "dev": "node --watch server/index.js"
+    "dev": "node --watch server/index.js",
+    "generate-tts": "node scripts/generate-tts.js",
+    "generate-rules-tts": "node scripts/generate-rules-tts.js"
   },
   "keywords": [
     "phonics",

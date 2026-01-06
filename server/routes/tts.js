@@ -59,11 +59,37 @@ router.get('/pattern/:pattern', checkReferer, async (req, res) => {
     }
 });
 
+// GET /api/tts/rule/:pattern/:type - 规则/提示语音（预生成的中文语音）
+router.get('/rule/:pattern/:type', checkReferer, (req, res) => {
+    try {
+        const { pattern, type } = req.params;
+        const result = ttsService.getRuleAudio(pattern, type);
+
+        if (!result) {
+            return res.status(404).json({
+                error: 'Audio Not Found',
+                message: `规则语音不存在: ${pattern}_${type}`
+            });
+        }
+
+        res.set({
+            'Content-Type': result.type,
+            'Content-Length': result.buffer.length,
+            'Cache-Control': 'public, max-age=31536000'
+        });
+        res.send(result.buffer);
+    } catch (error) {
+        console.error('规则语音错误:', error.message);
+        res.status(500).json({ error: 'Audio Failed', message: error.message });
+    }
+});
+
 // GET /api/tts/status - 服务状态
 router.get('/status', (req, res) => {
     res.json({
         available: ttsService.isAvailable(),
-        phonicsAudio: ttsService.getAvailablePhonicsAudio()
+        phonicsAudio: ttsService.getAvailablePhonicsAudio(),
+        rulesAudio: ttsService.getAvailableRulesAudio()
     });
 });
 

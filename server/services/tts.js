@@ -3,6 +3,7 @@
  * 
  * - 发音模式：优先使用真人发音（data/phonics-audio/）
  * - 单词：使用 Edge TTS
+ * - 规则语音：使用预生成的 Google TTS 高质量中文语音（data/rules-audio/）
  */
 
 const fs = require('fs');
@@ -12,10 +13,14 @@ const { Communicate } = require('edge-tts-universal');
 
 // 目录
 const PHONICS_AUDIO_DIR = path.join(__dirname, '../../data/phonics-audio');
+const RULES_AUDIO_DIR = path.join(__dirname, '../../data/rules-audio');
 const CACHE_DIR = path.join(__dirname, '../../data/audio');
 
 if (!fs.existsSync(PHONICS_AUDIO_DIR)) {
     fs.mkdirSync(PHONICS_AUDIO_DIR, { recursive: true });
+}
+if (!fs.existsSync(RULES_AUDIO_DIR)) {
+    fs.mkdirSync(RULES_AUDIO_DIR, { recursive: true });
 }
 if (!fs.existsSync(CACHE_DIR)) {
     fs.mkdirSync(CACHE_DIR, { recursive: true });
@@ -140,6 +145,47 @@ class TTSService {
         return files
             .filter(f => f.endsWith('.mp3') || f.endsWith('.wav') || f.endsWith('.ogg'))
             .map(f => path.basename(f, path.extname(f)));
+    }
+
+    /**
+     * 获取规则/提示语音
+     * @param {string} pattern - 发音模式（如 'a', 'sh', 'a_e'）
+     * @param {string} type - 类型 'rule' 或 'tip'
+     * @returns {Object|null} { buffer, type } 或 null
+     */
+    getRuleAudio(pattern, type) {
+        // 安全检查：只允许字母、数字、下划线、连字符
+        const safePattern = pattern.replace(/[^a-zA-Z0-9_-]/g, '');
+        const safeType = type === 'tip' ? 'tip' : 'rule';
+
+        // 文件名格式：pattern_type.mp3（下划线替换为连字符）
+        const filename = `${safePattern.replace(/_/g, '-')}_${safeType}.mp3`;
+        const filePath = path.join(RULES_AUDIO_DIR, filename);
+
+        // 确保路径在允许的目录内
+        if (!filePath.startsWith(RULES_AUDIO_DIR)) {
+            return null;
+        }
+
+        if (fs.existsSync(filePath)) {
+            return {
+                buffer: fs.readFileSync(filePath),
+                type: 'audio/mpeg'
+            };
+        }
+
+        return null;
+    }
+
+    /**
+     * 获取可用的规则语音列表
+     */
+    getAvailableRulesAudio() {
+        if (!fs.existsSync(RULES_AUDIO_DIR)) return [];
+        const files = fs.readdirSync(RULES_AUDIO_DIR);
+        return files
+            .filter(f => f.endsWith('.mp3'))
+            .map(f => path.basename(f, '.mp3'));
     }
 }
 
