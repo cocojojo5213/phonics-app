@@ -52,6 +52,8 @@ const phonicsData = {
     letters: [
         {
             pattern: 'a', pronunciation: '/æ/',
+            rule: '字母A的短音：嘴巴张大，舌头放平，发"啊"和"诶"之间的音。',
+            tip: 'A是元音字母，这里学的是它的短音。长音会在Magic-E部分学习。',
             words: [
                 { word: 'apple', highlight: 'a', prefix: '', suffix: 'pple' },
                 { word: 'ant', highlight: 'a', prefix: '', suffix: 'nt' },
@@ -61,6 +63,8 @@ const phonicsData = {
         },
         {
             pattern: 'b', pronunciation: '/b/',
+            rule: '双唇闭合，然后突然张开，让气流冲出，声带振动。',
+            tip: 'B是浊辅音，发音时嗓子会振动。和P的区别就是P不振动。',
             words: [
                 { word: 'bag', highlight: 'b', prefix: '', suffix: 'ag' },
                 { word: 'bike', highlight: 'b', prefix: '', suffix: 'ike' },
@@ -70,6 +74,8 @@ const phonicsData = {
         },
         {
             pattern: 'c', pronunciation: '/k/',
+            rule: '舌根抵住软腭，然后突然放开，让气流冲出。这是C的硬音。',
+            tip: 'C在a、o、u前发/k/（cat）；在e、i、y前发/s/（city）。这里先学硬音/k/。',
             words: [
                 { word: 'cat', highlight: 'c', prefix: '', suffix: 'at' },
                 { word: 'cup', highlight: 'c', prefix: '', suffix: 'up' },
@@ -79,6 +85,8 @@ const phonicsData = {
         },
         {
             pattern: 'd', pronunciation: '/d/',
+            rule: '舌尖抵住上牙龈，然后突然放开，声带振动。',
+            tip: 'D是浊辅音，发音时喉咙振动。和T的区别就是T不振动。',
             words: [
                 { word: 'dog', highlight: 'd', prefix: '', suffix: 'og' },
                 { word: 'doll', highlight: 'd', prefix: '', suffix: 'oll' },
@@ -88,6 +96,8 @@ const phonicsData = {
         },
         {
             pattern: 'e', pronunciation: '/ɛ/',
+            rule: '字母E的短音：嘴巴微张，舌头中部略微抬起，发"诶"的音。',
+            tip: 'E是元音字母，这里学的是短音。长音是字母E自己的名字/iː/。',
             words: [
                 { word: 'egg', highlight: 'e', prefix: '', suffix: 'gg' },
                 { word: 'elephant', highlight: 'e', prefix: '', suffix: 'lephant' },
@@ -97,6 +107,8 @@ const phonicsData = {
         },
         {
             pattern: 'f', pronunciation: '/f/',
+            rule: '上牙轻咬下唇，让气流从牙齿和嘴唇之间挤出。',
+            tip: 'F是清辅音，喉咙不振动。和V的发音位置相同，但V喉咙振动。',
             words: [
                 { word: 'fish', highlight: 'f', prefix: '', suffix: 'ish' },
                 { word: 'frog', highlight: 'f', prefix: '', suffix: 'rog' },
@@ -106,6 +118,8 @@ const phonicsData = {
         },
         {
             pattern: 'g', pronunciation: '/g/',
+            rule: '舌根抵住软腭，然后放开，声带振动。这是G的硬音。',
+            tip: 'G在a、o、u前发/g/（go）；在e、i、y前有时发/dʒ/（gem）。这里先学硬音。',
             words: [
                 { word: 'gorilla', highlight: 'g', prefix: '', suffix: 'orilla' },
                 { word: 'goat', highlight: 'g', prefix: '', suffix: 'oat' },
@@ -115,6 +129,8 @@ const phonicsData = {
         },
         {
             pattern: 'h', pronunciation: '/h/',
+            rule: '张开嘴巴，从喉咙深处呼出气流，像哈气一样。',
+            tip: 'H的发音很轻，像叹气或哈气。有些单词中H不发音，如hour、honest。',
             words: [
                 { word: 'horse', highlight: 'h', prefix: '', suffix: 'orse' },
                 { word: 'hen', highlight: 'h', prefix: '', suffix: 'en' },
@@ -124,6 +140,8 @@ const phonicsData = {
         },
         {
             pattern: 'i', pronunciation: '/ɪ/',
+            rule: '字母I的短音：嘴巴微张，舌头前部略微抬起，发短促的"衣"音。',
+            tip: 'I是元音字母，这里学的是短音。长音是字母I自己的名字/aɪ/。',
             words: [
                 { word: 'iguana', highlight: 'i', prefix: '', suffix: 'guana' },
                 { word: 'insect', highlight: 'i', prefix: '', suffix: 'nsect' },
@@ -133,6 +151,8 @@ const phonicsData = {
         },
         {
             pattern: 'j', pronunciation: '/dʒ/',
+            rule: '舌尖抵住上牙龈后部，然后放开，同时声带振动，发"基"的音。',
+            tip: 'J的发音和"吉"类似。它和CH的发音位置相同，但J振动喉咙，CH不振动。',
             words: [
                 { word: 'jam', highlight: 'j', prefix: '', suffix: 'am' },
                 { word: 'jacket', highlight: 'j', prefix: '', suffix: 'acket' },
@@ -142,6 +162,8 @@ const phonicsData = {
         },
         {
             pattern: 'k', pronunciation: '/k/',
+            rule: '舌根抵住软腭，然后突然放开，让气流冲出。',
+            tip: 'K和C的硬音发音完全相同。K在n前面时不发音，如knee、know。',
             words: [
                 { word: 'koala', highlight: 'k', prefix: '', suffix: 'oala' },
                 { word: 'kangaroo', highlight: 'k', prefix: '', suffix: 'angaroo' },
@@ -151,6 +173,8 @@ const phonicsData = {
         },
         {
             pattern: 'l', pronunciation: '/l/',
+            rule: '舌尖抵住上牙龈，气流从舌头两侧流出，声带振动。',
+            tip: 'L是流音。词首的L（light）和词尾的L（ball）发音略有不同，词尾更"暗"。',
             words: [
                 { word: 'lion', highlight: 'l', prefix: '', suffix: 'ion' },
                 { word: 'lamb', highlight: 'l', prefix: '', suffix: 'amb' },
@@ -160,6 +184,8 @@ const phonicsData = {
         },
         {
             pattern: 'm', pronunciation: '/m/',
+            rule: '双唇闭合，气流从鼻腔出来，发出"嗯"的鼻音。',
+            tip: 'M是鼻音，发音时嘴巴是闭着的，气流从鼻子出来。',
             words: [
                 { word: 'monkey', highlight: 'm', prefix: '', suffix: 'onkey' },
                 { word: 'milk', highlight: 'm', prefix: '', suffix: 'ilk' },
@@ -169,6 +195,8 @@ const phonicsData = {
         },
         {
             pattern: 'n', pronunciation: '/n/',
+            rule: '舌尖抵住上牙龈，气流从鼻腔出来，声带振动。',
+            tip: 'N是鼻音，和M不同的是，N的舌尖抵住上牙龈，M是双唇闭合。',
             words: [
                 { word: 'nurse', highlight: 'n', prefix: '', suffix: 'urse' },
                 { word: 'neck', highlight: 'n', prefix: '', suffix: 'eck' },
@@ -178,6 +206,8 @@ const phonicsData = {
         },
         {
             pattern: 'o', pronunciation: '/ɒ/',
+            rule: '字母O的短音：嘴巴张圆，舌头后缩，发"奥"和"啊"之间的音。',
+            tip: 'O是元音字母，这里学的是短音。长音是字母O自己的名字/oʊ/。',
             words: [
                 { word: 'octopus', highlight: 'o', prefix: '', suffix: 'ctopus' },
                 { word: 'ostrich', highlight: 'o', prefix: '', suffix: 'strich' },
@@ -187,6 +217,8 @@ const phonicsData = {
         },
         {
             pattern: 'p', pronunciation: '/p/',
+            rule: '双唇闭合，然后突然张开，让气流冲出，喉咙不振动。',
+            tip: 'P是清辅音，和B的发音位置相同。区别：P不振动喉咙，B振动。',
             words: [
                 { word: 'panda', highlight: 'p', prefix: '', suffix: 'anda' },
                 { word: 'penguin', highlight: 'p', prefix: '', suffix: 'enguin' },
@@ -196,6 +228,8 @@ const phonicsData = {
         },
         {
             pattern: 'q', pronunciation: '/kw/',
+            rule: 'Q几乎总是和U一起出现，发/kw/的音，像K+W连读。',
+            tip: 'Q单独出现很罕见。记住：QU是好朋友，总是在一起！',
             words: [
                 { word: 'queen', highlight: 'qu', prefix: '', suffix: 'een' },
                 { word: 'question', highlight: 'qu', prefix: '', suffix: 'estion' },
@@ -205,6 +239,8 @@ const phonicsData = {
         },
         {
             pattern: 'r', pronunciation: '/r/',
+            rule: '舌尖向上卷，不碰到任何地方，让气流从舌边流过。',
+            tip: 'R是英语中最难的音之一。舌头不要碰到口腔任何地方，卷起来就好。',
             words: [
                 { word: 'robot', highlight: 'r', prefix: '', suffix: 'obot' },
                 { word: 'rhino', highlight: 'r', prefix: '', suffix: 'hino' },
@@ -214,6 +250,8 @@ const phonicsData = {
         },
         {
             pattern: 's', pronunciation: '/s/',
+            rule: '舌尖接近上牙龈，让气流从舌尖和牙齿之间挤出，像蛇的嘎嘎声。',
+            tip: 'S有时也发/z/音，如is、has。这里先学基础的/s/音。',
             words: [
                 { word: 'sun', highlight: 's', prefix: '', suffix: 'un' },
                 { word: 'sand', highlight: 's', prefix: '', suffix: 'and' },
@@ -223,6 +261,8 @@ const phonicsData = {
         },
         {
             pattern: 't', pronunciation: '/t/',
+            rule: '舌尖抵住上牙龈，然后突然放开，喉咙不振动。',
+            tip: 'T是清辅音，和D的发音位置相同。区别：T不振动喉咙，D振动。',
             words: [
                 { word: 'tiger', highlight: 't', prefix: '', suffix: 'iger' },
                 { word: 'turtle', highlight: 't', prefix: '', suffix: 'urtle' },
@@ -232,6 +272,8 @@ const phonicsData = {
         },
         {
             pattern: 'u', pronunciation: '/ʌ/',
+            rule: '字母U的短音：嘴巴微张，舌头放松，发"啡"的音。',
+            tip: 'U是元音字母，这里学的是短音。长音是字母U自己的名字/juː/。',
             words: [
                 { word: 'umbrella', highlight: 'u', prefix: '', suffix: 'mbrella' },
                 { word: 'under', highlight: 'u', prefix: '', suffix: 'nder' },
@@ -241,6 +283,8 @@ const phonicsData = {
         },
         {
             pattern: 'v', pronunciation: '/v/',
+            rule: '上牙轻咬下唇，让气流从牙齿和嘴唇之间挤出，声带振动。',
+            tip: 'V是浊辅音，和F的发音位置完全相同。区别：V振动喉咙，F不振动。',
             words: [
                 { word: 'volcano', highlight: 'v', prefix: '', suffix: 'olcano' },
                 { word: 'village', highlight: 'v', prefix: '', suffix: 'illage' },
@@ -250,6 +294,8 @@ const phonicsData = {
         },
         {
             pattern: 'w', pronunciation: '/w/',
+            rule: '双唇向前突出形成小圆圈，然后快速张开，声带振动。',
+            tip: 'W的发音像吹口哨的起始动作。注意：W在wr组合中不发音，如write、wrong。',
             words: [
                 { word: 'wolf', highlight: 'w', prefix: '', suffix: 'olf' },
                 { word: 'witch', highlight: 'w', prefix: '', suffix: 'itch' },
@@ -259,6 +305,8 @@ const phonicsData = {
         },
         {
             pattern: 'x', pronunciation: '/ks/',
+            rule: 'X发/ks/的音，是K和S连读。X通常在词尾。',
+            tip: 'X在词首时发/z/音，如xylophone。但大多数情况发/ks/。',
             words: [
                 { word: 'fox', highlight: 'x', prefix: 'fo', suffix: '' },
                 { word: 'box', highlight: 'x', prefix: 'bo', suffix: '' },
@@ -268,6 +316,8 @@ const phonicsData = {
         },
         {
             pattern: 'y', pronunciation: '/j/',
+            rule: 'Y作为辅音时发/j/，舌头中部抬起接近上腭，发"耶"的起始音。',
+            tip: 'Y在词首发/j/；在词尾可能发/i/或/aɪ/，如happy、my。这里先学词首的Y。',
             words: [
                 { word: 'yo-yo', highlight: 'y', prefix: '', suffix: 'o-yo' },
                 { word: 'yellow', highlight: 'y', prefix: '', suffix: 'ellow' },
@@ -277,6 +327,8 @@ const phonicsData = {
         },
         {
             pattern: 'z', pronunciation: '/z/',
+            rule: '舌尖接近上牙龈，让气流从舌尖和牙齿之间挤出，声带振动。',
+            tip: 'Z是浊辅音，和S的发音位置完全相同。区别：Z振动喉咙，S不振动。',
             words: [
                 { word: 'zebra', highlight: 'z', prefix: '', suffix: 'ebra' },
                 { word: 'zone', highlight: 'z', prefix: '', suffix: 'one' },
@@ -292,6 +344,8 @@ const phonicsData = {
     short_vowels: [
         {
             pattern: 'ad', pronunciation: '/æd/',
+            rule: 'CVC结构：辅音+短元音a+辅音d。a发短促的/æ/音。',
+            tip: '先发开头辅音，再发短元音a，然后连贯到结尾d。',
             words: [
                 { word: 'dad', highlight: 'ad', prefix: 'd', suffix: '' },
                 { word: 'mad', highlight: 'ad', prefix: 'm', suffix: '' },
@@ -300,6 +354,8 @@ const phonicsData = {
         },
         {
             pattern: 'ag', pronunciation: '/æg/',
+            rule: 'CVC结构：辅音+短元音a+辅音g。a发短促的/æ/音。',
+            tip: 'ag结尾的词很常见，注意g发/g/的硬音。',
             words: [
                 { word: 'bag', highlight: 'ag', prefix: 'b', suffix: '' },
                 { word: 'tag', highlight: 'ag', prefix: 't', suffix: '' },
@@ -308,6 +364,8 @@ const phonicsData = {
         },
         {
             pattern: 'at', pronunciation: '/æt/',
+            rule: 'CVC结构：辅音+短元音a+辅音t。这是最常见的音节之一。',
+            tip: 'at结尾的词非常多！还有：bat、sat、fat、pat等。',
             words: [
                 { word: 'cat', highlight: 'at', prefix: 'c', suffix: '' },
                 { word: 'mat', highlight: 'at', prefix: 'm', suffix: '' },
@@ -317,6 +375,8 @@ const phonicsData = {
         },
         {
             pattern: 'am', pronunciation: '/æm/',
+            rule: 'CVC结构：辅音+短元音a+辅音m。结尾的m是鼻音。',
+            tip: '发am结尾时，要闭上嘴巴让m从鼻子出来。',
             words: [
                 { word: 'dam', highlight: 'am', prefix: 'd', suffix: '' },
                 { word: 'ham', highlight: 'am', prefix: 'h', suffix: '' },
@@ -325,6 +385,8 @@ const phonicsData = {
         },
         {
             pattern: 'an', pronunciation: '/æn/',
+            rule: 'CVC结构：辅音+短元音a+辅音n。结尾的n是鼻音。',
+            tip: '发an结尾时，舌尖抵住上牙龈，n从鼻子出来。',
             words: [
                 { word: 'man', highlight: 'an', prefix: 'm', suffix: '' },
                 { word: 'fan', highlight: 'an', prefix: 'f', suffix: '' },
@@ -333,6 +395,8 @@ const phonicsData = {
         },
         {
             pattern: 'ap', pronunciation: '/æp/',
+            rule: 'CVC结构：辅音+短元音a+辅音p。结尾的p突然爆破。',
+            tip: '发ap结尾时，双唇要快速闭合再张开。',
             words: [
                 { word: 'map', highlight: 'ap', prefix: 'm', suffix: '' },
                 { word: 'cap', highlight: 'ap', prefix: 'c', suffix: '' },
@@ -341,6 +405,8 @@ const phonicsData = {
         },
         {
             pattern: 'ed', pronunciation: '/ɛd/',
+            rule: 'CVC结构：辅音+短元音e+辅音d。e发短促的/ɛ/音。',
+            tip: '注意：这里的ed是单词结构，不是动词过去式的-ed后缀。',
             words: [
                 { word: 'Ted', highlight: 'ed', prefix: 'T', suffix: '' },
                 { word: 'red', highlight: 'ed', prefix: 'r', suffix: '' },
@@ -349,6 +415,8 @@ const phonicsData = {
         },
         {
             pattern: 'eg', pronunciation: '/ɛg/',
+            rule: 'CVC结构：辅音+短元音e+辅音g。e发短促的/ɛ/音。',
+            tip: 'eg结尾的词较少，多记几个常见的就好。',
             words: [
                 { word: 'Meg', highlight: 'eg', prefix: 'M', suffix: '' },
                 { word: 'leg', highlight: 'eg', prefix: 'l', suffix: '' },
@@ -357,6 +425,8 @@ const phonicsData = {
         },
         {
             pattern: 'en', pronunciation: '/ɛn/',
+            rule: 'CVC结构：辅音+短元音e+辅音n。结尾的n是鼻音。',
+            tip: 'en结尾很常见。还有：den、men、Ben等。',
             words: [
                 { word: 'hen', highlight: 'en', prefix: 'h', suffix: '' },
                 { word: 'pen', highlight: 'en', prefix: 'p', suffix: '' },
@@ -365,6 +435,8 @@ const phonicsData = {
         },
         {
             pattern: 'ig', pronunciation: '/ɪg/',
+            rule: 'CVC结构：辅音+短元音i+辅音g。i发短促的/ɪ/音。',
+            tip: 'ig结尾的词很常见。还有：dig、fig、jig等。',
             words: [
                 { word: 'big', highlight: 'ig', prefix: 'b', suffix: '' },
                 { word: 'pig', highlight: 'ig', prefix: 'p', suffix: '' },
@@ -373,6 +445,8 @@ const phonicsData = {
         },
         {
             pattern: 'in', pronunciation: '/ɪn/',
+            rule: 'CVC结构：辅音+短元音i+辅音n。结尾的n是鼻音。',
+            tip: 'in结尾非常常见。还有：win、fin、din等。',
             words: [
                 { word: 'tin', highlight: 'in', prefix: 't', suffix: '' },
                 { word: 'pin', highlight: 'in', prefix: 'p', suffix: '' },
@@ -381,6 +455,8 @@ const phonicsData = {
         },
         {
             pattern: 'ip', pronunciation: '/ɪp/',
+            rule: 'CVC结构：辅音+短元音i+辅音p。结尾的p突然爆破。',
+            tip: 'ip结尾的词很多。还有：tip、dip、hip、rip等。',
             words: [
                 { word: 'sip', highlight: 'ip', prefix: 's', suffix: '' },
                 { word: 'zip', highlight: 'ip', prefix: 'z', suffix: '' },
@@ -389,6 +465,8 @@ const phonicsData = {
         },
         {
             pattern: 'it', pronunciation: '/ɪt/',
+            rule: 'CVC结构：辅音+短元音i+辅音t。这是最常见的音节之一。',
+            tip: 'it结尾的词非常多！还有：bit、fit、pit、wit等。',
             words: [
                 { word: 'sit', highlight: 'it', prefix: 's', suffix: '' },
                 { word: 'hit', highlight: 'it', prefix: 'h', suffix: '' },
@@ -397,6 +475,8 @@ const phonicsData = {
         },
         {
             pattern: 'ox', pronunciation: '/ɒks/',
+            rule: 'CVC结构：辅音+短元音o+辅音x。o发短促的/ɒ/音。',
+            tip: 'x发/ks/的音，ox结尾的词不多但很常用。',
             words: [
                 { word: 'ox', highlight: 'ox', prefix: '', suffix: '' },
                 { word: 'fox', highlight: 'ox', prefix: 'f', suffix: '' },
@@ -405,6 +485,8 @@ const phonicsData = {
         },
         {
             pattern: 'og', pronunciation: '/ɒg/',
+            rule: 'CVC结构：辅音+短元音o+辅音g。o发短促的/ɒ/音。',
+            tip: 'og结尾的词很常见。还有：dog、log、hog等。',
             words: [
                 { word: 'fog', highlight: 'og', prefix: 'f', suffix: '' },
                 { word: 'jog', highlight: 'og', prefix: 'j', suffix: '' },
@@ -413,6 +495,8 @@ const phonicsData = {
         },
         {
             pattern: 'op', pronunciation: '/ɒp/',
+            rule: 'CVC结构：辅音+短元音o+辅音p。结尾的p突然爆破。',
+            tip: 'op结尾的词很多。还有：pop、cop、drop、stop等。',
             words: [
                 { word: 'hop', highlight: 'op', prefix: 'h', suffix: '' },
                 { word: 'mop', highlight: 'op', prefix: 'm', suffix: '' },
@@ -421,6 +505,8 @@ const phonicsData = {
         },
         {
             pattern: 'ot', pronunciation: '/ɒt/',
+            rule: 'CVC结构：辅音+短元音o+辅音t。o发短促的/ɒ/音。',
+            tip: 'ot结尾的词非常多！还有：got、lot、not、rot等。',
             words: [
                 { word: 'dot', highlight: 'ot', prefix: 'd', suffix: '' },
                 { word: 'hot', highlight: 'ot', prefix: 'h', suffix: '' },
@@ -429,6 +515,8 @@ const phonicsData = {
         },
         {
             pattern: 'ub', pronunciation: '/ʌb/',
+            rule: 'CVC结构：辅音+短元音u+辅音b。u发短促的/ʌ/音。',
+            tip: 'ub结尾的词较常见。还有：hub、pub、sub等。',
             words: [
                 { word: 'tub', highlight: 'ub', prefix: 't', suffix: '' },
                 { word: 'cub', highlight: 'ub', prefix: 'c', suffix: '' },
@@ -437,6 +525,8 @@ const phonicsData = {
         },
         {
             pattern: 'ug', pronunciation: '/ʌg/',
+            rule: 'CVC结构：辅音+短元音u+辅音g。u发短促的/ʌ/音。',
+            tip: 'ug结尾的词很常见。还有：hug、dug、jug、tug等。',
             words: [
                 { word: 'bug', highlight: 'ug', prefix: 'b', suffix: '' },
                 { word: 'mug', highlight: 'ug', prefix: 'm', suffix: '' },
@@ -445,6 +535,8 @@ const phonicsData = {
         },
         {
             pattern: 'un', pronunciation: '/ʌn/',
+            rule: 'CVC结构：辅音+短元音u+辅音n。结尾的n是鼻音。',
+            tip: 'un结尾的词很常见。还有：run、gun、pun等。',
             words: [
                 { word: 'fun', highlight: 'un', prefix: 'f', suffix: '' },
                 { word: 'sun', highlight: 'un', prefix: 's', suffix: '' },
@@ -453,6 +545,8 @@ const phonicsData = {
         },
         {
             pattern: 'ut', pronunciation: '/ʌt/',
+            rule: 'CVC结构：辅音+短元音u+辅音t。u发短促的/ʌ/音。',
+            tip: 'ut结尾的词很常见。还有：but、gut、put、shut等。',
             words: [
                 { word: 'hut', highlight: 'ut', prefix: 'h', suffix: '' },
                 { word: 'nut', highlight: 'ut', prefix: 'n', suffix: '' },
