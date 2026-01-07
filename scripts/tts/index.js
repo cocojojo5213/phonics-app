@@ -25,6 +25,7 @@ const commands = {
     words: require('./generate-words'),
     rules: require('./generate-rules'),
     sentences: require('./generate-sentences'),
+    spelling: require('./generate-spelling'),
     bundle: require('./bundle-audio'),
 };
 
@@ -40,6 +41,7 @@ function showHelp() {
   words      生成单词音频（英文女声）
   rules      生成规则讲解音频（中文女声）
   sentences  生成例句音频（英文女声）
+  spelling   生成拼读音频（r-ai-n → "r...ai...n...rain"）
   bundle     打包音频为 JSON bundle（用于静态站）
   all        依次执行 words -> rules -> sentences -> bundle
 

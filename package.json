@@ -10,8 +10,11 @@
     "tts:words": "node scripts/tts/index.js words",
     "tts:rules": "node scripts/tts/index.js rules",
     "tts:sentences": "node scripts/tts/index.js sentences",
+    "tts:spelling": "node scripts/tts/index.js spelling",
     "tts:bundle": "node scripts/tts/index.js bundle",
-    "tts:all": "node scripts/tts/index.js all"
+    "tts:all": "node scripts/tts/index.js all",
+    "phonics:analyze": "node scripts/phonics-analyze.js",
+    "phonics:cleanup": "node scripts/cleanup-orphans.js"
   },
   "keywords": [
     "phonics",
