@@ -1086,3 +1086,85 @@ select {
 [data-theme="dark"] .sentence-row:hover {
   background: var(--primary);
 }
+
+/* ============================================
+   音频加载状态样式
+   ============================================ */
+
+/* 加载中的脉冲动画 */
+@keyframes audio-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 var(--primary);
+  }
+
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 0 4px var(--primary);
+  }
+}
+
+/* 加载中的旋转动画（用于图标） */
+@keyframes audio-spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* 单词卡片加载状态 */
+.word-card.audio-loading {
+  animation: audio-pulse 0.8s ease-in-out infinite;
+  pointer-events: none;
+  position: relative;
+  border: 2px solid var(--primary) !important;
+  background: var(--primary-light) !important;
+}
+
+.word-card.audio-loading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: inherit;
+  z-index: 1;
+}
+
+[data-theme="dark"] .word-card.audio-loading::before {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.word-card.audio-loading::after {
+  content: '🔊';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  z-index: 2;
+  animation: audio-spin 1.5s linear infinite;
+}
+
+/* 播放按钮加载状态 */
+.play-btn.audio-loading,
+.audio-btn.audio-loading,
+.clickable-audio.audio-loading {
+  animation: audio-pulse 0.8s ease-in-out infinite;
+  pointer-events: none;
+  opacity: 0.8;
+  border-color: var(--primary) !important;
+}
+
+/* 通用加载状态的禁用效果 */
+.audio-loading {
+  cursor: wait !important;
+  user-select: none;
+}

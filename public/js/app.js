@@ -362,7 +362,7 @@ function renderPractice(data) {
     ` : '';
 
     return `
-            <div class="word-card" onclick="playWord('${w.word}')">
+            <div class="word-card" data-word="${w.word}" onclick="playWord('${w.word}', event)">
                 <div class="word">${wordDisplay}</div>
                 ${w.meaning ? `<div class="meaning">${w.meaning}</div>` : ''}
                 ${w.phonetic ? `<div class="phonetic">${w.phonetic}</div>` : ''}
@@ -409,42 +409,89 @@ function renderPractice(data) {
     `;
 }
 
-// 播放发音模式的声音（使用 SSML IPA 发音）
-async function playPatternSound() {
-  const pattern = state.currentPattern;
+// ============== 语音播放 ==============
+
+// 正在播放/加载的标记（防止重复点击）
+let isPlayingAudio = false;
+
+/**
+ * 通用播放函数包装器
+ * - 显示加载状态
+ * - 防止重复点击
+ * - 加载完成后恢复状态
+ */
+async function playWithLoading(playFn, elementSelector) {
+  // 如果正在播放，先停止
+  if (isPlayingAudio) {
+    AudioLoader.stopCurrent && AudioLoader.stopCurrent();
+  }
+
+  isPlayingAudio = true;
+
+  // 显示加载状态
+  const element = elementSelector ? document.querySelector(elementSelector) : null;
+  if (element) {
+    element.classList.add('audio-loading');
+  }
+
   try {
-    // 添加时间戳防止浏览器缓存
-    const audio = new Audio(`/api/tts/pattern/${encodeURIComponent(pattern)}?t=${Date.now()}`);
-    await audio.play();
+    await playFn();
   } catch (e) {
-    console.error('播放发音失败:', e);
+    console.warn('播放错误:', e);
+  } finally {
+    // 延迟一小段时间再移除加载状态
+    setTimeout(() => {
+      if (element) {
+        element.classList.remove('audio-loading');
+      }
+      isPlayingAudio = false;
+    }, 300);
   }
 }
 
-// 播放发音
-async function playSound(text) {
-  try {
-    const audio = new Audio(`/api/tts/word/${encodeURIComponent(text)}?t=${Date.now()}`);
-    await audio.play();
-  } catch (e) {
-    console.error('播放失败:', e);
-  }
+// 播放发音模式的声音
+async function playPatternSound() {
+  await playWithLoading(
+    () => AudioLoader.playPattern(state.currentCategory, state.currentPattern),
+    '.play-btn'
+  );
 }
 
 // 播放单词
-async function playWord(word) {
-  await playSound(word);
+async function playWord(word, event) {
+  // 找到被点击的单词卡片
+  const wordCard = event?.target?.closest?.('.word-card') ||
+    document.querySelector(`.word-card[data-word="${word}"]`);
+
+  // 立即显示加载状态
+  if (wordCard) {
+    wordCard.classList.add('audio-loading');
+  }
+
+  // 停止之前正在播放的音频
+  AudioLoader.stopCurrent();
+
+  try {
+    await AudioLoader.playWord(state.currentCategory, state.currentPattern, word);
+  } catch (e) {
+    console.warn('播放错误:', e);
+  } finally {
+    // 短暂延迟后移除加载状态
+    setTimeout(() => {
+      if (wordCard) {
+        wordCard.classList.remove('audio-loading');
+      }
+    }, 300);
+  }
 }
 
 // 播放例句
-async function playSentence(sentence) {
-  if (!sentence) return;
-  try {
-    const audio = new Audio(`/api/tts/sentence/${encodeURIComponent(sentence)}?t=${Date.now()}`);
-    await audio.play();
-  } catch (e) {
-    console.error('播放例句失败:', e);
-  }
+async function playSentence(sentenceText) {
+  if (!sentenceText) return;
+  await playWithLoading(
+    () => AudioLoader.playSentence(state.currentCategory, state.currentPattern, null, sentenceText),
+    '.sentence-row'
+  );
 }
 
 // HTML 转义，防止 XSS
@@ -480,20 +527,19 @@ async function loadSentences(words) {
   }
 }
 
-// 播放规则/提示语音（中文 Google TTS）
+// 播放规则/提示语音
 async function playRuleAudio(type) {
   const pattern = state.currentPattern;
   if (!pattern) return;
 
-  try {
-    // pattern 中的下划线需要保留，API 会处理
-    const url = `/api/tts/rule/${encodeURIComponent(pattern)}/${type}?t=${Date.now()}`;
-    const audio = new Audio(url);
-    await audio.play();
-  } catch (e) {
-    console.error('播放规则语音失败:', e);
-    // 如果预生成的语音不存在，可以考虑回退方案（但目前不做）
-  }
+  const selector = type === 'rule' ? '.rule-text' : '.rule-tip';
+
+  await playWithLoading(
+    () => type === 'rule'
+      ? AudioLoader.playRule(state.currentCategory, pattern)
+      : AudioLoader.playTip(state.currentCategory, pattern),
+    selector
+  );
 }
 
 // AI 扩词
