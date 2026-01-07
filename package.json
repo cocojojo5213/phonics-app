@@ -6,8 +6,12 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
-    "generate-tts": "node scripts/generate-tts.js",
-    "generate-rules-tts": "node scripts/generate-rules-tts.js"
+    "tts": "node scripts/tts/index.js",
+    "tts:words": "node scripts/tts/index.js words",
+    "tts:rules": "node scripts/tts/index.js rules",
+    "tts:sentences": "node scripts/tts/index.js sentences",
+    "tts:bundle": "node scripts/tts/index.js bundle",
+    "tts:all": "node scripts/tts/index.js all"
   },
   "keywords": [
     "phonics",

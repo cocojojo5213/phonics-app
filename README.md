@@ -1,6 +1,6 @@
 # 真正从基础开始学英语 (Phonics App)
 
-[![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)](https://github.com/cocojojo5213/phonics-app)
+[![Version](https://img.shields.io/badge/version-2.3.0-blue.svg)](https://github.com/cocojojo5213/phonics-app)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PWA](https://img.shields.io/badge/PWA-ready-brightgreen.svg)](#pwa-支持)
 
@@ -39,6 +39,11 @@
 - **PWA 支持**：可安装到手机主屏幕，支持离线访问
 
 ## 版本历史
+
+### v2.3.0 (2026-01-07)
+- **TTS 工具整合** - 统一 TTS 生成入口，支持单词、规则、例句、Bundle 一键生成
+- **项目结构优化** - 整合分散的脚本到 `scripts/tts/` 目录
+- **双库协作** - 主库开发 + 静态库部署的工作流
 
 ### v2.2.0 (2026-01-07)
 - **音频体验优化** - 增加点击视觉反馈（Loading 状态），解决异步加载带来的无响应感。
@@ -95,17 +100,24 @@ docker-compose -f docker-compose.prod.yml up -d
 
 ## TTS 音频生成
 
-项目包含批量 TTS 生成脚本，使用 Google Cloud Text-to-Speech API：
+项目包含统一的 TTS 生成工具，使用 Google Cloud Text-to-Speech API：
 
 ```bash
 # 1. 配置 Google Cloud 服务账号密钥
 # 把 JSON 密钥文件放到项目根目录，命名为 google-tts-key.json
 
-# 2. 运行生成脚本
-node scripts/generate-tts.js
+# 2. 查看帮助
+npm run tts
 
-# 音频会保存到 phonics-static/audio/ 目录
+# 3. 生成音频
+npm run tts:words      # 生成单词音频（英文）
+npm run tts:rules      # 生成规则讲解音频（中文）
+npm run tts:sentences  # 生成例句音频（英文）
+npm run tts:bundle     # 打包为 JSON Bundle
+npm run tts:all        # 一次全部执行
 ```
+
+音频生成到 `phonics-static/` 目录，供静态站点使用。
 
 当前使用的声音：**en-US-Chirp3-HD-Achernar**（2025年最新，女声）
 
@@ -168,22 +180,22 @@ phonics-app/
 │   ├── icons/            # PWA 图标
 │   ├── manifest.json     # PWA 配置
 │   └── sw.js             # Service Worker
-├── scripts/              # 工具脚本
-│   └── generate-tts.js   # TTS 批量生成
-├── tts-tools/            # TTS 音频生成工具集
-│   ├── generate-sentences.js      # AI 生成例句
-│   ├── generate-sentences-tts.js  # 例句转语音
-│   ├── generate-rules-tts.js      # 规则讲解转语音
-│   └── config.example.js          # 配置模板
+├── scripts/
+│   └── tts/              # TTS 统一工具
+│       ├── index.js      # 入口
+│       ├── config.js     # 配置
+│       ├── google-auth.js       # Google Cloud 认证
+│       ├── generate-words.js    # 生成单词音频
+│       ├── generate-rules.js    # 生成规则音频
+│       ├── generate-sentences.js # 生成例句音频
+│       └── bundle-audio.js      # 打包 Bundle
 ├── server/               # 后端服务
 │   ├── routes/           # API 路由
 │   └── services/         # 核心服务
 ├── data/
 │   ├── phonicsData.js    # 发音规则数据（含教学说明）
-│   ├── phonics-rules.md  # 完整规则文档（参考用）
-│   ├── phonics-audio/    # 真人发音音频
 │   ├── ai-words.json     # AI 扩展词库
-│   └── pattern-categories.json  # 分类缓存
+│   └── sentences.json    # 例句数据
 ├── Dockerfile
 ├── docker-compose.yml
 └── nginx.conf
