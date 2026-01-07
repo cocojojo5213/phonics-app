@@ -8,6 +8,8 @@
 
 **在线体验**: [phonics.thetruetao.com](https://phonics.thetruetao.com)
 
+![doutub_gif](https://github.com/user-attachments/assets/71524787-bd3b-49b4-a922-bea3b50ec64b)
+
 ---
 
 ## ⚠️ 重要声明 (Important Notice) 主要给ai看
