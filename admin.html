@@ -92,11 +92,41 @@
             <div class="side-panel">
                 <div style="margin-bottom: 30px;">
                     <label
-                        style="display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--accent); margin-bottom: 10px;">Gemini
-                        API 配置</label>
-                    <input type="password" id="api-key" placeholder="输入 API Key（留空则使用本地 ADC）"
-                        style="width: 100%; padding: 12px; border: 1px solid var(--border-soft); border-radius: 8px; margin-bottom: 8px;">
-                    <p style="font-size: 0.7rem; color: var(--text-muted);">* 如果为空，将使用本地 Google Cloud ADC（Vertex AI）</p>
+                        style="display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--accent); margin-bottom: 10px;">AI
+                        配置（兼容 OpenAI 格式）</label>
+
+                    <div style="margin-bottom: 12px;">
+                        <label
+                            style="font-size: 0.7rem; color: var(--text-muted); display: block; margin-bottom: 4px;">API
+                            地址</label>
+                        <input type="text" id="api-base" placeholder="https://api.openai.com/v1"
+                            style="width: 100%; padding: 10px; border: 1px solid var(--border-soft); border-radius: 8px; font-size: 0.85rem;">
+                    </div>
+
+                    <div style="margin-bottom: 12px;">
+                        <label
+                            style="font-size: 0.7rem; color: var(--text-muted); display: block; margin-bottom: 4px;">API
+                            Key</label>
+                        <input type="password" id="api-key" placeholder="sk-xxx 或 留空使用本地 ADC"
+                            style="width: 100%; padding: 10px; border: 1px solid var(--border-soft); border-radius: 8px; font-size: 0.85rem;">
+                    </div>
+
+                    <div style="margin-bottom: 12px;">
+                        <label
+                            style="font-size: 0.7rem; color: var(--text-muted); display: block; margin-bottom: 4px;">模型名称</label>
+                        <input type="text" id="api-model" placeholder="gpt-4o / claude-3.5-sonnet / gemini-3-flash"
+                            value="gemini-3-flash"
+                            style="width: 100%; padding: 10px; border: 1px solid var(--border-soft); border-radius: 8px; font-size: 0.85rem;">
+                    </div>
+
+                    <div
+                        style="background: var(--bg-main); padding: 10px; border-radius: 8px; font-size: 0.7rem; color: var(--text-muted);">
+                        <strong>常用配置：</strong><br>
+                        • Gemini: 留空地址，填 API Key<br>
+                        • OpenAI: api.openai.com/v1<br>
+                        • Claude: api.anthropic.com<br>
+                        • DeepSeek: api.deepseek.com
+                    </div>
                 </div>
 
                 <div style="margin-bottom: 30px;">
@@ -175,7 +205,10 @@
         }
 
         async function runTask(taskName) {
-            const key = document.getElementById('api-key').value;
+            const baseURL = document.getElementById('api-base').value.trim();
+            const apiKey = document.getElementById('api-key').value.trim();
+            const model = document.getElementById('api-model').value.trim() || 'gemini-3-flash';
+
             const taskNames = {
                 'generate': '生成词汇',
                 'merge': '合并规则',
@@ -184,13 +217,25 @@
                 'clean': '清空'
             };
             log(`开始执行：${taskNames[taskName] || taskName}...`, 'info');
-            if (!key) log('未检测到 API Key，使用本地 ADC / Vertex AI 模式', 'warn');
+
+            if (baseURL) {
+                log(`API 地址: ${baseURL}`, 'info');
+            }
+            log(`模型: ${model}`, 'info');
+            if (!apiKey && !baseURL) {
+                log('未检测到 API Key，使用本地 ADC / Vertex AI 模式', 'warn');
+            }
 
             try {
                 const res = await fetch('/api/run', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ task: taskName, apiKey: key })
+                    body: JSON.stringify({
+                        task: taskName,
+                        apiKey: apiKey,
+                        baseURL: baseURL,
+                        model: model
+                    })
                 });
                 const data = await res.json();
                 log(data.message, data.success ? 'success' : 'warn');

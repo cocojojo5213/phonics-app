@@ -1,6 +1,6 @@
 # Phonics - 自然拼读学习工具
 
-[![Version](https://img.shields.io/badge/version-2.3.0-blue.svg)](https://github.com/cocojojo5213/phonics-app)
+[![Version](https://img.shields.io/badge/version-2.4.0-blue.svg)](https://github.com/cocojojo5213/phonics-app)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PWA](https://img.shields.io/badge/PWA-ready-brightgreen.svg)](#pwa-支持)
 
@@ -149,21 +149,25 @@ gcloud auth application-default login
 export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 ```
 
-### AI 功能
+### AI 功能（通用接口）
 
-词汇生成使用 Google Gemini 3 Flash 模型：
+词汇生成支持多种 AI 服务，在 Workshop 后台配置：
 
-```bash
-# 使用 ADC (推荐)
-gcloud auth application-default login
+| 服务 | API 地址 | 模型名称 |
+|:---|:---|:---|
+| **Gemini** | 留空 | `gemini-3-flash` |
+| **OpenAI** | `https://api.openai.com/v1` | `gpt-4o` |
+| **Claude** | `https://api.anthropic.com` | `claude-3-5-sonnet-20241022` |
+| **DeepSeek** | `https://api.deepseek.com` | `deepseek-chat` |
+| **本地 Ollama** | `http://localhost:11434/v1` | `llama3` |
 
-# 或在 admin.html 中输入 API Key
-```
+生成的单词会自动通过 27 万+英语词典验证，过滤假词。
 
 ---
 
 ## 版本历史
 
+- **v2.4.0 (2026-01-09)** - 通用 AI 接口、实时词典验证、静音字母/音节显示、后台汉化
 - **v2.3.0 (2026-01-09)** - 完整重构：16分类规则库、彩色breakdown、Workshop工具
 - **v2.0.0 (2026-01-09)** - UI 全面重构，Flashcard 模式
 - **v1.x** - 服务器版本（仅修bug）

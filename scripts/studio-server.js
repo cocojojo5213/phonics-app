@@ -77,17 +77,18 @@ app.get('/api/stats', (req, res) => {
         res.status(500).json({ success: false, message: e.message });
     }
 });
-
 /**
  * 执行任务
  */
 app.post('/api/run', async (req, res) => {
-    const { task, apiKey } = req.body;
-    console.log(`[STUDIO] Received task: ${task}`);
+    const { task, apiKey, baseURL, model } = req.body;
+    console.log(`[STUDIO] 接收任务: ${task}`);
+    if (baseURL) console.log(`[STUDIO] API 地址: ${baseURL}`);
+    console.log(`[STUDIO] 模型: ${model || 'gemini-3-flash'}`);
 
     // 检查任务是否正在运行
     if (runningTasks.has(task)) {
-        return res.json({ success: false, message: `Task ${task} is already running.` });
+        return res.json({ success: false, message: `任务 ${task} 正在运行中` });
     }
 
     try {
@@ -114,21 +115,21 @@ app.post('/api/run', async (req, res) => {
                 if (fs.existsSync(generatedPath)) {
                     fs.unlinkSync(generatedPath);
                 }
-                return res.json({ success: true, message: 'Generated words file cleaned.' });
+                return res.json({ success: true, message: '已清空生成的词汇文件' });
             default:
-                return res.json({ success: false, message: `Unknown task: ${task}` });
+                return res.json({ success: false, message: `未知任务: ${task}` });
         }
 
         // 检查脚本是否存在
         if (!fs.existsSync(scriptPath)) {
-            return res.json({ success: false, message: `Script not found: ${scriptPath}` });
+            return res.json({ success: false, message: `脚本不存在: ${scriptPath}` });
         }
 
-        // 设置环境变量（如果有 API Key）
+        // 设置环境变量（传递 AI 配置）
         const env = { ...process.env };
-        if (apiKey) {
-            env.GEMINI_API_KEY = apiKey;
-        }
+        if (apiKey) env.AI_API_KEY = apiKey;
+        if (baseURL) env.AI_BASE_URL = baseURL;
+        if (model) env.AI_MODEL = model;
 
         // 启动子进程
         const child = spawn('node', [scriptPath, ...args], {
@@ -141,12 +142,12 @@ app.post('/api/run', async (req, res) => {
 
         child.on('close', (code) => {
             runningTasks.delete(task);
-            console.log(`[STUDIO] Task ${task} finished with code ${code}`);
+            console.log(`[STUDIO] 任务 ${task} 完成，退出码 ${code}`);
         });
 
         res.json({
             success: true,
-            message: `Task ${task} started in background. Check terminal for progress.`
+            message: `任务已在后台启动，请查看终端输出`
         });
 
     } catch (e) {
