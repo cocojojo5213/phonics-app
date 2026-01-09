@@ -37,11 +37,11 @@
             color: #d4d4d4;
             padding: 20px;
             border-radius: 20px;
-            font-family: 'Consolas', monospace;
+            font-family: 'Consolas', 'Monaco', monospace;
             height: 600px;
             overflow-y: auto;
-            font-size: 0.9rem;
-            line-height: 1.5;
+            font-size: 0.85rem;
+            line-height: 1.6;
         }
 
         .step-item {
@@ -65,6 +65,11 @@
             color: #0369a1;
         }
 
+        .log-line {
+            padding: 2px 0;
+            word-break: break-word;
+        }
+
         .log-info {
             color: #58a6ff;
         }
@@ -75,6 +80,74 @@
 
         .log-warn {
             color: #d29922;
+        }
+
+        .log-error {
+            color: #f85149;
+        }
+
+        .log-stdout {
+            color: #d4d4d4;
+        }
+
+        .log-stderr {
+            color: #ffa657;
+        }
+
+        .log-connected {
+            color: #a371f7;
+        }
+
+        .log-time {
+            color: #6e7681;
+            margin-right: 8px;
+        }
+
+        .connection-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .connection-status.connected {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .connection-status.disconnected {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .connection-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .connected .connection-dot {
+            background: #22c55e;
+        }
+
+        .disconnected .connection-dot {
+            background: #ef4444;
+            animation: none;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
         }
     </style>
 </head>
@@ -161,28 +234,81 @@
             <!-- Execution Log -->
             <div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <h3 style="font-size: 1.1rem;">执行日志</h3>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <h3 style="font-size: 1.1rem; margin: 0;">执行日志</h3>
+                        <span id="connection-status" class="connection-status disconnected">
+                            <span class="connection-dot"></span>
+                            <span class="connection-text">未连接</span>
+                        </span>
+                    </div>
                     <button onclick="clearLog()"
                         style="background: none; border: none; font-size: 0.8rem; color: var(--accent); cursor: pointer;">清空</button>
                 </div>
-                <div class="main-log" id="log-output">
-                    [系统] 工作台已初始化<br>
-                    [系统] 等待任务执行...
-                </div>
+                <div class="main-log" id="log-output"></div>
             </div>
         </div>
     </div>
 
     <script>
+        let eventSource = null;
+
         function log(msg, type = 'info') {
             const output = document.getElementById('log-output');
             const time = new Date().toLocaleTimeString();
-            output.innerHTML += `<div class="log-${type}">[${time}] ${msg}</div>`;
+            const escapedMsg = msg.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            output.innerHTML += `<div class="log-line log-${type}"><span class="log-time">[${time}]</span>${escapedMsg}</div>`;
             output.scrollTop = output.scrollHeight;
         }
 
         function clearLog() {
             document.getElementById('log-output').innerHTML = '';
+            log('日志已清空', 'info');
+        }
+
+        function updateConnectionStatus(connected) {
+            const el = document.getElementById('connection-status');
+            el.className = `connection-status ${connected ? 'connected' : 'disconnected'}`;
+            el.querySelector('.connection-text').textContent = connected ? '已连接' : '未连接';
+        }
+
+        function connectSSE() {
+            if (eventSource) {
+                eventSource.close();
+            }
+
+            eventSource = new EventSource('/api/logs/stream');
+
+            eventSource.onopen = () => {
+                updateConnectionStatus(true);
+            };
+
+            eventSource.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+
+                    if (data.type === 'connected') {
+                        log('已连接到服务器日志流', 'connected');
+                        return;
+                    }
+
+                    // 显示日志
+                    const prefix = data.task ? `[${data.task}] ` : '';
+                    log(prefix + data.message, data.type);
+
+                    // 任务完成时刷新统计
+                    if (data.type === 'success' || data.type === 'error') {
+                        setTimeout(loadStats, 500);
+                    }
+                } catch (e) {
+                    console.warn('SSE parse error:', e);
+                }
+            };
+
+            eventSource.onerror = () => {
+                updateConnectionStatus(false);
+                // 3秒后重连
+                setTimeout(connectSSE, 3000);
+            };
         }
 
         async function loadStats() {
@@ -218,14 +344,6 @@
             };
             log(`开始执行：${taskNames[taskName] || taskName}...`, 'info');
 
-            if (baseURL) {
-                log(`API 地址: ${baseURL}`, 'info');
-            }
-            log(`模型: ${model}`, 'info');
-            if (!apiKey && !baseURL) {
-                log('未检测到 API Key，使用本地 ADC / Vertex AI 模式', 'warn');
-            }
-
             try {
                 const res = await fetch('/api/run', {
                     method: 'POST',
@@ -238,17 +356,25 @@
                     })
                 });
                 const data = await res.json();
-                log(data.message, data.success ? 'success' : 'warn');
-
-                // 刷新统计
-                setTimeout(loadStats, 2000);
+                if (!data.success) {
+                    log(data.message, 'warn');
+                }
             } catch (e) {
-                log('服务器连接失败，请运行：npm run studio', 'warn');
+                log('服务器连接失败，请运行：npm run studio', 'error');
             }
         }
 
-        // 页面加载时获取统计
-        window.onload = loadStats;
+        // 页面加载时初始化
+        window.onload = () => {
+            loadStats();
+            connectSSE();
+            log('工作台已初始化，等待任务执行...', 'info');
+        };
+
+        // 页面关闭时断开连接
+        window.onbeforeunload = () => {
+            if (eventSource) eventSource.close();
+        };
     </script>
 </body>
 
