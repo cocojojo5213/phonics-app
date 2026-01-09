@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phonics Workshop | 管理后台</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --panel-bg: #fdfdfd;
+        }
+
+        body {
+            background: #f0f2f5;
+            padding: 40px 0;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+        }
+
+        .side-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid var(--border-soft);
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .main-log {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 20px;
+            font-family: 'Consolas', monospace;
+            height: 600px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .step-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-soft);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .status-pill {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-ready {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .log-info {
+            color: #58a6ff;
+        }
+
+        .log-success {
+            color: #7ee787;
+        }
+
+        .log-warn {
+            color: #d29922;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div style="margin-bottom: 40px; border-bottom: 2px solid var(--accent); padding-bottom: 20px;">
+            <h1 style="font-size: 2.5rem; margin-bottom: 10px;">Workshop <span
+                    style="font-weight: 300; opacity: 0.5;">Console</span></h1>
+            <p style="color: var(--text-muted);">AI 驱动的数据生成与资源自动化管理中心</p>
+        </div>
+
+        <div class="admin-grid">
+            <!-- Control Panel -->
+            <div class="side-panel">
+                <div style="margin-bottom: 30px;">
+                    <label
+                        style="display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--accent); margin-bottom: 10px;">Gemini
+                        API Configuration</label>
+                    <input type="password" id="api-key" placeholder="Enter API Key (Optional for ADC)"
+                        style="width: 100%; padding: 12px; border: 1px solid var(--border-soft); border-radius: 8px; margin-bottom: 8px;">
+                    <p style="font-size: 0.7rem; color: var(--text-muted);">* 如果为空，脚本将尝试使用本地 Google Cloud ADC (Vertex
+                        AI)。</p>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <label
+                        style="display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--accent); margin-bottom: 15px;">Task
+                        Runner</label>
+                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 12px; justify-content: center;"
+                        onclick="runTask('generate')">Generate Words</button>
+                    <button class="btn"
+                        style="width: 100%; margin-bottom: 12px; justify-content: center; border: 1px solid var(--border-soft);"
+                        onclick="runTask('tts')">Generate TTS</button>
+                    <button class="btn"
+                        style="width: 100%; justify-content: center; border: 1px solid var(--border-soft);"
+                        onclick="runTask('clean')">Clean Resources</button>
+                </div>
+
+                <div id="stats-panel">
+                    <label
+                        style="display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 15px;">Current
+                        Rules</label>
+                    <div id="rules-list">
+                        <!-- Rules will be loaded here -->
+                        <div class="step-item"><span>Loading Rules...</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Execution Log -->
+            <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="font-size: 1.1rem;">Execution Output</h3>
+                    <button onclick="clearLog()"
+                        style="background: none; border: none; font-size: 0.8rem; color: var(--accent); cursor: pointer;">Clear
+                        Console</button>
+                </div>
+                <div class="main-log" id="log-output">
+                    [SYSTEM] Workshop environment initialized.<br>
+                    [SYSTEM] Awaiting user command...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function log(msg, type = 'info') {
+            const output = document.getElementById('log-output');
+            const time = new Date().toLocaleTimeString();
+            output.innerHTML += `<div class="log-${type}">[${time}] ${msg}</div>`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('log-output').innerHTML = '';
+        }
+
+        async function loadStats() {
+            try {
+                const res = await fetch('/api/stats');
+                const data = await res.json();
+                if (data.success) {
+                    const s = data.stats;
+                    document.getElementById('rules-list').innerHTML = `
+                        <div class="step-item"><span>Categories</span><span class="status-pill status-ready">${s.categories}</span></div>
+                        <div class="step-item"><span>Rules</span><span class="status-pill status-ready">${s.rules}</span></div>
+                        <div class="step-item"><span>Generated</span><span class="status-pill" style="background:#dcfce7;color:#166534;">${s.generatedRules}</span></div>
+                        <div class="step-item"><span>Word Audio</span><span class="status-pill" style="background:#fef3c7;color:#92400e;">${s.wordAudios}</span></div>
+                        <div class="step-item"><span>Sentence Audio</span><span class="status-pill" style="background:#fef3c7;color:#92400e;">${s.sentenceAudios}</span></div>
+                    `;
+                }
+            } catch (e) {
+                document.getElementById('rules-list').innerHTML = '<div class="step-item"><span>Server not running</span></div>';
+            }
+        }
+
+        async function runTask(taskName) {
+            const key = document.getElementById('api-key').value;
+            log(`Starting task: ${taskName.toUpperCase()}...`, 'info');
+            if (!key) log('No API Key detected. Using local ADC / Vertex AI mode.', 'warn');
+
+            try {
+                const res = await fetch('/api/run', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ task: taskName, apiKey: key })
+                });
+                const data = await res.json();
+                log(data.message, data.success ? 'success' : 'warn');
+
+                // 刷新统计
+                setTimeout(loadStats, 2000);
+            } catch (e) {
+                log('Server connection failed. Run: npm run studio', 'warn');
+            }
+        }
+
+        // 页面加载时获取统计
+        window.onload = loadStats;
+    </script>
+</body>
+
+</html>

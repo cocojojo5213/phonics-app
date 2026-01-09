@@ -1,0 +1,8084 @@
+{
+  "meta": {
+    "schemaVersion": "2.3",
+    "dialect": "en-US",
+    "unitSeparator": "|",
+    "created": "2026-01-09T02:56:59.415080+00:00",
+    "notes": "v2.3: Added syllableDivisionPriority meta field and VCCCV syllable division concept rule (apply before VCCV).",
+    "highlightFormat": "example.highlight is an object: {type:'token'|'split'|'span'|'none', ...}. 'split' uses indices for split digraph like a_e. 'none' means no explicit highlight.",
+    "breakdownFormat": "example.breakdown is a string joined by unitSeparator",
+    "syllableFormat": "Optional: example.syllables is an array of syllable strings; each syllable string is joined by unitSeparator. Suggested display joiner: '/'.",
+    "syllableDivisionPriority": [
+      "syllable.divide.compound",
+      "syllable.divide.prefix_suffix",
+      "syllable.divide.cle",
+      "syllable.divide.vv_split",
+      "syllable.divide.vcccv",
+      "syllable.divide.vccv",
+      "syllable.divide.vcv_two_ways"
+    ]
+  },
+  "categories": [
+    {
+      "id": "01_alphabet_consonants",
+      "name_cn": "单辅音字母（基础音）",
+      "name_en": "Single consonant letters (most common sounds)",
+      "order": 1
+    },
+    {
+      "id": "02_vowels_short",
+      "name_cn": "短元音",
+      "name_en": "Short vowels",
+      "order": 2
+    },
+    {
+      "id": "03_consonant_digraphs",
+      "name_cn": "辅音字母组合 Digraphs/Trigraphs",
+      "name_en": "Consonant digraphs/trigraphs",
+      "order": 3
+    },
+    {
+      "id": "04_consonant_blends",
+      "name_cn": "辅音连读 Blends",
+      "name_en": "Consonant blends",
+      "order": 4
+    },
+    {
+      "id": "05_ending_spelling_patterns",
+      "name_cn": "常见拼写规律（词尾）",
+      "name_en": "Common ending spelling patterns",
+      "order": 5
+    },
+    {
+      "id": "06_vce_magic_e",
+      "name_cn": "魔法E（VCe）",
+      "name_en": "Silent-e (VCe)",
+      "order": 6
+    },
+    {
+      "id": "07_vowel_teams_long",
+      "name_cn": "长元音字母组合 Vowel Teams",
+      "name_en": "Long vowel teams",
+      "order": 7
+    },
+    {
+      "id": "08_r_controlled",
+      "name_cn": "R 控制元音（Bossy R）",
+      "name_en": "R-controlled vowels",
+      "order": 8
+    },
+    {
+      "id": "09_vowel_teams_other",
+      "name_cn": "其他元音组合（双元音/变体元音）",
+      "name_en": "Other vowel teams (diphthongs/variant vowels)",
+      "order": 9
+    },
+    {
+      "id": "10_soft_cg_y",
+      "name_cn": "软音 C/G 与 Y 的多种用法",
+      "name_en": "Soft C/G and Y variants",
+      "order": 10
+    },
+    {
+      "id": "11_inflectional_endings",
+      "name_cn": "常见词尾变化（语法词尾）",
+      "name_en": "Inflectional endings",
+      "order": 11
+    },
+    {
+      "id": "12_spelling_changes_suffixes",
+      "name_cn": "加后缀时的拼写变化",
+      "name_en": "Spelling changes with suffixes",
+      "order": 12
+    },
+    {
+      "id": "13_syllable_types",
+      "name_cn": "六大音节类型（读多音节词的规则）",
+      "name_en": "Six syllable types (multisyllable decoding)",
+      "order": 13
+    },
+    {
+      "id": "14_schwa",
+      "name_en": "Schwa (unstressed syllables)",
+      "name_cn": "弱读音 Schwa（非重读音节）",
+      "order": 14
+    },
+    {
+      "id": "15_syllable_division",
+      "name_cn": "音节划分规则（多音节拆分）",
+      "name_en": "Syllable division rules (multisyllabic decoding)",
+      "order": 15
+    },
+    {
+      "id": "16_consonant_voicing",
+      "name_cn": "辅音清浊变化（发音倾向）",
+      "name_en": "Consonant voicing tendencies",
+      "order": 16
+    }
+  ],
+  "rules": [
+    {
+      "id": "consonant.single.b",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "b"
+      ],
+      "sound": {
+        "ipa": "/b/",
+        "name_en": "b says /b/",
+        "name_cn": "字母 b 常见音 /b/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter b: most commonly says /b/. Examples: bat, bed, big, bug.",
+        "zh": "字母 b：最常见发音 /b/。例词：bat，bed，big，bug。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "bat",
+        "bed",
+        "big",
+        "bug"
+      ],
+      "examples": [
+        {
+          "word": "bat",
+          "breakdown": "b|a|t",
+          "highlight": {
+            "type": "token",
+            "value": "b"
+          }
+        },
+        {
+          "word": "bed",
+          "breakdown": "b|e|d",
+          "highlight": {
+            "type": "token",
+            "value": "b"
+          }
+        },
+        {
+          "word": "big",
+          "breakdown": "b|i|g",
+          "highlight": {
+            "type": "token",
+            "value": "b"
+          }
+        },
+        {
+          "word": "bug",
+          "breakdown": "b|u|g",
+          "highlight": {
+            "type": "token",
+            "value": "b"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "b",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.c",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "c"
+      ],
+      "sound": {
+        "ipa": "/k/",
+        "name_en": "hard c /k/",
+        "name_cn": "字母 c 硬音 /k/（常在 a,o,u 前）"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter c: most commonly says /k/. Examples: cat, cap, cot, cup.",
+        "zh": "字母 c：最常见发音 /k/。例词：cat，cap，cot，cup。"
+      },
+      "notes": [
+        "Most common sound (hard c).",
+        "When c is followed by e, i, or y, it often says /s/ — see consonant.soft_c."
+      ],
+      "fewshot": [
+        "cat",
+        "cap",
+        "cot",
+        "cup"
+      ],
+      "examples": [
+        {
+          "word": "cat",
+          "breakdown": "c|a|t",
+          "highlight": {
+            "type": "token",
+            "value": "c"
+          }
+        },
+        {
+          "word": "cap",
+          "breakdown": "c|a|p",
+          "highlight": {
+            "type": "token",
+            "value": "c"
+          }
+        },
+        {
+          "word": "cot",
+          "breakdown": "c|o|t",
+          "highlight": {
+            "type": "token",
+            "value": "c"
+          }
+        },
+        {
+          "word": "cup",
+          "breakdown": "c|u|p",
+          "highlight": {
+            "type": "token",
+            "value": "c"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "c",
+        "match": "token"
+      },
+      "seeAlso": [
+        "consonant.soft_c"
+      ]
+    },
+    {
+      "id": "consonant.single.d",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "d"
+      ],
+      "sound": {
+        "ipa": "/d/",
+        "name_en": "d says /d/",
+        "name_cn": "字母 d 常见音 /d/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter d: most commonly says /d/. Examples: dog, dad, dip, duck.",
+        "zh": "字母 d：最常见发音 /d/。例词：dog，dad，dip，duck。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "dog",
+        "dad",
+        "dip",
+        "duck"
+      ],
+      "examples": [
+        {
+          "word": "dog",
+          "breakdown": "d|o|g",
+          "highlight": {
+            "type": "token",
+            "value": "d"
+          }
+        },
+        {
+          "word": "dad",
+          "breakdown": "d|a|d",
+          "highlight": {
+            "type": "token",
+            "value": "d"
+          }
+        },
+        {
+          "word": "dip",
+          "breakdown": "d|i|p",
+          "highlight": {
+            "type": "token",
+            "value": "d"
+          }
+        },
+        {
+          "word": "duck",
+          "breakdown": "d|u|ck",
+          "highlight": {
+            "type": "token",
+            "value": "d"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "d",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.f",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "f"
+      ],
+      "sound": {
+        "ipa": "/f/",
+        "name_en": "f says /f/",
+        "name_cn": "字母 f 常见音 /f/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter f: most commonly says /f/. Examples: fan, fig, fun, fox.",
+        "zh": "字母 f：最常见发音 /f/。例词：fan，fig，fun，fox。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "fan",
+        "fig",
+        "fun",
+        "fox"
+      ],
+      "examples": [
+        {
+          "word": "fan",
+          "breakdown": "f|a|n",
+          "highlight": {
+            "type": "token",
+            "value": "f"
+          }
+        },
+        {
+          "word": "fig",
+          "breakdown": "f|i|g",
+          "highlight": {
+            "type": "token",
+            "value": "f"
+          }
+        },
+        {
+          "word": "fun",
+          "breakdown": "f|u|n",
+          "highlight": {
+            "type": "token",
+            "value": "f"
+          }
+        },
+        {
+          "word": "fox",
+          "breakdown": "f|o|x",
+          "highlight": {
+            "type": "token",
+            "value": "f"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "f",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.g",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "g"
+      ],
+      "sound": {
+        "ipa": "/g/",
+        "name_en": "hard g /g/",
+        "name_cn": "字母 g 硬音 /g/（常在 a,o,u 前）"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter g: most commonly says /g/. Examples: gap, got, gum, tag.",
+        "zh": "字母 g：最常见发音 /g/。例词：gap，got，gum，tag。"
+      },
+      "notes": [
+        "Most common sound (hard g).",
+        "When g is followed by e, i, or y, it often says /dʒ/ — see consonant.soft_g.",
+        "Sometimes a silent u is used to keep g hard (gu) — see consonant.digraph.gu_hard_g."
+      ],
+      "fewshot": [
+        "gap",
+        "got",
+        "gum",
+        "tag"
+      ],
+      "examples": [
+        {
+          "word": "gap",
+          "breakdown": "g|a|p",
+          "highlight": {
+            "type": "token",
+            "value": "g"
+          }
+        },
+        {
+          "word": "got",
+          "breakdown": "g|o|t",
+          "highlight": {
+            "type": "token",
+            "value": "g"
+          }
+        },
+        {
+          "word": "gum",
+          "breakdown": "g|u|m",
+          "highlight": {
+            "type": "token",
+            "value": "g"
+          }
+        },
+        {
+          "word": "tag",
+          "breakdown": "t|a|g",
+          "highlight": {
+            "type": "token",
+            "value": "g"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "g",
+        "match": "token"
+      },
+      "seeAlso": [
+        "consonant.soft_g",
+        "consonant.digraph.gu_hard_g"
+      ]
+    },
+    {
+      "id": "consonant.single.h",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "h"
+      ],
+      "sound": {
+        "ipa": "/h/",
+        "name_en": "h says /h/",
+        "name_cn": "字母 h 常见音 /h/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter h: most commonly says /h/. Examples: hat, hen, him, hot.",
+        "zh": "字母 h：最常见发音 /h/。例词：hat，hen，him，hot。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "hat",
+        "hen",
+        "him",
+        "hot"
+      ],
+      "examples": [
+        {
+          "word": "hat",
+          "breakdown": "h|a|t",
+          "highlight": {
+            "type": "token",
+            "value": "h"
+          }
+        },
+        {
+          "word": "hen",
+          "breakdown": "h|e|n",
+          "highlight": {
+            "type": "token",
+            "value": "h"
+          }
+        },
+        {
+          "word": "him",
+          "breakdown": "h|i|m",
+          "highlight": {
+            "type": "token",
+            "value": "h"
+          }
+        },
+        {
+          "word": "hot",
+          "breakdown": "h|o|t",
+          "highlight": {
+            "type": "token",
+            "value": "h"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "h",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.j",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "j"
+      ],
+      "sound": {
+        "ipa": "/dʒ/",
+        "name_en": "j says /j/ (/dʒ/)",
+        "name_cn": "字母 j 常见音 /dʒ/（像中文“j”）"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter j: most commonly says /dʒ/. Examples: jam, jet, jog, jump.",
+        "zh": "字母 j：最常见发音 /dʒ/。例词：jam，jet，jog，jump。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "jam",
+        "jet",
+        "jog",
+        "jump"
+      ],
+      "examples": [
+        {
+          "word": "jam",
+          "breakdown": "j|a|m",
+          "highlight": {
+            "type": "token",
+            "value": "j"
+          }
+        },
+        {
+          "word": "jet",
+          "breakdown": "j|e|t",
+          "highlight": {
+            "type": "token",
+            "value": "j"
+          }
+        },
+        {
+          "word": "jog",
+          "breakdown": "j|o|g",
+          "highlight": {
+            "type": "token",
+            "value": "j"
+          }
+        },
+        {
+          "word": "jump",
+          "breakdown": "j|u|m|p",
+          "highlight": {
+            "type": "token",
+            "value": "j"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "j",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.k",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "k"
+      ],
+      "sound": {
+        "ipa": "/k/",
+        "name_en": "k says /k/",
+        "name_cn": "字母 k 常见音 /k/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter k: most commonly says /k/. Examples: kit, kick, keg, sock.",
+        "zh": "字母 k：最常见发音 /k/。例词：kit，kick，keg，sock。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "kit",
+        "kick",
+        "keg",
+        "sock"
+      ],
+      "examples": [
+        {
+          "word": "kit",
+          "breakdown": "k|i|t",
+          "highlight": {
+            "type": "token",
+            "value": "k"
+          }
+        },
+        {
+          "word": "kick",
+          "breakdown": "k|i|ck",
+          "highlight": {
+            "type": "token",
+            "value": "k"
+          }
+        },
+        {
+          "word": "keg",
+          "breakdown": "k|e|g",
+          "highlight": {
+            "type": "token",
+            "value": "k"
+          }
+        },
+        {
+          "word": "sock",
+          "breakdown": "s|o|ck",
+          "highlight": {
+            "type": "token",
+            "value": "k"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "k",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.l",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "l"
+      ],
+      "sound": {
+        "ipa": "/l/",
+        "name_en": "l says /l/",
+        "name_cn": "字母 l 常见音 /l/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter l: most commonly says /l/. Examples: lip, leg, log, lamp.",
+        "zh": "字母 l：最常见发音 /l/。例词：lip，leg，log，lamp。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "lip",
+        "leg",
+        "log",
+        "lamp"
+      ],
+      "examples": [
+        {
+          "word": "lip",
+          "breakdown": "l|i|p",
+          "highlight": {
+            "type": "token",
+            "value": "l"
+          }
+        },
+        {
+          "word": "leg",
+          "breakdown": "l|e|g",
+          "highlight": {
+            "type": "token",
+            "value": "l"
+          }
+        },
+        {
+          "word": "log",
+          "breakdown": "l|o|g",
+          "highlight": {
+            "type": "token",
+            "value": "l"
+          }
+        },
+        {
+          "word": "lamp",
+          "breakdown": "l|a|m|p",
+          "highlight": {
+            "type": "token",
+            "value": "l"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "l",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.m",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "m"
+      ],
+      "sound": {
+        "ipa": "/m/",
+        "name_en": "m says /m/",
+        "name_cn": "字母 m 常见音 /m/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter m: most commonly says /m/. Examples: map, men, mix, mud.",
+        "zh": "字母 m：最常见发音 /m/。例词：map，men，mix，mud。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "map",
+        "men",
+        "mix",
+        "mud"
+      ],
+      "examples": [
+        {
+          "word": "map",
+          "breakdown": "m|a|p",
+          "highlight": {
+            "type": "token",
+            "value": "m"
+          }
+        },
+        {
+          "word": "men",
+          "breakdown": "m|e|n",
+          "highlight": {
+            "type": "token",
+            "value": "m"
+          }
+        },
+        {
+          "word": "mix",
+          "breakdown": "m|i|x",
+          "highlight": {
+            "type": "token",
+            "value": "m"
+          }
+        },
+        {
+          "word": "mud",
+          "breakdown": "m|u|d",
+          "highlight": {
+            "type": "token",
+            "value": "m"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "m",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.n",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "n"
+      ],
+      "sound": {
+        "ipa": "/n/",
+        "name_en": "n says /n/",
+        "name_cn": "字母 n 常见音 /n/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter n: most commonly says /n/. Examples: nap, net, nip, nut.",
+        "zh": "字母 n：最常见发音 /n/。例词：nap，net，nip，nut。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "nap",
+        "net",
+        "nip",
+        "nut"
+      ],
+      "examples": [
+        {
+          "word": "nap",
+          "breakdown": "n|a|p",
+          "highlight": {
+            "type": "token",
+            "value": "n"
+          }
+        },
+        {
+          "word": "net",
+          "breakdown": "n|e|t",
+          "highlight": {
+            "type": "token",
+            "value": "n"
+          }
+        },
+        {
+          "word": "nip",
+          "breakdown": "n|i|p",
+          "highlight": {
+            "type": "token",
+            "value": "n"
+          }
+        },
+        {
+          "word": "nut",
+          "breakdown": "n|u|t",
+          "highlight": {
+            "type": "token",
+            "value": "n"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "n",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.p",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "p"
+      ],
+      "sound": {
+        "ipa": "/p/",
+        "name_en": "p says /p/",
+        "name_cn": "字母 p 常见音 /p/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter p: most commonly says /p/. Examples: pan, pen, pig, pup.",
+        "zh": "字母 p：最常见发音 /p/。例词：pan，pen，pig，pup。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "pan",
+        "pen",
+        "pig",
+        "pup"
+      ],
+      "examples": [
+        {
+          "word": "pan",
+          "breakdown": "p|a|n",
+          "highlight": {
+            "type": "token",
+            "value": "p"
+          }
+        },
+        {
+          "word": "pen",
+          "breakdown": "p|e|n",
+          "highlight": {
+            "type": "token",
+            "value": "p"
+          }
+        },
+        {
+          "word": "pig",
+          "breakdown": "p|i|g",
+          "highlight": {
+            "type": "token",
+            "value": "p"
+          }
+        },
+        {
+          "word": "pup",
+          "breakdown": "p|u|p",
+          "highlight": {
+            "type": "token",
+            "value": "p"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "p",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.qu",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "qu"
+      ],
+      "sound": {
+        "ipa": "/kw/",
+        "name_en": "qu says /kw/",
+        "name_cn": "字母组合 qu 常见音 /kw/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter qu: most commonly says /kw/. Examples: quit, quiz, quick, quack.",
+        "zh": "字母 qu：最常见发音 /kw/。例词：quit，quiz，quick，quack。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "quit",
+        "quiz",
+        "quick",
+        "quack"
+      ],
+      "examples": [
+        {
+          "word": "quit",
+          "breakdown": "qu|i|t",
+          "highlight": {
+            "type": "token",
+            "value": "qu"
+          }
+        },
+        {
+          "word": "quiz",
+          "breakdown": "qu|i|z",
+          "highlight": {
+            "type": "token",
+            "value": "qu"
+          }
+        },
+        {
+          "word": "quick",
+          "breakdown": "qu|i|ck",
+          "highlight": {
+            "type": "token",
+            "value": "qu"
+          }
+        },
+        {
+          "word": "quack",
+          "breakdown": "qu|a|ck",
+          "highlight": {
+            "type": "token",
+            "value": "qu"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "qu",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.r",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "r"
+      ],
+      "sound": {
+        "ipa": "/r/",
+        "name_en": "r says /r/",
+        "name_cn": "字母 r 常见音 /r/（美式卷舌）"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter r: most commonly says /r/. Examples: rag, red, rip, run.",
+        "zh": "字母 r：最常见发音 /r/。例词：rag，red，rip，run。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "rag",
+        "red",
+        "rip",
+        "run"
+      ],
+      "examples": [
+        {
+          "word": "rag",
+          "breakdown": "r|a|g",
+          "highlight": {
+            "type": "token",
+            "value": "r"
+          }
+        },
+        {
+          "word": "red",
+          "breakdown": "r|e|d",
+          "highlight": {
+            "type": "token",
+            "value": "r"
+          }
+        },
+        {
+          "word": "rip",
+          "breakdown": "r|i|p",
+          "highlight": {
+            "type": "token",
+            "value": "r"
+          }
+        },
+        {
+          "word": "run",
+          "breakdown": "r|u|n",
+          "highlight": {
+            "type": "token",
+            "value": "r"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "r",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.s",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "s"
+      ],
+      "sound": {
+        "ipa": "/s/",
+        "name_en": "s says /s/",
+        "name_cn": "字母 s 常见音 /s/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter s: most commonly says /s/. Examples: sun, sip, sad, mess.",
+        "zh": "字母 s：最常见发音 /s/。例词：sun，sip，sad，mess。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "sun",
+        "sip",
+        "sad",
+        "mess"
+      ],
+      "examples": [
+        {
+          "word": "sun",
+          "breakdown": "s|u|n",
+          "highlight": {
+            "type": "token",
+            "value": "s"
+          }
+        },
+        {
+          "word": "sip",
+          "breakdown": "s|i|p",
+          "highlight": {
+            "type": "token",
+            "value": "s"
+          }
+        },
+        {
+          "word": "sad",
+          "breakdown": "s|a|d",
+          "highlight": {
+            "type": "token",
+            "value": "s"
+          }
+        },
+        {
+          "word": "mess",
+          "breakdown": "m|e|ss",
+          "highlight": {
+            "type": "token",
+            "value": "s"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "s",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.t",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "t"
+      ],
+      "sound": {
+        "ipa": "/t/",
+        "name_en": "t says /t/",
+        "name_cn": "字母 t 常见音 /t/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter t: most commonly says /t/. Examples: top, ten, tip, tub.",
+        "zh": "字母 t：最常见发音 /t/。例词：top，ten，tip，tub。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "top",
+        "ten",
+        "tip",
+        "tub"
+      ],
+      "examples": [
+        {
+          "word": "top",
+          "breakdown": "t|o|p",
+          "highlight": {
+            "type": "token",
+            "value": "t"
+          }
+        },
+        {
+          "word": "ten",
+          "breakdown": "t|e|n",
+          "highlight": {
+            "type": "token",
+            "value": "t"
+          }
+        },
+        {
+          "word": "tip",
+          "breakdown": "t|i|p",
+          "highlight": {
+            "type": "token",
+            "value": "t"
+          }
+        },
+        {
+          "word": "tub",
+          "breakdown": "t|u|b",
+          "highlight": {
+            "type": "token",
+            "value": "t"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "t",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.v",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "v"
+      ],
+      "sound": {
+        "ipa": "/v/",
+        "name_en": "v says /v/",
+        "name_cn": "字母 v 常见音 /v/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter v: most commonly says /v/. Examples: van, vet, vivid, vote.",
+        "zh": "字母 v：最常见发音 /v/。例词：van，vet，vivid，vote。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "van",
+        "vet",
+        "vivid",
+        "vote"
+      ],
+      "examples": [
+        {
+          "word": "van",
+          "breakdown": "v|a|n",
+          "highlight": {
+            "type": "token",
+            "value": "v"
+          }
+        },
+        {
+          "word": "vet",
+          "breakdown": "v|e|t",
+          "highlight": {
+            "type": "token",
+            "value": "v"
+          }
+        },
+        {
+          "word": "vivid",
+          "breakdown": "v|i|v|i|d",
+          "highlight": {
+            "type": "token",
+            "value": "v"
+          }
+        },
+        {
+          "word": "vote",
+          "breakdown": "v|o|t|e",
+          "highlight": {
+            "type": "token",
+            "value": "v"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "v",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.w",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "w"
+      ],
+      "sound": {
+        "ipa": "/w/",
+        "name_en": "w says /w/",
+        "name_cn": "字母 w 常见音 /w/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter w: most commonly says /w/. Examples: web, win, wet, wag.",
+        "zh": "字母 w：最常见发音 /w/。例词：web，win，wet，wag。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "web",
+        "win",
+        "wet",
+        "wag"
+      ],
+      "examples": [
+        {
+          "word": "web",
+          "breakdown": "w|e|b",
+          "highlight": {
+            "type": "token",
+            "value": "w"
+          }
+        },
+        {
+          "word": "win",
+          "breakdown": "w|i|n",
+          "highlight": {
+            "type": "token",
+            "value": "w"
+          }
+        },
+        {
+          "word": "wet",
+          "breakdown": "w|e|t",
+          "highlight": {
+            "type": "token",
+            "value": "w"
+          }
+        },
+        {
+          "word": "wag",
+          "breakdown": "w|a|g",
+          "highlight": {
+            "type": "token",
+            "value": "w"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "w",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.x",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "x"
+      ],
+      "sound": {
+        "ipa": "/ks/",
+        "name_en": "x says /ks/",
+        "name_cn": "字母 x 常见音 /ks/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter x: most commonly says /ks/. Examples: box, fox, six, mix.",
+        "zh": "字母 x：最常见发音 /ks/。例词：box，fox，six，mix。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "box",
+        "fox",
+        "six",
+        "mix"
+      ],
+      "examples": [
+        {
+          "word": "box",
+          "breakdown": "b|o|x",
+          "highlight": {
+            "type": "token",
+            "value": "x"
+          }
+        },
+        {
+          "word": "fox",
+          "breakdown": "f|o|x",
+          "highlight": {
+            "type": "token",
+            "value": "x"
+          }
+        },
+        {
+          "word": "six",
+          "breakdown": "s|i|x",
+          "highlight": {
+            "type": "token",
+            "value": "x"
+          }
+        },
+        {
+          "word": "mix",
+          "breakdown": "m|i|x",
+          "highlight": {
+            "type": "token",
+            "value": "x"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "x",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.y_consonant",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "y"
+      ],
+      "sound": {
+        "ipa": "/j/",
+        "name_en": "y as consonant /y/ (/j/)",
+        "name_cn": "字母 y 作辅音时发 /j/（像 yes 开头）"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter y: most commonly says /j/. Examples: yes, yam, yell, yuck.",
+        "zh": "字母 y：最常见发音 /j/。例词：yes，yam，yell，yuck。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "yes",
+        "yam",
+        "yell",
+        "yuck"
+      ],
+      "examples": [
+        {
+          "word": "yes",
+          "breakdown": "y|e|s",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        },
+        {
+          "word": "yam",
+          "breakdown": "y|a|m",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        },
+        {
+          "word": "yell",
+          "breakdown": "y|e|ll",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        },
+        {
+          "word": "yuck",
+          "breakdown": "y|u|ck",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "y",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.single.z",
+      "category": "01_alphabet_consonants",
+      "graphemes": [
+        "z"
+      ],
+      "sound": {
+        "ipa": "/z/",
+        "name_en": "z says /z/",
+        "name_cn": "字母 z 常见音 /z/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Letter z: most commonly says /z/. Examples: zip, zag, zoo, buzz.",
+        "zh": "字母 z：最常见发音 /z/。例词：zip，zag，zoo，buzz。"
+      },
+      "notes": [
+        "Most common sound; English has additional sounds in later rules."
+      ],
+      "fewshot": [
+        "zip",
+        "zag",
+        "zoo",
+        "buzz"
+      ],
+      "examples": [
+        {
+          "word": "zip",
+          "breakdown": "z|i|p",
+          "highlight": {
+            "type": "token",
+            "value": "z"
+          }
+        },
+        {
+          "word": "zag",
+          "breakdown": "z|a|g",
+          "highlight": {
+            "type": "token",
+            "value": "z"
+          }
+        },
+        {
+          "word": "zoo",
+          "breakdown": "z|oo",
+          "highlight": {
+            "type": "token",
+            "value": "z"
+          }
+        },
+        {
+          "word": "buzz",
+          "breakdown": "b|u|zz",
+          "highlight": {
+            "type": "token",
+            "value": "z"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "z",
+        "match": "token"
+      }
+    },
+    {
+      "id": "vowel.short.a",
+      "category": "02_vowels_short",
+      "graphemes": [
+        "a"
+      ],
+      "sound": {
+        "ipa": "/æ/",
+        "name_en": "short a",
+        "name_cn": "短 a"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Short vowel a: says /æ/ in closed syllables like CVC words. Examples: cat, map, sad, bag.",
+        "zh": "短元音 a：在闭音节（如 CVC）里常读 /æ/。例词：cat，map，sad，bag。"
+      },
+      "notes": [
+        "Common in CVC/closed syllables."
+      ],
+      "fewshot": [
+        "cat",
+        "map",
+        "sad",
+        "bag"
+      ],
+      "examples": [
+        {
+          "word": "cat",
+          "breakdown": "c|a|t",
+          "highlight": {
+            "type": "token",
+            "value": "a"
+          }
+        },
+        {
+          "word": "map",
+          "breakdown": "m|a|p",
+          "highlight": {
+            "type": "token",
+            "value": "a"
+          }
+        },
+        {
+          "word": "sad",
+          "breakdown": "s|a|d",
+          "highlight": {
+            "type": "token",
+            "value": "a"
+          }
+        },
+        {
+          "word": "bag",
+          "breakdown": "b|a|g",
+          "highlight": {
+            "type": "token",
+            "value": "a"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "a",
+        "match": "token"
+      }
+    },
+    {
+      "id": "vowel.short.e",
+      "category": "02_vowels_short",
+      "graphemes": [
+        "e"
+      ],
+      "sound": {
+        "ipa": "/ɛ/",
+        "name_en": "short e",
+        "name_cn": "短 e"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Short vowel e: says /ɛ/ in closed syllables like CVC words. Examples: bed, hen, red, jet.",
+        "zh": "短元音 e：在闭音节（如 CVC）里常读 /ɛ/。例词：bed，hen，red，jet。"
+      },
+      "notes": [
+        "Common in CVC/closed syllables."
+      ],
+      "fewshot": [
+        "bed",
+        "hen",
+        "red",
+        "jet"
+      ],
+      "examples": [
+        {
+          "word": "bed",
+          "breakdown": "b|e|d",
+          "highlight": {
+            "type": "token",
+            "value": "e"
+          }
+        },
+        {
+          "word": "hen",
+          "breakdown": "h|e|n",
+          "highlight": {
+            "type": "token",
+            "value": "e"
+          }
+        },
+        {
+          "word": "red",
+          "breakdown": "r|e|d",
+          "highlight": {
+            "type": "token",
+            "value": "e"
+          }
+        },
+        {
+          "word": "jet",
+          "breakdown": "j|e|t",
+          "highlight": {
+            "type": "token",
+            "value": "e"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "e",
+        "match": "token"
+      }
+    },
+    {
+      "id": "vowel.short.i",
+      "category": "02_vowels_short",
+      "graphemes": [
+        "i"
+      ],
+      "sound": {
+        "ipa": "/ɪ/",
+        "name_en": "short i",
+        "name_cn": "短 i"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Short vowel i: says /ɪ/ in closed syllables like CVC words. Examples: sit, pig, fin, lip.",
+        "zh": "短元音 i：在闭音节（如 CVC）里常读 /ɪ/。例词：sit，pig，fin，lip。"
+      },
+      "notes": [
+        "Common in CVC/closed syllables."
+      ],
+      "fewshot": [
+        "sit",
+        "pig",
+        "fin",
+        "lip"
+      ],
+      "examples": [
+        {
+          "word": "sit",
+          "breakdown": "s|i|t",
+          "highlight": {
+            "type": "token",
+            "value": "i"
+          }
+        },
+        {
+          "word": "pig",
+          "breakdown": "p|i|g",
+          "highlight": {
+            "type": "token",
+            "value": "i"
+          }
+        },
+        {
+          "word": "fin",
+          "breakdown": "f|i|n",
+          "highlight": {
+            "type": "token",
+            "value": "i"
+          }
+        },
+        {
+          "word": "lip",
+          "breakdown": "l|i|p",
+          "highlight": {
+            "type": "token",
+            "value": "i"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "i",
+        "match": "token"
+      }
+    },
+    {
+      "id": "vowel.short.o",
+      "category": "02_vowels_short",
+      "graphemes": [
+        "o"
+      ],
+      "sound": {
+        "ipa": "/ɑ/",
+        "name_en": "short o",
+        "name_cn": "短 o"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Short vowel o: says /ɑ/ in closed syllables like CVC words. Examples: hot, mop, sock, lot.",
+        "zh": "短元音 o：在闭音节（如 CVC）里常读 /ɑ/。例词：hot，mop，sock，lot。"
+      },
+      "notes": [
+        "Common in CVC/closed syllables."
+      ],
+      "fewshot": [
+        "hot",
+        "mop",
+        "sock",
+        "lot"
+      ],
+      "examples": [
+        {
+          "word": "hot",
+          "breakdown": "h|o|t",
+          "highlight": {
+            "type": "token",
+            "value": "o"
+          }
+        },
+        {
+          "word": "mop",
+          "breakdown": "m|o|p",
+          "highlight": {
+            "type": "token",
+            "value": "o"
+          }
+        },
+        {
+          "word": "sock",
+          "breakdown": "s|o|ck",
+          "highlight": {
+            "type": "token",
+            "value": "o"
+          }
+        },
+        {
+          "word": "lot",
+          "breakdown": "l|o|t",
+          "highlight": {
+            "type": "token",
+            "value": "o"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "o",
+        "match": "token"
+      }
+    },
+    {
+      "id": "vowel.short.u",
+      "category": "02_vowels_short",
+      "graphemes": [
+        "u"
+      ],
+      "sound": {
+        "ipa": "/ʌ/",
+        "name_en": "short u",
+        "name_cn": "短 u"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Short vowel u: says /ʌ/ in closed syllables like CVC words. Examples: sun, cup, bug, mud.",
+        "zh": "短元音 u：在闭音节（如 CVC）里常读 /ʌ/。例词：sun，cup，bug，mud。"
+      },
+      "notes": [
+        "Common in CVC/closed syllables."
+      ],
+      "fewshot": [
+        "sun",
+        "cup",
+        "bug",
+        "mud"
+      ],
+      "examples": [
+        {
+          "word": "sun",
+          "breakdown": "s|u|n",
+          "highlight": {
+            "type": "token",
+            "value": "u"
+          }
+        },
+        {
+          "word": "cup",
+          "breakdown": "c|u|p",
+          "highlight": {
+            "type": "token",
+            "value": "u"
+          }
+        },
+        {
+          "word": "bug",
+          "breakdown": "b|u|g",
+          "highlight": {
+            "type": "token",
+            "value": "u"
+          }
+        },
+        {
+          "word": "mud",
+          "breakdown": "m|u|d",
+          "highlight": {
+            "type": "token",
+            "value": "u"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "u",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.digraph.ch",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "ch"
+      ],
+      "sound": {
+        "ipa": "/tʃ/",
+        "name_en": "ch /ch/",
+        "name_cn": "ch 发 /tʃ/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Grapheme ch: says /tʃ/. Examples: chip, chop, chin, rich.",
+        "zh": "字母组合 ch：常读 /tʃ/。例词：chip，chop，chin，rich。"
+      },
+      "notes": [
+        "Digraph/trigraph: two or three letters making one sound."
+      ],
+      "fewshot": [
+        "chip",
+        "chop",
+        "chin",
+        "rich"
+      ],
+      "examples": [
+        {
+          "word": "chip",
+          "breakdown": "ch|i|p",
+          "highlight": {
+            "type": "token",
+            "value": "ch"
+          }
+        },
+        {
+          "word": "chop",
+          "breakdown": "ch|o|p",
+          "highlight": {
+            "type": "token",
+            "value": "ch"
+          }
+        },
+        {
+          "word": "chin",
+          "breakdown": "ch|i|n",
+          "highlight": {
+            "type": "token",
+            "value": "ch"
+          }
+        },
+        {
+          "word": "rich",
+          "breakdown": "r|i|ch",
+          "highlight": {
+            "type": "token",
+            "value": "ch"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ch",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.digraph.ck",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "ck"
+      ],
+      "sound": {
+        "ipa": "/k/",
+        "name_en": "ck /k/",
+        "name_cn": "ck 常在词尾读 /k/（多跟短元音）"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Grapheme ck: says /k/. Examples: back, neck, kick, duck.",
+        "zh": "字母组合 ck：常读 /k/。例词：back，neck，kick，duck。"
+      },
+      "notes": [
+        "Digraph/trigraph: two or three letters making one sound."
+      ],
+      "fewshot": [
+        "back",
+        "neck",
+        "kick",
+        "duck"
+      ],
+      "examples": [
+        {
+          "word": "back",
+          "breakdown": "b|a|ck",
+          "highlight": {
+            "type": "token",
+            "value": "ck"
+          }
+        },
+        {
+          "word": "neck",
+          "breakdown": "n|e|ck",
+          "highlight": {
+            "type": "token",
+            "value": "ck"
+          }
+        },
+        {
+          "word": "kick",
+          "breakdown": "k|i|ck",
+          "highlight": {
+            "type": "token",
+            "value": "ck"
+          }
+        },
+        {
+          "word": "duck",
+          "breakdown": "d|u|ck",
+          "highlight": {
+            "type": "token",
+            "value": "ck"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ck",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.digraph.ng",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "ng"
+      ],
+      "sound": {
+        "ipa": "/ŋ/",
+        "name_en": "ng /ng/",
+        "name_cn": "ng 常读 /ŋ/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Grapheme ng: says /ŋ/. Examples: sing, ring, long, king.",
+        "zh": "字母组合 ng：常读 /ŋ/。例词：sing，ring，long，king。"
+      },
+      "notes": [
+        "Digraph/trigraph: two or three letters making one sound."
+      ],
+      "fewshot": [
+        "sing",
+        "ring",
+        "long",
+        "king"
+      ],
+      "examples": [
+        {
+          "word": "sing",
+          "breakdown": "s|i|ng",
+          "highlight": {
+            "type": "token",
+            "value": "ng"
+          }
+        },
+        {
+          "word": "ring",
+          "breakdown": "r|i|ng",
+          "highlight": {
+            "type": "token",
+            "value": "ng"
+          }
+        },
+        {
+          "word": "long",
+          "breakdown": "l|o|ng",
+          "highlight": {
+            "type": "token",
+            "value": "ng"
+          }
+        },
+        {
+          "word": "king",
+          "breakdown": "k|i|ng",
+          "highlight": {
+            "type": "token",
+            "value": "ng"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ng",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.digraph.nk",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "nk"
+      ],
+      "sound": {
+        "ipa": "/ŋk/",
+        "name_en": "nk /nk/",
+        "name_cn": "nk 常读 /ŋk/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Grapheme nk: says /ŋk/. Examples: sink, pink, bank, trunk.",
+        "zh": "字母组合 nk：常读 /ŋk/。例词：sink，pink，bank，trunk。"
+      },
+      "notes": [
+        "Digraph/trigraph: two or three letters making one sound."
+      ],
+      "fewshot": [
+        "sink",
+        "pink",
+        "bank",
+        "trunk"
+      ],
+      "examples": [
+        {
+          "word": "sink",
+          "breakdown": "s|i|nk",
+          "highlight": {
+            "type": "token",
+            "value": "nk"
+          }
+        },
+        {
+          "word": "pink",
+          "breakdown": "p|i|nk",
+          "highlight": {
+            "type": "token",
+            "value": "nk"
+          }
+        },
+        {
+          "word": "bank",
+          "breakdown": "b|a|nk",
+          "highlight": {
+            "type": "token",
+            "value": "nk"
+          }
+        },
+        {
+          "word": "trunk",
+          "breakdown": "t|r|u|nk",
+          "highlight": {
+            "type": "token",
+            "value": "nk"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "nk",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.digraph.ph",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "ph"
+      ],
+      "sound": {
+        "ipa": "/f/",
+        "name_en": "ph /f/",
+        "name_cn": "ph 常读 /f/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Grapheme ph: says /f/. Examples: phone, photo, graph, elephant.",
+        "zh": "字母组合 ph：常读 /f/。例词：phone，photo，graph，elephant。"
+      },
+      "notes": [
+        "Digraph/trigraph: two or three letters making one sound."
+      ],
+      "fewshot": [
+        "phone",
+        "photo",
+        "graph",
+        "elephant"
+      ],
+      "examples": [
+        {
+          "word": "phone",
+          "breakdown": "ph|o|n|e",
+          "highlight": {
+            "type": "token",
+            "value": "ph"
+          }
+        },
+        {
+          "word": "photo",
+          "breakdown": "ph|o|t|o",
+          "highlight": {
+            "type": "token",
+            "value": "ph"
+          }
+        },
+        {
+          "word": "graph",
+          "breakdown": "g|r|a|ph",
+          "highlight": {
+            "type": "token",
+            "value": "ph"
+          }
+        },
+        {
+          "word": "elephant",
+          "breakdown": "e|l|e|ph|a|n|t",
+          "highlight": {
+            "type": "token",
+            "value": "ph"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ph",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.digraph.sh",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "sh"
+      ],
+      "sound": {
+        "ipa": "/ʃ/",
+        "name_en": "sh /sh/",
+        "name_cn": "sh 发 /ʃ/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Grapheme sh: says /ʃ/. Examples: ship, shop, fish, wish.",
+        "zh": "字母组合 sh：常读 /ʃ/。例词：ship，shop，fish，wish。"
+      },
+      "notes": [
+        "Digraph/trigraph: two or three letters making one sound."
+      ],
+      "fewshot": [
+        "ship",
+        "shop",
+        "fish",
+        "wish"
+      ],
+      "examples": [
+        {
+          "word": "ship",
+          "breakdown": "sh|i|p",
+          "highlight": {
+            "type": "token",
+            "value": "sh"
+          }
+        },
+        {
+          "word": "shop",
+          "breakdown": "sh|o|p",
+          "highlight": {
+            "type": "token",
+            "value": "sh"
+          }
+        },
+        {
+          "word": "fish",
+          "breakdown": "f|i|sh",
+          "highlight": {
+            "type": "token",
+            "value": "sh"
+          }
+        },
+        {
+          "word": "wish",
+          "breakdown": "w|i|sh",
+          "highlight": {
+            "type": "token",
+            "value": "sh"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "sh",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.digraph.th_voiced",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "th"
+      ],
+      "sound": {
+        "ipa": "/ð/",
+        "name_en": "th (voiced)",
+        "name_cn": "th 浊音 /ð/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Grapheme th: says /ð/. Examples: this, that, them, with.",
+        "zh": "字母组合 th：常读 /ð/。例词：this，that，them，with。"
+      },
+      "notes": [
+        "Digraph/trigraph: two or three letters making one sound."
+      ],
+      "fewshot": [
+        "this",
+        "that",
+        "them",
+        "with"
+      ],
+      "examples": [
+        {
+          "word": "this",
+          "breakdown": "th|i|s",
+          "highlight": {
+            "type": "token",
+            "value": "th"
+          }
+        },
+        {
+          "word": "that",
+          "breakdown": "th|a|t",
+          "highlight": {
+            "type": "token",
+            "value": "th"
+          }
+        },
+        {
+          "word": "them",
+          "breakdown": "th|e|m",
+          "highlight": {
+            "type": "token",
+            "value": "th"
+          }
+        },
+        {
+          "word": "with",
+          "breakdown": "w|i|th",
+          "highlight": {
+            "type": "token",
+            "value": "th"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "th",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.digraph.th_voiceless",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "th"
+      ],
+      "sound": {
+        "ipa": "/θ/",
+        "name_en": "th (voiceless)",
+        "name_cn": "th 清音 /θ/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Grapheme th: says /θ/. Examples: thin, thumb, bath, math.",
+        "zh": "字母组合 th：常读 /θ/。例词：thin，thumb，bath，math。"
+      },
+      "notes": [
+        "Digraph/trigraph: two or three letters making one sound."
+      ],
+      "fewshot": [
+        "thin",
+        "thumb",
+        "bath",
+        "math"
+      ],
+      "examples": [
+        {
+          "word": "thin",
+          "breakdown": "th|i|n",
+          "highlight": {
+            "type": "token",
+            "value": "th"
+          }
+        },
+        {
+          "word": "thumb",
+          "breakdown": "th|u|mb",
+          "highlight": {
+            "type": "token",
+            "value": "th"
+          }
+        },
+        {
+          "word": "bath",
+          "breakdown": "b|a|th",
+          "highlight": {
+            "type": "token",
+            "value": "th"
+          }
+        },
+        {
+          "word": "math",
+          "breakdown": "m|a|th",
+          "highlight": {
+            "type": "token",
+            "value": "th"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "th",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.digraph.wh",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "wh"
+      ],
+      "sound": {
+        "ipa": "/w/",
+        "name_en": "wh /w/ (often)",
+        "name_cn": "wh 常读 /w/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Grapheme wh: says /w/. Examples: when, what, which, whip.",
+        "zh": "字母组合 wh：常读 /w/。例词：when，what，which，whip。"
+      },
+      "notes": [
+        "Digraph/trigraph: two or three letters making one sound."
+      ],
+      "fewshot": [
+        "when",
+        "what",
+        "which",
+        "whip"
+      ],
+      "examples": [
+        {
+          "word": "when",
+          "breakdown": "wh|e|n",
+          "highlight": {
+            "type": "token",
+            "value": "wh"
+          }
+        },
+        {
+          "word": "what",
+          "breakdown": "wh|a|t",
+          "highlight": {
+            "type": "token",
+            "value": "wh"
+          }
+        },
+        {
+          "word": "which",
+          "breakdown": "wh|i|ch",
+          "highlight": {
+            "type": "token",
+            "value": "wh"
+          }
+        },
+        {
+          "word": "whip",
+          "breakdown": "wh|i|p",
+          "highlight": {
+            "type": "token",
+            "value": "wh"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "wh",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.silent_kn",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "kn"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "kn",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/n/",
+        "name_en": "kn: k is silent; kn says /n/",
+        "name_cn": "kn：k 不发音，kn 发 /n/"
+      },
+      "position": [
+        "beginning"
+      ],
+      "tts": {
+        "en": "Silent letter pattern kn: says /n/. Examples: knee, knife, knot, knock.",
+        "zh": "不发音字母规律 kn：整体读 /n/。例词：knee，knife，knot，knock。"
+      },
+      "notes": [
+        "These are common patterns but not fully 'sound it out' by single letters."
+      ],
+      "fewshot": [
+        "knee",
+        "knife",
+        "knot",
+        "knock"
+      ],
+      "examples": [
+        {
+          "word": "knee",
+          "breakdown": "kn|ee",
+          "highlight": {
+            "type": "token",
+            "value": "kn"
+          }
+        },
+        {
+          "word": "knife",
+          "breakdown": "kn|i|f|e",
+          "highlight": {
+            "type": "token",
+            "value": "kn"
+          }
+        },
+        {
+          "word": "knot",
+          "breakdown": "kn|o|t",
+          "highlight": {
+            "type": "token",
+            "value": "kn"
+          }
+        },
+        {
+          "word": "knock",
+          "breakdown": "kn|o|ck",
+          "highlight": {
+            "type": "token",
+            "value": "kn"
+          }
+        }
+      ]
+    },
+    {
+      "id": "consonant.silent_mb",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "mb"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "mb",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/m/",
+        "name_en": "mb: b is silent at the end",
+        "name_cn": "mb：词尾 b 不发音"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "Silent letter pattern mb: says /m/. Examples: lamb, comb, thumb, climb.",
+        "zh": "不发音字母规律 mb：整体读 /m/。例词：lamb，comb，thumb，climb。"
+      },
+      "notes": [
+        "These are common patterns but not fully 'sound it out' by single letters."
+      ],
+      "fewshot": [
+        "lamb",
+        "comb",
+        "thumb",
+        "climb"
+      ],
+      "examples": [
+        {
+          "word": "lamb",
+          "breakdown": "l|a|mb",
+          "highlight": {
+            "type": "token",
+            "value": "mb"
+          }
+        },
+        {
+          "word": "comb",
+          "breakdown": "c|o|mb",
+          "highlight": {
+            "type": "token",
+            "value": "mb"
+          }
+        },
+        {
+          "word": "thumb",
+          "breakdown": "th|u|mb",
+          "highlight": {
+            "type": "token",
+            "value": "mb"
+          }
+        },
+        {
+          "word": "climb",
+          "breakdown": "cl|i|mb",
+          "highlight": {
+            "type": "token",
+            "value": "mb"
+          }
+        }
+      ]
+    },
+    {
+      "id": "consonant.silent_wr",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "wr"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "wr",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/r/",
+        "name_en": "wr: w is silent; wr says /r/",
+        "name_cn": "wr：w 不发音，wr 发 /r/"
+      },
+      "position": [
+        "beginning"
+      ],
+      "tts": {
+        "en": "Silent letter pattern wr: says /r/. Examples: wrap, wren, wrong, wrist.",
+        "zh": "不发音字母规律 wr：整体读 /r/。例词：wrap，wren，wrong，wrist。"
+      },
+      "notes": [
+        "These are common patterns but not fully 'sound it out' by single letters."
+      ],
+      "fewshot": [
+        "wrap",
+        "wren",
+        "wrong",
+        "wrist"
+      ],
+      "examples": [
+        {
+          "word": "wrap",
+          "breakdown": "wr|a|p",
+          "highlight": {
+            "type": "token",
+            "value": "wr"
+          }
+        },
+        {
+          "word": "wren",
+          "breakdown": "wr|e|n",
+          "highlight": {
+            "type": "token",
+            "value": "wr"
+          }
+        },
+        {
+          "word": "wrong",
+          "breakdown": "wr|o|ng",
+          "highlight": {
+            "type": "token",
+            "value": "wr"
+          }
+        },
+        {
+          "word": "wrist",
+          "breakdown": "wr|i|s|t",
+          "highlight": {
+            "type": "token",
+            "value": "wr"
+          }
+        }
+      ]
+    },
+    {
+      "id": "consonant.blends.l",
+      "category": "04_consonant_blends",
+      "graphemes": [
+        "bl",
+        "cl",
+        "fl",
+        "gl",
+        "pl",
+        "sl"
+      ],
+      "sound": {
+        "ipa": null,
+        "name_en": "consonant blend",
+        "name_cn": "辅音连读（不合并成新音）"
+      },
+      "position": [
+        "beginning"
+      ],
+      "tts": {
+        "en": "Two-letter L-blends: both consonants are heard (e.g., bl, cl). Examples: blot, clap, flag, glad.",
+        "zh": "L-blends：两个辅音连读，两个音都要读出来（如 bl, cl）。 例词：blot，clap，flag，glad。"
+      },
+      "notes": [
+        "A blend is not a new sound; you still hear each consonant."
+      ],
+      "fewshot": [
+        "blot",
+        "clap",
+        "flag",
+        "glad"
+      ],
+      "examples": [
+        {
+          "word": "blot",
+          "breakdown": "bl|o|t",
+          "highlight": {
+            "type": "token",
+            "value": "bl"
+          }
+        },
+        {
+          "word": "clap",
+          "breakdown": "cl|a|p",
+          "highlight": {
+            "type": "token",
+            "value": "cl"
+          }
+        },
+        {
+          "word": "flag",
+          "breakdown": "fl|a|g",
+          "highlight": {
+            "type": "token",
+            "value": "fl"
+          }
+        },
+        {
+          "word": "glad",
+          "breakdown": "gl|a|d",
+          "highlight": {
+            "type": "token",
+            "value": "gl"
+          }
+        }
+      ],
+      "focus": {
+        "type": "concept",
+        "value": "consonant_blends",
+        "match": "token_from_list"
+      }
+    },
+    {
+      "id": "consonant.blends.r",
+      "category": "04_consonant_blends",
+      "graphemes": [
+        "br",
+        "cr",
+        "dr",
+        "fr",
+        "gr",
+        "pr",
+        "tr"
+      ],
+      "sound": {
+        "ipa": null,
+        "name_en": "consonant blend",
+        "name_cn": "辅音连读（不合并成新音）"
+      },
+      "position": [
+        "beginning"
+      ],
+      "tts": {
+        "en": "Two-letter R-blends: both consonants are heard (e.g., br, tr). Examples: brag, crab, drop, trip.",
+        "zh": "R-blends：两个辅音连读，两个音都要读出来（如 br, tr）。 例词：brag，crab，drop，trip。"
+      },
+      "notes": [
+        "A blend is not a new sound; you still hear each consonant."
+      ],
+      "fewshot": [
+        "brag",
+        "crab",
+        "drop",
+        "trip"
+      ],
+      "examples": [
+        {
+          "word": "brag",
+          "breakdown": "br|a|g",
+          "highlight": {
+            "type": "token",
+            "value": "br"
+          }
+        },
+        {
+          "word": "crab",
+          "breakdown": "cr|a|b",
+          "highlight": {
+            "type": "token",
+            "value": "cr"
+          }
+        },
+        {
+          "word": "drop",
+          "breakdown": "dr|o|p",
+          "highlight": {
+            "type": "token",
+            "value": "dr"
+          }
+        },
+        {
+          "word": "trip",
+          "breakdown": "tr|i|p",
+          "highlight": {
+            "type": "token",
+            "value": "tr"
+          }
+        }
+      ],
+      "focus": {
+        "type": "concept",
+        "value": "consonant_blends",
+        "match": "token_from_list"
+      }
+    },
+    {
+      "id": "consonant.blends.s",
+      "category": "04_consonant_blends",
+      "graphemes": [
+        "sc",
+        "sk",
+        "sl",
+        "sm",
+        "sn",
+        "sp",
+        "st",
+        "sw"
+      ],
+      "sound": {
+        "ipa": null,
+        "name_en": "consonant blend",
+        "name_cn": "辅音连读（不合并成新音）"
+      },
+      "position": [
+        "beginning"
+      ],
+      "tts": {
+        "en": "S-blends: start with s + another consonant; both sounds are heard. Examples: stop, spin, skin, swim.",
+        "zh": "S-blends：以 s 开头再接一个辅音，两个音都要读出来。 例词：stop，spin，skin，swim。"
+      },
+      "notes": [
+        "A blend is not a new sound; you still hear each consonant."
+      ],
+      "fewshot": [
+        "stop",
+        "spin",
+        "skin",
+        "swim"
+      ],
+      "examples": [
+        {
+          "word": "stop",
+          "breakdown": "st|o|p",
+          "highlight": {
+            "type": "token",
+            "value": "st"
+          }
+        },
+        {
+          "word": "spin",
+          "breakdown": "sp|i|n",
+          "highlight": {
+            "type": "token",
+            "value": "sp"
+          }
+        },
+        {
+          "word": "skin",
+          "breakdown": "sk|i|n",
+          "highlight": {
+            "type": "token",
+            "value": "sk"
+          }
+        },
+        {
+          "word": "swim",
+          "breakdown": "sw|i|m",
+          "highlight": {
+            "type": "token",
+            "value": "sw"
+          }
+        }
+      ],
+      "focus": {
+        "type": "concept",
+        "value": "consonant_blends",
+        "match": "token_from_list"
+      }
+    },
+    {
+      "id": "consonant.blends.thr_str",
+      "category": "04_consonant_blends",
+      "graphemes": [
+        "thr",
+        "str",
+        "spl",
+        "spr",
+        "scr"
+      ],
+      "sound": {
+        "ipa": null,
+        "name_en": "consonant blend",
+        "name_cn": "辅音连读（不合并成新音）"
+      },
+      "position": [
+        "beginning"
+      ],
+      "tts": {
+        "en": "Three-letter blends: three consonants blend together; each sound is heard. Examples: thin, string, split, scrap.",
+        "zh": "三辅音连读：三个辅音一起连读，每个音都能听见。 例词：thin，string，split，scrap。"
+      },
+      "notes": [
+        "A blend is not a new sound; you still hear each consonant."
+      ],
+      "fewshot": [
+        "thin",
+        "string",
+        "split",
+        "scrap"
+      ],
+      "examples": [
+        {
+          "word": "thin",
+          "breakdown": "th|i|n",
+          "highlight": {
+            "type": "token",
+            "value": "th"
+          }
+        },
+        {
+          "word": "string",
+          "breakdown": "str|i|ng",
+          "highlight": {
+            "type": "token",
+            "value": "str"
+          }
+        },
+        {
+          "word": "split",
+          "breakdown": "spl|i|t",
+          "highlight": {
+            "type": "token",
+            "value": "spl"
+          }
+        },
+        {
+          "word": "scrap",
+          "breakdown": "scr|a|p",
+          "highlight": {
+            "type": "token",
+            "value": "scr"
+          }
+        }
+      ],
+      "focus": {
+        "type": "concept",
+        "value": "consonant_blends",
+        "match": "token_from_list"
+      }
+    },
+    {
+      "id": "ending.consonant_le",
+      "category": "05_ending_spelling_patterns",
+      "graphemes": [
+        "le"
+      ],
+      "sound": {
+        "ipa": "/əl/",
+        "name_en": "ending pattern",
+        "name_cn": "词尾拼写规律"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "Consonant-le: at the end of a word, consonant + le forms its own syllable (…-le). Examples: apple, little, candle, table.",
+        "zh": "辅音+le：词尾的“辅音 + le”通常构成一个音节（…-le）。 例词：apple，little，candle，table。"
+      },
+      "notes": [],
+      "fewshot": [
+        "apple",
+        "little",
+        "candle",
+        "table"
+      ],
+      "examples": [
+        {
+          "word": "apple",
+          "breakdown": "a|p|p|le",
+          "highlight": {
+            "type": "token",
+            "value": "le"
+          }
+        },
+        {
+          "word": "little",
+          "breakdown": "l|i|t|t|le",
+          "highlight": {
+            "type": "token",
+            "value": "le"
+          }
+        },
+        {
+          "word": "candle",
+          "breakdown": "c|a|n|d|le",
+          "highlight": {
+            "type": "token",
+            "value": "le"
+          }
+        },
+        {
+          "word": "table",
+          "breakdown": "t|a|b|le",
+          "highlight": {
+            "type": "token",
+            "value": "le"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "le",
+        "match": "token"
+      }
+    },
+    {
+      "id": "ending.dge",
+      "category": "05_ending_spelling_patterns",
+      "graphemes": [
+        "dge"
+      ],
+      "sound": {
+        "ipa": "/dʒ/",
+        "name_en": "ending pattern",
+        "name_cn": "词尾拼写规律"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "dge often comes after a short vowel at the end of a syllable/word. Examples: badge, edge, bridge, fudge.",
+        "zh": "dge 常出现在短元音后，表示 /dʒ/ 音。 例词：badge，edge，bridge，fudge。"
+      },
+      "notes": [],
+      "fewshot": [
+        "badge",
+        "edge",
+        "bridge",
+        "fudge"
+      ],
+      "examples": [
+        {
+          "word": "badge",
+          "breakdown": "b|a|dge",
+          "highlight": {
+            "type": "token",
+            "value": "dge"
+          }
+        },
+        {
+          "word": "edge",
+          "breakdown": "e|dge",
+          "highlight": {
+            "type": "token",
+            "value": "dge"
+          }
+        },
+        {
+          "word": "bridge",
+          "breakdown": "br|i|dge",
+          "highlight": {
+            "type": "token",
+            "value": "dge"
+          }
+        },
+        {
+          "word": "fudge",
+          "breakdown": "f|u|dge",
+          "highlight": {
+            "type": "token",
+            "value": "dge"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "dge",
+        "match": "token"
+      }
+    },
+    {
+      "id": "ending.floss",
+      "category": "05_ending_spelling_patterns",
+      "graphemes": [
+        "ff",
+        "ll",
+        "ss",
+        "zz"
+      ],
+      "sound": {
+        "ipa": null,
+        "name_en": "ending pattern",
+        "name_cn": "词尾拼写规律"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "FLOSS rule: in many one-syllable words, f/l/s/z are doubled after a short vowel at the end. Examples: off, bell, hiss, fuzz.",
+        "zh": "FLOSS 规则：很多单音节词里，词尾的 f/l/s/z 在短元音后会双写。 例词：off，bell，hiss，fuzz。"
+      },
+      "notes": [],
+      "fewshot": [
+        "off",
+        "bell",
+        "hiss",
+        "fuzz"
+      ],
+      "examples": [
+        {
+          "word": "off",
+          "breakdown": "o|ff",
+          "highlight": {
+            "type": "token",
+            "value": "ff"
+          }
+        },
+        {
+          "word": "bell",
+          "breakdown": "b|e|ll",
+          "highlight": {
+            "type": "token",
+            "value": "ll"
+          }
+        },
+        {
+          "word": "hiss",
+          "breakdown": "h|i|ss",
+          "highlight": {
+            "type": "token",
+            "value": "ss"
+          }
+        },
+        {
+          "word": "fuzz",
+          "breakdown": "f|u|zz",
+          "highlight": {
+            "type": "token",
+            "value": "zz"
+          }
+        }
+      ],
+      "focus": {
+        "type": "concept",
+        "value": "ending_spelling_patterns",
+        "match": "token_from_list"
+      }
+    },
+    {
+      "id": "ending.tch",
+      "category": "05_ending_spelling_patterns",
+      "graphemes": [
+        "tch"
+      ],
+      "sound": {
+        "ipa": "/tʃ/",
+        "name_en": "ending pattern",
+        "name_cn": "词尾拼写规律"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "tch usually comes after a short vowel in one-syllable words. Examples: catch, match, pitch, notch.",
+        "zh": "tch 多出现在短元音后（常见于单音节词）。 例词：catch，match，pitch，notch。"
+      },
+      "notes": [],
+      "fewshot": [
+        "catch",
+        "match",
+        "pitch",
+        "notch"
+      ],
+      "examples": [
+        {
+          "word": "catch",
+          "breakdown": "c|a|tch",
+          "highlight": {
+            "type": "token",
+            "value": "tch"
+          }
+        },
+        {
+          "word": "match",
+          "breakdown": "m|a|tch",
+          "highlight": {
+            "type": "token",
+            "value": "tch"
+          }
+        },
+        {
+          "word": "pitch",
+          "breakdown": "p|i|tch",
+          "highlight": {
+            "type": "token",
+            "value": "tch"
+          }
+        },
+        {
+          "word": "notch",
+          "breakdown": "n|o|tch",
+          "highlight": {
+            "type": "token",
+            "value": "tch"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "tch",
+        "match": "token"
+      }
+    },
+    {
+      "id": "vowel.vce.a_e",
+      "category": "06_vce_magic_e",
+      "graphemes": [
+        "a_e"
+      ],
+      "focus": {
+        "type": "split_digraph",
+        "value": "a_e",
+        "parts": [
+          "a",
+          "e"
+        ],
+        "match": "indices"
+      },
+      "sound": {
+        "ipa": "/eɪ/",
+        "name_en": "long a (silent-e)",
+        "name_cn": "a 长音（魔法E）"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "Silent-e (VCe): final e is silent and makes a say its long sound /eɪ/. Examples: cake, name, game, late.",
+        "zh": "魔法E（VCe）：词尾 e 通常不发音，让 a 读长音 /eɪ/。例词：cake，name，game，late。"
+      },
+      "notes": [
+        "VCe is also called a split digraph. There are exceptions (have, give, etc.)."
+      ],
+      "fewshot": [
+        "cake",
+        "name",
+        "game",
+        "late"
+      ],
+      "examples": [
+        {
+          "word": "cake",
+          "breakdown": "c|a|k|e",
+          "highlight": {
+            "type": "split",
+            "value": "a_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "name",
+          "breakdown": "n|a|m|e",
+          "highlight": {
+            "type": "split",
+            "value": "a_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "game",
+          "breakdown": "g|a|m|e",
+          "highlight": {
+            "type": "split",
+            "value": "a_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "late",
+          "breakdown": "l|a|t|e",
+          "highlight": {
+            "type": "split",
+            "value": "a_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vowel.vce.e_e",
+      "category": "06_vce_magic_e",
+      "graphemes": [
+        "e_e"
+      ],
+      "focus": {
+        "type": "split_digraph",
+        "value": "e_e",
+        "parts": [
+          "e",
+          "e"
+        ],
+        "match": "indices"
+      },
+      "sound": {
+        "ipa": "/iː/",
+        "name_en": "long e (silent-e)",
+        "name_cn": "e 长音（魔法E）"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "Silent-e (VCe): final e is silent and makes e say its long sound /iː/. Examples: gene, scene, these, theme.",
+        "zh": "魔法E（VCe）：词尾 e 通常不发音，让 e 读长音 /iː/。例词：gene，scene，these，theme。"
+      },
+      "notes": [
+        "VCe is also called a split digraph. There are exceptions (have, give, etc.)."
+      ],
+      "fewshot": [
+        "gene",
+        "scene",
+        "these",
+        "theme"
+      ],
+      "examples": [
+        {
+          "word": "gene",
+          "breakdown": "g|e|n|e",
+          "highlight": {
+            "type": "split",
+            "value": "e_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "scene",
+          "breakdown": "s|c|e|n|e",
+          "highlight": {
+            "type": "split",
+            "value": "e_e",
+            "indices": [
+              2,
+              4
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 4,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "these",
+          "breakdown": "th|e|s|e",
+          "highlight": {
+            "type": "split",
+            "value": "e_e",
+            "indices": [
+              2,
+              4
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 4,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "theme",
+          "breakdown": "th|e|m|e",
+          "highlight": {
+            "type": "split",
+            "value": "e_e",
+            "indices": [
+              2,
+              4
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 4,
+              "flag": "silent"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vowel.vce.i_e",
+      "category": "06_vce_magic_e",
+      "graphemes": [
+        "i_e"
+      ],
+      "focus": {
+        "type": "split_digraph",
+        "value": "i_e",
+        "parts": [
+          "i",
+          "e"
+        ],
+        "match": "indices"
+      },
+      "sound": {
+        "ipa": "/aɪ/",
+        "name_en": "long i (silent-e)",
+        "name_cn": "i 长音（魔法E）"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "Silent-e (VCe): final e is silent and makes i say its long sound /aɪ/. Examples: bike, time, kite, nine.",
+        "zh": "魔法E（VCe）：词尾 e 通常不发音，让 i 读长音 /aɪ/。例词：bike，time，kite，nine。"
+      },
+      "notes": [
+        "VCe is also called a split digraph. There are exceptions (have, give, etc.)."
+      ],
+      "fewshot": [
+        "bike",
+        "time",
+        "kite",
+        "nine"
+      ],
+      "examples": [
+        {
+          "word": "bike",
+          "breakdown": "b|i|k|e",
+          "highlight": {
+            "type": "split",
+            "value": "i_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "time",
+          "breakdown": "t|i|m|e",
+          "highlight": {
+            "type": "split",
+            "value": "i_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "kite",
+          "breakdown": "k|i|t|e",
+          "highlight": {
+            "type": "split",
+            "value": "i_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "nine",
+          "breakdown": "n|i|n|e",
+          "highlight": {
+            "type": "split",
+            "value": "i_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vowel.vce.o_e",
+      "category": "06_vce_magic_e",
+      "graphemes": [
+        "o_e"
+      ],
+      "focus": {
+        "type": "split_digraph",
+        "value": "o_e",
+        "parts": [
+          "o",
+          "e"
+        ],
+        "match": "indices"
+      },
+      "sound": {
+        "ipa": "/oʊ/",
+        "name_en": "long o (silent-e)",
+        "name_cn": "o 长音（魔法E）"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "Silent-e (VCe): final e is silent and makes o say its long sound /oʊ/. Examples: home, nose, hope, rope.",
+        "zh": "魔法E（VCe）：词尾 e 通常不发音，让 o 读长音 /oʊ/。例词：home，nose，hope，rope。"
+      },
+      "notes": [
+        "VCe is also called a split digraph. There are exceptions (have, give, etc.)."
+      ],
+      "fewshot": [
+        "home",
+        "nose",
+        "hope",
+        "rope"
+      ],
+      "examples": [
+        {
+          "word": "home",
+          "breakdown": "h|o|m|e",
+          "highlight": {
+            "type": "split",
+            "value": "o_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "nose",
+          "breakdown": "n|o|s|e",
+          "highlight": {
+            "type": "split",
+            "value": "o_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "hope",
+          "breakdown": "h|o|p|e",
+          "highlight": {
+            "type": "split",
+            "value": "o_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "rope",
+          "breakdown": "r|o|p|e",
+          "highlight": {
+            "type": "split",
+            "value": "o_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vowel.vce.u_e",
+      "category": "06_vce_magic_e",
+      "graphemes": [
+        "u_e"
+      ],
+      "focus": {
+        "type": "split_digraph",
+        "value": "u_e",
+        "parts": [
+          "u",
+          "e"
+        ],
+        "match": "indices"
+      },
+      "sound": {
+        "ipa": "/juː/ or /uː/",
+        "name_en": "long u (silent-e)",
+        "name_cn": "u 长音（魔法E）"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "Silent-e (VCe): final e is silent and makes u say its long sound /juː/ or /uː/. Examples: cube, tune, mule, tube.",
+        "zh": "魔法E（VCe）：词尾 e 通常不发音，让 u 读长音 /juː/ or /uː/。例词：cube，tune，mule，tube。"
+      },
+      "notes": [
+        "VCe is also called a split digraph. There are exceptions (have, give, etc.)."
+      ],
+      "fewshot": [
+        "cube",
+        "tune",
+        "mule",
+        "tube"
+      ],
+      "examples": [
+        {
+          "word": "cube",
+          "breakdown": "c|u|b|e",
+          "highlight": {
+            "type": "split",
+            "value": "u_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "tune",
+          "breakdown": "t|u|n|e",
+          "highlight": {
+            "type": "split",
+            "value": "u_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "mule",
+          "breakdown": "m|u|l|e",
+          "highlight": {
+            "type": "split",
+            "value": "u_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        },
+        {
+          "word": "tube",
+          "breakdown": "t|u|b|e",
+          "highlight": {
+            "type": "split",
+            "value": "u_e",
+            "indices": [
+              1,
+              3
+            ]
+          },
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vowel.team.ai",
+      "category": "07_vowel_teams_long",
+      "graphemes": [
+        "ai"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ai",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/eɪ/",
+        "name_en": "long a",
+        "name_cn": "长 a"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team ai: says /eɪ/. Examples: rain, tail, snail, paint.",
+        "zh": "元音组合 ai：常读 /eɪ/。例词：rain，tail，snail，paint。"
+      },
+      "notes": [
+        "Often in the middle of a word."
+      ],
+      "fewshot": [
+        "rain",
+        "tail",
+        "snail",
+        "paint"
+      ],
+      "examples": [
+        {
+          "word": "rain",
+          "breakdown": "r|ai|n",
+          "highlight": {
+            "type": "token",
+            "value": "ai"
+          }
+        },
+        {
+          "word": "tail",
+          "breakdown": "t|ai|l",
+          "highlight": {
+            "type": "token",
+            "value": "ai"
+          }
+        },
+        {
+          "word": "snail",
+          "breakdown": "s|n|ai|l",
+          "highlight": {
+            "type": "token",
+            "value": "ai"
+          }
+        },
+        {
+          "word": "paint",
+          "breakdown": "p|ai|n|t",
+          "highlight": {
+            "type": "token",
+            "value": "ai"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.team.ay",
+      "category": "07_vowel_teams_long",
+      "graphemes": [
+        "ay"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ay",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/eɪ/",
+        "name_en": "long a",
+        "name_cn": "长 a"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team ay: says /eɪ/. Examples: day, play, stay, tray.",
+        "zh": "元音组合 ay：常读 /eɪ/。例词：day，play，stay，tray。"
+      },
+      "notes": [
+        "Often at the end of a word."
+      ],
+      "fewshot": [
+        "day",
+        "play",
+        "stay",
+        "tray"
+      ],
+      "examples": [
+        {
+          "word": "day",
+          "breakdown": "d|ay",
+          "highlight": {
+            "type": "token",
+            "value": "ay"
+          }
+        },
+        {
+          "word": "play",
+          "breakdown": "p|l|ay",
+          "highlight": {
+            "type": "token",
+            "value": "ay"
+          }
+        },
+        {
+          "word": "stay",
+          "breakdown": "s|t|ay",
+          "highlight": {
+            "type": "token",
+            "value": "ay"
+          }
+        },
+        {
+          "word": "tray",
+          "breakdown": "t|r|ay",
+          "highlight": {
+            "type": "token",
+            "value": "ay"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.team.ea_long_e",
+      "category": "07_vowel_teams_long",
+      "graphemes": [
+        "ea"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ea",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/iː/",
+        "name_en": "long e",
+        "name_cn": "长 e"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team ea: says /iː/. Examples: meat, team, seal, eat.",
+        "zh": "元音组合 ea：常读 /iː/。例词：meat，team，seal，eat。"
+      },
+      "notes": [
+        "ea can also say /ɛ/ in some words (see separate rule)."
+      ],
+      "fewshot": [
+        "meat",
+        "team",
+        "seal",
+        "eat"
+      ],
+      "examples": [
+        {
+          "word": "meat",
+          "breakdown": "m|ea|t",
+          "highlight": {
+            "type": "token",
+            "value": "ea"
+          }
+        },
+        {
+          "word": "team",
+          "breakdown": "t|ea|m",
+          "highlight": {
+            "type": "token",
+            "value": "ea"
+          }
+        },
+        {
+          "word": "seal",
+          "breakdown": "s|ea|l",
+          "highlight": {
+            "type": "token",
+            "value": "ea"
+          }
+        },
+        {
+          "word": "eat",
+          "breakdown": "ea|t",
+          "highlight": {
+            "type": "token",
+            "value": "ea"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.team.ee",
+      "category": "07_vowel_teams_long",
+      "graphemes": [
+        "ee"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ee",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/iː/",
+        "name_en": "long e",
+        "name_cn": "长 e"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team ee: says /iː/. Examples: see, seed, feet, green.",
+        "zh": "元音组合 ee：常读 /iː/。例词：see，seed，feet，green。"
+      },
+      "notes": [],
+      "fewshot": [
+        "see",
+        "seed",
+        "feet",
+        "green"
+      ],
+      "examples": [
+        {
+          "word": "see",
+          "breakdown": "s|ee",
+          "highlight": {
+            "type": "token",
+            "value": "ee"
+          }
+        },
+        {
+          "word": "seed",
+          "breakdown": "s|ee|d",
+          "highlight": {
+            "type": "token",
+            "value": "ee"
+          }
+        },
+        {
+          "word": "feet",
+          "breakdown": "f|ee|t",
+          "highlight": {
+            "type": "token",
+            "value": "ee"
+          }
+        },
+        {
+          "word": "green",
+          "breakdown": "g|r|ee|n",
+          "highlight": {
+            "type": "token",
+            "value": "ee"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.team.ie_long_i",
+      "category": "07_vowel_teams_long",
+      "graphemes": [
+        "ie"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ie",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/aɪ/",
+        "name_en": "long i",
+        "name_cn": "长 i"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team ie: says /aɪ/. Examples: pie, tie, lie, die.",
+        "zh": "元音组合 ie：常读 /aɪ/。例词：pie，tie，lie，die。"
+      },
+      "notes": [
+        "ie can also say /iː/ in some words (chief); teach as advanced/irregular."
+      ],
+      "fewshot": [
+        "pie",
+        "tie",
+        "lie",
+        "die"
+      ],
+      "examples": [
+        {
+          "word": "pie",
+          "breakdown": "p|ie",
+          "highlight": {
+            "type": "token",
+            "value": "ie"
+          }
+        },
+        {
+          "word": "tie",
+          "breakdown": "t|ie",
+          "highlight": {
+            "type": "token",
+            "value": "ie"
+          }
+        },
+        {
+          "word": "lie",
+          "breakdown": "l|ie",
+          "highlight": {
+            "type": "token",
+            "value": "ie"
+          }
+        },
+        {
+          "word": "die",
+          "breakdown": "d|ie",
+          "highlight": {
+            "type": "token",
+            "value": "ie"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.team.igh",
+      "category": "07_vowel_teams_long",
+      "graphemes": [
+        "igh"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "igh",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/aɪ/",
+        "name_en": "long i",
+        "name_cn": "长 i"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team igh: says /aɪ/. Examples: light, night, right, sigh.",
+        "zh": "元音组合 igh：常读 /aɪ/。例词：light，night，right，sigh。"
+      },
+      "notes": [
+        "gh is silent in this pattern."
+      ],
+      "fewshot": [
+        "light",
+        "night",
+        "right",
+        "sigh"
+      ],
+      "examples": [
+        {
+          "word": "light",
+          "breakdown": "l|igh|t",
+          "highlight": {
+            "type": "token",
+            "value": "igh"
+          }
+        },
+        {
+          "word": "night",
+          "breakdown": "n|igh|t",
+          "highlight": {
+            "type": "token",
+            "value": "igh"
+          }
+        },
+        {
+          "word": "right",
+          "breakdown": "r|igh|t",
+          "highlight": {
+            "type": "token",
+            "value": "igh"
+          }
+        },
+        {
+          "word": "sigh",
+          "breakdown": "s|igh",
+          "highlight": {
+            "type": "token",
+            "value": "igh"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.team.oa",
+      "category": "07_vowel_teams_long",
+      "graphemes": [
+        "oa"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "oa",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/oʊ/",
+        "name_en": "long o",
+        "name_cn": "长 o"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team oa: says /oʊ/. Examples: boat, coat, road, soap.",
+        "zh": "元音组合 oa：常读 /oʊ/。例词：boat，coat，road，soap。"
+      },
+      "notes": [],
+      "fewshot": [
+        "boat",
+        "coat",
+        "road",
+        "soap"
+      ],
+      "examples": [
+        {
+          "word": "boat",
+          "breakdown": "b|oa|t",
+          "highlight": {
+            "type": "token",
+            "value": "oa"
+          }
+        },
+        {
+          "word": "coat",
+          "breakdown": "c|oa|t",
+          "highlight": {
+            "type": "token",
+            "value": "oa"
+          }
+        },
+        {
+          "word": "road",
+          "breakdown": "r|oa|d",
+          "highlight": {
+            "type": "token",
+            "value": "oa"
+          }
+        },
+        {
+          "word": "soap",
+          "breakdown": "s|oa|p",
+          "highlight": {
+            "type": "token",
+            "value": "oa"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.team.ow_long_o",
+      "category": "07_vowel_teams_long",
+      "graphemes": [
+        "ow"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ow",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/oʊ/",
+        "name_en": "long o",
+        "name_cn": "长 o"
+      },
+      "position": [
+        "ending",
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team ow: says /oʊ/. Examples: snow, grow, low, show.",
+        "zh": "元音组合 ow：常读 /oʊ/。例词：snow，grow，low，show。"
+      },
+      "notes": [
+        "ow can also say /aʊ/ (see diphthong rule)."
+      ],
+      "fewshot": [
+        "snow",
+        "grow",
+        "low",
+        "show"
+      ],
+      "examples": [
+        {
+          "word": "snow",
+          "breakdown": "s|n|ow",
+          "highlight": {
+            "type": "token",
+            "value": "ow"
+          }
+        },
+        {
+          "word": "grow",
+          "breakdown": "g|r|ow",
+          "highlight": {
+            "type": "token",
+            "value": "ow"
+          }
+        },
+        {
+          "word": "low",
+          "breakdown": "l|ow",
+          "highlight": {
+            "type": "token",
+            "value": "ow"
+          }
+        },
+        {
+          "word": "show",
+          "breakdown": "sh|ow",
+          "highlight": {
+            "type": "token",
+            "value": "ow"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.rcontrolled.ar",
+      "category": "08_r_controlled",
+      "graphemes": [
+        "ar"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ar",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/ɑr/",
+        "name_en": "ar /ar/",
+        "name_cn": "ar 发 /ɑr/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "R-controlled ar: says /ɑr/. Examples: car, far, barn, park.",
+        "zh": "R 控制元音 ar：常读 /ɑr/。例词：car，far，barn，park。"
+      },
+      "notes": [],
+      "fewshot": [
+        "car",
+        "far",
+        "barn",
+        "park"
+      ],
+      "examples": [
+        {
+          "word": "car",
+          "breakdown": "c|ar",
+          "highlight": {
+            "type": "token",
+            "value": "ar"
+          }
+        },
+        {
+          "word": "far",
+          "breakdown": "f|ar",
+          "highlight": {
+            "type": "token",
+            "value": "ar"
+          }
+        },
+        {
+          "word": "barn",
+          "breakdown": "b|ar|n",
+          "highlight": {
+            "type": "token",
+            "value": "ar"
+          }
+        },
+        {
+          "word": "park",
+          "breakdown": "p|ar|k",
+          "highlight": {
+            "type": "token",
+            "value": "ar"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.rcontrolled.er",
+      "category": "08_r_controlled",
+      "graphemes": [
+        "er"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "er",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/ɝ/",
+        "name_en": "er /er/",
+        "name_cn": "er 发 /ɝ/（美式卷舌元音）"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "R-controlled er: says /ɝ/. Examples: her, fern, term, perch.",
+        "zh": "R 控制元音 er：常读 /ɝ/。例词：her，fern，term，perch。"
+      },
+      "notes": [
+        "In many American accents, er/ir/ur share the same sound /ɝ/."
+      ],
+      "fewshot": [
+        "her",
+        "fern",
+        "term",
+        "perch"
+      ],
+      "examples": [
+        {
+          "word": "her",
+          "breakdown": "h|er",
+          "highlight": {
+            "type": "token",
+            "value": "er"
+          }
+        },
+        {
+          "word": "fern",
+          "breakdown": "f|er|n",
+          "highlight": {
+            "type": "token",
+            "value": "er"
+          }
+        },
+        {
+          "word": "term",
+          "breakdown": "t|er|m",
+          "highlight": {
+            "type": "token",
+            "value": "er"
+          }
+        },
+        {
+          "word": "perch",
+          "breakdown": "p|er|ch",
+          "highlight": {
+            "type": "token",
+            "value": "er"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.rcontrolled.ir",
+      "category": "08_r_controlled",
+      "graphemes": [
+        "ir"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ir",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/ɝ/",
+        "name_en": "ir /er/ sound",
+        "name_cn": "ir 也常读 /ɝ/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "R-controlled ir: says /ɝ/. Examples: bird, girl, first, shirt.",
+        "zh": "R 控制元音 ir：常读 /ɝ/。例词：bird，girl，first，shirt。"
+      },
+      "notes": [
+        "In many American accents, er/ir/ur share the same sound /ɝ/."
+      ],
+      "fewshot": [
+        "bird",
+        "girl",
+        "first",
+        "shirt"
+      ],
+      "examples": [
+        {
+          "word": "bird",
+          "breakdown": "b|ir|d",
+          "highlight": {
+            "type": "token",
+            "value": "ir"
+          }
+        },
+        {
+          "word": "girl",
+          "breakdown": "g|ir|l",
+          "highlight": {
+            "type": "token",
+            "value": "ir"
+          }
+        },
+        {
+          "word": "first",
+          "breakdown": "f|ir|s|t",
+          "highlight": {
+            "type": "token",
+            "value": "ir"
+          }
+        },
+        {
+          "word": "shirt",
+          "breakdown": "sh|ir|t",
+          "highlight": {
+            "type": "token",
+            "value": "ir"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.rcontrolled.or",
+      "category": "08_r_controlled",
+      "graphemes": [
+        "or"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "or",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/ɔr/",
+        "name_en": "or /or/",
+        "name_cn": "or 发 /ɔr/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "R-controlled or: says /ɔr/. Examples: corn, fork, storm, porch.",
+        "zh": "R 控制元音 or：常读 /ɔr/。例词：corn，fork，storm，porch。"
+      },
+      "notes": [],
+      "fewshot": [
+        "corn",
+        "fork",
+        "storm",
+        "porch"
+      ],
+      "examples": [
+        {
+          "word": "corn",
+          "breakdown": "c|or|n",
+          "highlight": {
+            "type": "token",
+            "value": "or"
+          }
+        },
+        {
+          "word": "fork",
+          "breakdown": "f|or|k",
+          "highlight": {
+            "type": "token",
+            "value": "or"
+          }
+        },
+        {
+          "word": "storm",
+          "breakdown": "s|t|or|m",
+          "highlight": {
+            "type": "token",
+            "value": "or"
+          }
+        },
+        {
+          "word": "porch",
+          "breakdown": "p|or|ch",
+          "highlight": {
+            "type": "token",
+            "value": "or"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.rcontrolled.ur",
+      "category": "08_r_controlled",
+      "graphemes": [
+        "ur"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ur",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/ɝ/",
+        "name_en": "ur /er/ sound",
+        "name_cn": "ur 也常读 /ɝ/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "R-controlled ur: says /ɝ/. Examples: fur, turn, curl, hurt.",
+        "zh": "R 控制元音 ur：常读 /ɝ/。例词：fur，turn，curl，hurt。"
+      },
+      "notes": [
+        "In many American accents, er/ir/ur share the same sound /ɝ/."
+      ],
+      "fewshot": [
+        "fur",
+        "turn",
+        "curl",
+        "hurt"
+      ],
+      "examples": [
+        {
+          "word": "fur",
+          "breakdown": "f|ur",
+          "highlight": {
+            "type": "token",
+            "value": "ur"
+          }
+        },
+        {
+          "word": "turn",
+          "breakdown": "t|ur|n",
+          "highlight": {
+            "type": "token",
+            "value": "ur"
+          }
+        },
+        {
+          "word": "curl",
+          "breakdown": "c|ur|l",
+          "highlight": {
+            "type": "token",
+            "value": "ur"
+          }
+        },
+        {
+          "word": "hurt",
+          "breakdown": "h|ur|t",
+          "highlight": {
+            "type": "token",
+            "value": "ur"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.rcontrolled.wor",
+      "category": "08_r_controlled",
+      "graphemes": [
+        "wor"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "wor",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/wɝ/",
+        "name_en": "wor /wer/ sound",
+        "name_cn": "wor 常读 /wɝ/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "R-controlled wor: says /wɝ/. Examples: word, work, worm, world.",
+        "zh": "R 控制元音 wor：常读 /wɝ/。例词：word，work，worm，world。"
+      },
+      "notes": [
+        "In many American accents, er/ir/ur share the same sound /ɝ/."
+      ],
+      "fewshot": [
+        "word",
+        "work",
+        "worm",
+        "world"
+      ],
+      "examples": [
+        {
+          "word": "word",
+          "breakdown": "wor|d",
+          "highlight": {
+            "type": "token",
+            "value": "wor"
+          }
+        },
+        {
+          "word": "work",
+          "breakdown": "wor|k",
+          "highlight": {
+            "type": "token",
+            "value": "wor"
+          }
+        },
+        {
+          "word": "worm",
+          "breakdown": "wor|m",
+          "highlight": {
+            "type": "token",
+            "value": "wor"
+          }
+        },
+        {
+          "word": "world",
+          "breakdown": "wor|l|d",
+          "highlight": {
+            "type": "token",
+            "value": "wor"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.other.au",
+      "category": "09_vowel_teams_other",
+      "graphemes": [
+        "au"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "au",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/ɔː/",
+        "name_en": "au /aw/ sound",
+        "name_cn": "au 常读 /ɔː/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team au: says /ɔː/. Examples: haul, autumn, launch, fault.",
+        "zh": "元音组合 au：常读 /ɔː/。例词：haul，autumn，launch，fault。"
+      },
+      "notes": [],
+      "fewshot": [
+        "haul",
+        "autumn",
+        "launch",
+        "fault"
+      ],
+      "examples": [
+        {
+          "word": "haul",
+          "breakdown": "h|au|l",
+          "highlight": {
+            "type": "token",
+            "value": "au"
+          }
+        },
+        {
+          "word": "autumn",
+          "breakdown": "au|t|u|m|n",
+          "highlight": {
+            "type": "token",
+            "value": "au"
+          }
+        },
+        {
+          "word": "launch",
+          "breakdown": "l|au|n|ch",
+          "highlight": {
+            "type": "token",
+            "value": "au"
+          }
+        },
+        {
+          "word": "fault",
+          "breakdown": "f|au|l|t",
+          "highlight": {
+            "type": "token",
+            "value": "au"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.other.aw",
+      "category": "09_vowel_teams_other",
+      "graphemes": [
+        "aw"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "aw",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/ɔː/",
+        "name_en": "aw /aw/ sound",
+        "name_cn": "aw 常读 /ɔː/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team aw: says /ɔː/. Examples: saw, paw, claw, yawn.",
+        "zh": "元音组合 aw：常读 /ɔː/。例词：saw，paw，claw，yawn。"
+      },
+      "notes": [],
+      "fewshot": [
+        "saw",
+        "paw",
+        "claw",
+        "yawn"
+      ],
+      "examples": [
+        {
+          "word": "saw",
+          "breakdown": "s|aw",
+          "highlight": {
+            "type": "token",
+            "value": "aw"
+          }
+        },
+        {
+          "word": "paw",
+          "breakdown": "p|aw",
+          "highlight": {
+            "type": "token",
+            "value": "aw"
+          }
+        },
+        {
+          "word": "claw",
+          "breakdown": "c|l|aw",
+          "highlight": {
+            "type": "token",
+            "value": "aw"
+          }
+        },
+        {
+          "word": "yawn",
+          "breakdown": "y|aw|n",
+          "highlight": {
+            "type": "token",
+            "value": "aw"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.other.ea_short_e",
+      "category": "09_vowel_teams_other",
+      "graphemes": [
+        "ea"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ea",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/ɛ/",
+        "name_en": "ea (short e)",
+        "name_cn": "ea 有时读 /ɛ/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team ea: says /ɛ/. Examples: bread, head, dead, sweat.",
+        "zh": "元音组合 ea：常读 /ɛ/。例词：bread，head，dead，sweat。"
+      },
+      "notes": [
+        "This spelling can have more than one sound in English; teach the common one here."
+      ],
+      "fewshot": [
+        "bread",
+        "head",
+        "dead",
+        "sweat"
+      ],
+      "examples": [
+        {
+          "word": "bread",
+          "breakdown": "b|r|ea|d",
+          "highlight": {
+            "type": "token",
+            "value": "ea"
+          }
+        },
+        {
+          "word": "head",
+          "breakdown": "h|ea|d",
+          "highlight": {
+            "type": "token",
+            "value": "ea"
+          }
+        },
+        {
+          "word": "dead",
+          "breakdown": "d|ea|d",
+          "highlight": {
+            "type": "token",
+            "value": "ea"
+          }
+        },
+        {
+          "word": "sweat",
+          "breakdown": "s|w|ea|t",
+          "highlight": {
+            "type": "token",
+            "value": "ea"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.other.oi",
+      "category": "09_vowel_teams_other",
+      "graphemes": [
+        "oi"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "oi",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/ɔɪ/",
+        "name_en": "oi /oy/ sound",
+        "name_cn": "oi 常读 /ɔɪ/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team oi: says /ɔɪ/. Examples: coin, boil, soil, join.",
+        "zh": "元音组合 oi：常读 /ɔɪ/。例词：coin，boil，soil，join。"
+      },
+      "notes": [],
+      "fewshot": [
+        "coin",
+        "boil",
+        "soil",
+        "join"
+      ],
+      "examples": [
+        {
+          "word": "coin",
+          "breakdown": "c|oi|n",
+          "highlight": {
+            "type": "token",
+            "value": "oi"
+          }
+        },
+        {
+          "word": "boil",
+          "breakdown": "b|oi|l",
+          "highlight": {
+            "type": "token",
+            "value": "oi"
+          }
+        },
+        {
+          "word": "soil",
+          "breakdown": "s|oi|l",
+          "highlight": {
+            "type": "token",
+            "value": "oi"
+          }
+        },
+        {
+          "word": "join",
+          "breakdown": "j|oi|n",
+          "highlight": {
+            "type": "token",
+            "value": "oi"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.other.oo_long",
+      "category": "09_vowel_teams_other",
+      "graphemes": [
+        "oo"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "oo",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/uː/",
+        "name_en": "oo (long)",
+        "name_cn": "oo 长音 /uː/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team oo: says /uː/. Examples: moon, food, room, soon.",
+        "zh": "元音组合 oo：常读 /uː/。例词：moon，food，room，soon。"
+      },
+      "notes": [
+        "This spelling can have more than one sound in English; teach the common one here."
+      ],
+      "fewshot": [
+        "moon",
+        "food",
+        "room",
+        "soon"
+      ],
+      "examples": [
+        {
+          "word": "moon",
+          "breakdown": "m|oo|n",
+          "highlight": {
+            "type": "token",
+            "value": "oo"
+          }
+        },
+        {
+          "word": "food",
+          "breakdown": "f|oo|d",
+          "highlight": {
+            "type": "token",
+            "value": "oo"
+          }
+        },
+        {
+          "word": "room",
+          "breakdown": "r|oo|m",
+          "highlight": {
+            "type": "token",
+            "value": "oo"
+          }
+        },
+        {
+          "word": "soon",
+          "breakdown": "s|oo|n",
+          "highlight": {
+            "type": "token",
+            "value": "oo"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.other.oo_short",
+      "category": "09_vowel_teams_other",
+      "graphemes": [
+        "oo"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "oo",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/ʊ/",
+        "name_en": "oo (short)",
+        "name_cn": "oo 短音 /ʊ/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team oo: says /ʊ/. Examples: book, cook, look, good.",
+        "zh": "元音组合 oo：常读 /ʊ/。例词：book，cook，look，good。"
+      },
+      "notes": [
+        "This spelling can have more than one sound in English; teach the common one here."
+      ],
+      "fewshot": [
+        "book",
+        "cook",
+        "look",
+        "good"
+      ],
+      "examples": [
+        {
+          "word": "book",
+          "breakdown": "b|oo|k",
+          "highlight": {
+            "type": "token",
+            "value": "oo"
+          }
+        },
+        {
+          "word": "cook",
+          "breakdown": "c|oo|k",
+          "highlight": {
+            "type": "token",
+            "value": "oo"
+          }
+        },
+        {
+          "word": "look",
+          "breakdown": "l|oo|k",
+          "highlight": {
+            "type": "token",
+            "value": "oo"
+          }
+        },
+        {
+          "word": "good",
+          "breakdown": "g|oo|d",
+          "highlight": {
+            "type": "token",
+            "value": "oo"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.other.ou",
+      "category": "09_vowel_teams_other",
+      "graphemes": [
+        "ou"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ou",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/aʊ/",
+        "name_en": "ou /ow/ (diphthong)",
+        "name_cn": "ou 常读 /aʊ/（双元音）"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team ou: says /aʊ/. Examples: out, loud, sound, cloud.",
+        "zh": "元音组合 ou：常读 /aʊ/。例词：out，loud，sound，cloud。"
+      },
+      "notes": [],
+      "fewshot": [
+        "out",
+        "loud",
+        "sound",
+        "cloud"
+      ],
+      "examples": [
+        {
+          "word": "out",
+          "breakdown": "ou|t",
+          "highlight": {
+            "type": "token",
+            "value": "ou"
+          }
+        },
+        {
+          "word": "loud",
+          "breakdown": "l|ou|d",
+          "highlight": {
+            "type": "token",
+            "value": "ou"
+          }
+        },
+        {
+          "word": "sound",
+          "breakdown": "s|ou|n|d",
+          "highlight": {
+            "type": "token",
+            "value": "ou"
+          }
+        },
+        {
+          "word": "cloud",
+          "breakdown": "c|l|ou|d",
+          "highlight": {
+            "type": "token",
+            "value": "ou"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.other.ow_diphthong",
+      "category": "09_vowel_teams_other",
+      "graphemes": [
+        "ow"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "ow",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/aʊ/",
+        "name_en": "ow /ow/ (diphthong)",
+        "name_cn": "ow 也可读 /aʊ/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team ow: says /aʊ/. Examples: cow, now, down, town.",
+        "zh": "元音组合 ow：常读 /aʊ/。例词：cow，now，down，town。"
+      },
+      "notes": [
+        "This spelling can have more than one sound in English; teach the common one here."
+      ],
+      "fewshot": [
+        "cow",
+        "now",
+        "down",
+        "town"
+      ],
+      "examples": [
+        {
+          "word": "cow",
+          "breakdown": "c|ow",
+          "highlight": {
+            "type": "token",
+            "value": "ow"
+          }
+        },
+        {
+          "word": "now",
+          "breakdown": "n|ow",
+          "highlight": {
+            "type": "token",
+            "value": "ow"
+          }
+        },
+        {
+          "word": "down",
+          "breakdown": "d|ow|n",
+          "highlight": {
+            "type": "token",
+            "value": "ow"
+          }
+        },
+        {
+          "word": "town",
+          "breakdown": "t|ow|n",
+          "highlight": {
+            "type": "token",
+            "value": "ow"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.other.oy",
+      "category": "09_vowel_teams_other",
+      "graphemes": [
+        "oy"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "oy",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/ɔɪ/",
+        "name_en": "oy /oy/ sound",
+        "name_cn": "oy 常读 /ɔɪ/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Vowel team oy: says /ɔɪ/. Examples: boy, toy, joy, coy.",
+        "zh": "元音组合 oy：常读 /ɔɪ/。例词：boy，toy，joy，coy。"
+      },
+      "notes": [],
+      "fewshot": [
+        "boy",
+        "toy",
+        "joy",
+        "coy"
+      ],
+      "examples": [
+        {
+          "word": "boy",
+          "breakdown": "b|oy",
+          "highlight": {
+            "type": "token",
+            "value": "oy"
+          }
+        },
+        {
+          "word": "toy",
+          "breakdown": "t|oy",
+          "highlight": {
+            "type": "token",
+            "value": "oy"
+          }
+        },
+        {
+          "word": "joy",
+          "breakdown": "j|oy",
+          "highlight": {
+            "type": "token",
+            "value": "oy"
+          }
+        },
+        {
+          "word": "coy",
+          "breakdown": "c|oy",
+          "highlight": {
+            "type": "token",
+            "value": "oy"
+          }
+        }
+      ]
+    },
+    {
+      "id": "consonant.soft_c",
+      "category": "10_soft_cg_y",
+      "graphemes": [
+        "c"
+      ],
+      "focus": {
+        "type": "grapheme_with_context",
+        "value": "c",
+        "match": "index",
+        "context": {
+          "en": "Usually before e, i, or y.",
+          "zh": "通常在 e/i/y 前。"
+        }
+      },
+      "sound": {
+        "ipa": "/s/",
+        "name_en": "Soft c: c says /s/",
+        "name_cn": "软音 c：c 读 /s/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Soft c: c says /s/ Usually before e, i, or y. Examples: cent, city, cycle, rice.",
+        "zh": "软音 c：c 读 /s/通常在 e/i/y 前。 例词：cent，city，cycle，rice。"
+      },
+      "notes": [
+        "Same letter can have multiple sounds; context helps choose the right one."
+      ],
+      "fewshot": [
+        "cent",
+        "city",
+        "cycle",
+        "rice"
+      ],
+      "examples": [
+        {
+          "word": "cent",
+          "breakdown": "c|e|n|t",
+          "highlight": {
+            "type": "index",
+            "value": "c",
+            "indices": [
+              0
+            ]
+          }
+        },
+        {
+          "word": "city",
+          "breakdown": "c|i|t|y",
+          "highlight": {
+            "type": "index",
+            "value": "c",
+            "indices": [
+              0
+            ]
+          }
+        },
+        {
+          "word": "cycle",
+          "breakdown": "c|y|c|l|e",
+          "highlight": {
+            "type": "index",
+            "value": "c",
+            "indices": [
+              0
+            ]
+          }
+        },
+        {
+          "word": "rice",
+          "breakdown": "r|i|c|e",
+          "highlight": {
+            "type": "index",
+            "value": "c",
+            "indices": [
+              2
+            ]
+          }
+        }
+      ],
+      "context": {
+        "en": "Usually before e, i, or y.",
+        "zh": "通常在 e/i/y 前。"
+      }
+    },
+    {
+      "id": "consonant.soft_g",
+      "category": "10_soft_cg_y",
+      "graphemes": [
+        "g"
+      ],
+      "focus": {
+        "type": "grapheme_with_context",
+        "value": "g",
+        "match": "index",
+        "context": {
+          "en": "Often before e, i, or y (and sometimes at the end as -ge).",
+          "zh": "常在 e/i/y 前（或词尾 -ge）。"
+        }
+      },
+      "sound": {
+        "ipa": "/dʒ/",
+        "name_en": "Soft g: g says /dʒ/",
+        "name_cn": "软音 g：g 读 /dʒ/"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Soft g: g says /dʒ/ Often before e, i, or y (and sometimes at the end as -ge). Examples: gem, giraffe, gym, age.",
+        "zh": "软音 g：g 读 /dʒ/常在 e/i/y 前（或词尾 -ge）。 例词：gem，giraffe，gym，age。"
+      },
+      "notes": [
+        "Same letter can have multiple sounds; context helps choose the right one."
+      ],
+      "fewshot": [
+        "gem",
+        "giraffe",
+        "gym",
+        "age"
+      ],
+      "examples": [
+        {
+          "word": "gem",
+          "breakdown": "g|e|m",
+          "highlight": {
+            "type": "index",
+            "value": "g",
+            "indices": [
+              0
+            ]
+          }
+        },
+        {
+          "word": "giraffe",
+          "breakdown": "g|ir|a|ff|e",
+          "highlight": {
+            "type": "index",
+            "value": "g",
+            "indices": [
+              0
+            ]
+          }
+        },
+        {
+          "word": "gym",
+          "breakdown": "g|y|m",
+          "highlight": {
+            "type": "index",
+            "value": "g",
+            "indices": [
+              0
+            ]
+          }
+        },
+        {
+          "word": "age",
+          "breakdown": "a|g|e",
+          "highlight": {
+            "type": "index",
+            "value": "g",
+            "indices": [
+              1
+            ]
+          }
+        }
+      ],
+      "context": {
+        "en": "Often before e, i, or y (and sometimes at the end as -ge).",
+        "zh": "常在 e/i/y 前（或词尾 -ge）。"
+      }
+    },
+    {
+      "id": "vowel.y_final_long_e",
+      "category": "10_soft_cg_y",
+      "graphemes": [
+        "y"
+      ],
+      "focus": {
+        "type": "grapheme_with_context",
+        "value": "y",
+        "match": "token",
+        "context": {
+          "en": "At the end of a word or syllable, y often says /iː/.",
+          "zh": "在词尾/音节尾，y 常读 /iː/。"
+        }
+      },
+      "sound": {
+        "ipa": "/iː/",
+        "name_en": "final y (long e sound)",
+        "name_cn": "词尾 y（长 e 音）"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "Final y often says /iː/ (like long e). Examples: happy, funny, sunny, baby.",
+        "zh": "词尾 y 常读 /iː/（像长 e）。例词：happy，funny，sunny，baby。"
+      },
+      "notes": [
+        "In some words, final y says /aɪ/ (see next rule)."
+      ],
+      "fewshot": [
+        "happy",
+        "funny",
+        "sunny",
+        "baby"
+      ],
+      "examples": [
+        {
+          "word": "happy",
+          "breakdown": "h|a|pp|y",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        },
+        {
+          "word": "funny",
+          "breakdown": "f|u|nn|y",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        },
+        {
+          "word": "sunny",
+          "breakdown": "s|u|nn|y",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        },
+        {
+          "word": "baby",
+          "breakdown": "b|a|b|y",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        }
+      ],
+      "context": {
+        "en": "word-final y",
+        "zh": "词尾 y"
+      }
+    },
+    {
+      "id": "vowel.y_final_long_i",
+      "category": "10_soft_cg_y",
+      "graphemes": [
+        "y"
+      ],
+      "focus": {
+        "type": "grapheme_with_context",
+        "value": "y",
+        "match": "token",
+        "context": {
+          "en": "At the end of a one-syllable word, y often says /aɪ/.",
+          "zh": "在单音节词尾，y 常读 /aɪ/。"
+        }
+      },
+      "sound": {
+        "ipa": "/aɪ/",
+        "name_en": "final y (long i sound)",
+        "name_cn": "词尾 y（长 i 音）"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "In many one-syllable words, final y says /aɪ/ (like long i). Examples: my, fly, try, sky.",
+        "zh": "很多单音节词里，词尾 y 读 /aɪ/（像长 i）。例词：my，fly，try，sky。"
+      },
+      "notes": [],
+      "fewshot": [
+        "my",
+        "fly",
+        "try",
+        "sky"
+      ],
+      "examples": [
+        {
+          "word": "my",
+          "breakdown": "m|y",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        },
+        {
+          "word": "fly",
+          "breakdown": "f|l|y",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        },
+        {
+          "word": "try",
+          "breakdown": "t|r|y",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        },
+        {
+          "word": "sky",
+          "breakdown": "s|k|y",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        }
+      ],
+      "context": {
+        "en": "one-syllable word-final y",
+        "zh": "单音节词尾 y"
+      }
+    },
+    {
+      "id": "vowel.y_middle_short_i",
+      "category": "10_soft_cg_y",
+      "graphemes": [
+        "y"
+      ],
+      "focus": {
+        "type": "grapheme_with_context",
+        "value": "y",
+        "match": "token",
+        "context": {
+          "en": "In the middle of a word, y can say /ɪ/ (short i).",
+          "zh": "在词中间，y 有时读 /ɪ/（短 i）。"
+        }
+      },
+      "sound": {
+        "ipa": "/ɪ/",
+        "name_en": "y (short i sound)",
+        "name_cn": "y（短 i 音）"
+      },
+      "position": [
+        "middle"
+      ],
+      "tts": {
+        "en": "Middle y can say /ɪ/ (short i). Examples: gym, myth, hymn, lynx.",
+        "zh": "词中间的 y 有时读 /ɪ/（短 i）。例词：gym，myth，hymn，lynx。"
+      },
+      "notes": [
+        "These are common but not fully predictable; treat as a useful pattern."
+      ],
+      "fewshot": [
+        "gym",
+        "myth",
+        "hymn",
+        "lynx"
+      ],
+      "examples": [
+        {
+          "word": "gym",
+          "breakdown": "g|y|m",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        },
+        {
+          "word": "myth",
+          "breakdown": "m|y|th",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        },
+        {
+          "word": "hymn",
+          "breakdown": "h|y|m|n",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        },
+        {
+          "word": "lynx",
+          "breakdown": "l|y|n|x",
+          "highlight": {
+            "type": "token",
+            "value": "y"
+          }
+        }
+      ],
+      "context": {
+        "en": "word-medial y",
+        "zh": "词中间 y"
+      }
+    },
+    {
+      "id": "suffix.ed_d",
+      "category": "11_inflectional_endings",
+      "graphemes": [
+        "ed"
+      ],
+      "focus": {
+        "type": "suffix",
+        "value": "ed",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/d/",
+        "name_en": "suffix",
+        "name_cn": "后缀/词尾"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "-ed (past): pronounced /d/ after voiced sounds (except /d/). Examples: played, cleaned, called, rained.",
+        "zh": "过去式 -ed：在浊辅音或元音后常读 /d/（不含 /d/）。 例词：played，cleaned，called，rained。"
+      },
+      "notes": [],
+      "fewshot": [
+        "played",
+        "cleaned",
+        "called",
+        "rained"
+      ],
+      "examples": [
+        {
+          "word": "played",
+          "breakdown": "p|l|ay|ed",
+          "highlight": {
+            "type": "token",
+            "value": "ed"
+          }
+        },
+        {
+          "word": "cleaned",
+          "breakdown": "c|l|ea|n|ed",
+          "highlight": {
+            "type": "token",
+            "value": "ed"
+          }
+        },
+        {
+          "word": "called",
+          "breakdown": "c|a|ll|ed",
+          "highlight": {
+            "type": "token",
+            "value": "ed"
+          }
+        },
+        {
+          "word": "rained",
+          "breakdown": "r|ai|n|ed",
+          "highlight": {
+            "type": "token",
+            "value": "ed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "suffix.ed_id",
+      "category": "11_inflectional_endings",
+      "graphemes": [
+        "ed"
+      ],
+      "focus": {
+        "type": "suffix",
+        "value": "ed",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/ɪd/",
+        "name_en": "suffix",
+        "name_cn": "后缀/词尾"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "-ed (past): pronounced /ɪd/ after /t/ or /d/. Examples: wanted, needed, folded, landed.",
+        "zh": "过去式 -ed：在 /t/ 或 /d/ 后读 /ɪd/。 例词：wanted，needed，folded，landed。"
+      },
+      "notes": [],
+      "fewshot": [
+        "wanted",
+        "needed",
+        "folded",
+        "landed"
+      ],
+      "examples": [
+        {
+          "word": "wanted",
+          "breakdown": "w|a|n|t|ed",
+          "highlight": {
+            "type": "token",
+            "value": "ed"
+          }
+        },
+        {
+          "word": "needed",
+          "breakdown": "n|ee|d|ed",
+          "highlight": {
+            "type": "token",
+            "value": "ed"
+          }
+        },
+        {
+          "word": "folded",
+          "breakdown": "f|o|l|d|ed",
+          "highlight": {
+            "type": "token",
+            "value": "ed"
+          }
+        },
+        {
+          "word": "landed",
+          "breakdown": "l|a|n|d|ed",
+          "highlight": {
+            "type": "token",
+            "value": "ed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "suffix.ed_t",
+      "category": "11_inflectional_endings",
+      "graphemes": [
+        "ed"
+      ],
+      "focus": {
+        "type": "suffix",
+        "value": "ed",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/t/",
+        "name_en": "suffix",
+        "name_cn": "后缀/词尾"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "-ed (past): pronounced /t/ after voiceless sounds (except /t/). Examples: jumped, kissed, laughed, fixed.",
+        "zh": "过去式 -ed：在清辅音后常读 /t/（不含 /t/）。 例词：jumped，kissed，laughed，fixed。"
+      },
+      "notes": [],
+      "fewshot": [
+        "jumped",
+        "kissed",
+        "laughed",
+        "fixed"
+      ],
+      "examples": [
+        {
+          "word": "jumped",
+          "breakdown": "j|u|m|p|ed",
+          "highlight": {
+            "type": "token",
+            "value": "ed"
+          }
+        },
+        {
+          "word": "kissed",
+          "breakdown": "k|i|ss|ed",
+          "highlight": {
+            "type": "token",
+            "value": "ed"
+          }
+        },
+        {
+          "word": "laughed",
+          "breakdown": "l|au|gh|ed",
+          "highlight": {
+            "type": "token",
+            "value": "ed"
+          }
+        },
+        {
+          "word": "fixed",
+          "breakdown": "f|i|x|ed",
+          "highlight": {
+            "type": "token",
+            "value": "ed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "suffix.ing",
+      "category": "11_inflectional_endings",
+      "graphemes": [
+        "ing"
+      ],
+      "focus": {
+        "type": "suffix",
+        "value": "ing",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/ɪŋ/",
+        "name_en": "suffix",
+        "name_cn": "后缀/词尾"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "-ing: shows an action happening now (present participle). Examples: jumping, running, looking, fishing.",
+        "zh": "-ing：表示正在进行的动作。 例词：jumping，running，looking，fishing。"
+      },
+      "notes": [],
+      "fewshot": [
+        "jumping",
+        "running",
+        "looking",
+        "fishing"
+      ],
+      "examples": [
+        {
+          "word": "jumping",
+          "breakdown": "j|u|m|p|ing",
+          "highlight": {
+            "type": "token",
+            "value": "ing"
+          }
+        },
+        {
+          "word": "running",
+          "breakdown": "r|u|n|n|ing",
+          "highlight": {
+            "type": "token",
+            "value": "ing"
+          }
+        },
+        {
+          "word": "looking",
+          "breakdown": "l|oo|k|ing",
+          "highlight": {
+            "type": "token",
+            "value": "ing"
+          }
+        },
+        {
+          "word": "fishing",
+          "breakdown": "f|i|sh|ing",
+          "highlight": {
+            "type": "token",
+            "value": "ing"
+          }
+        }
+      ]
+    },
+    {
+      "id": "suffix.plural_es",
+      "category": "11_inflectional_endings",
+      "graphemes": [
+        "es"
+      ],
+      "focus": {
+        "type": "suffix",
+        "value": "es",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/ɪz/",
+        "name_en": "suffix",
+        "name_cn": "后缀/词尾"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "Plural -es: after s, x, z, ch, sh, add -es (usually /ɪz/). Examples: boxes, buses, dishes, watches.",
+        "zh": "复数 -es：在 s/x/z/ch/sh 后加 -es（常读 /ɪz/）。 例词：boxes，buses，dishes，watches。"
+      },
+      "notes": [],
+      "fewshot": [
+        "boxes",
+        "buses",
+        "dishes",
+        "watches"
+      ],
+      "examples": [
+        {
+          "word": "boxes",
+          "breakdown": "b|o|x|es",
+          "highlight": {
+            "type": "token",
+            "value": "es"
+          }
+        },
+        {
+          "word": "buses",
+          "breakdown": "b|u|s|es",
+          "highlight": {
+            "type": "token",
+            "value": "es"
+          }
+        },
+        {
+          "word": "dishes",
+          "breakdown": "d|i|sh|es",
+          "highlight": {
+            "type": "token",
+            "value": "es"
+          }
+        },
+        {
+          "word": "watches",
+          "breakdown": "w|a|tch|es",
+          "highlight": {
+            "type": "token",
+            "value": "es"
+          }
+        }
+      ]
+    },
+    {
+      "id": "suffix.plural_s",
+      "category": "11_inflectional_endings",
+      "graphemes": [
+        "s"
+      ],
+      "focus": {
+        "type": "suffix",
+        "value": "s",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "suffix",
+        "name_cn": "后缀/词尾"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "Plural -s: adds meaning 'more than one' (pronounced /s/ or /z/ depending on the ending sound). Examples: cats, dogs, maps, hats.",
+        "zh": "复数 -s：表示“多个”（读 /s/ 或 /z/，取决于前一个音）。 例词：cats，dogs，maps，hats。"
+      },
+      "notes": [
+        "TTS/teaching can introduce /s/ vs /z/ later; the spelling pattern is stable."
+      ],
+      "fewshot": [
+        "cats",
+        "dogs",
+        "maps",
+        "hats"
+      ],
+      "examples": [
+        {
+          "word": "cats",
+          "breakdown": "c|a|t|s",
+          "highlight": {
+            "type": "token",
+            "value": "s"
+          }
+        },
+        {
+          "word": "dogs",
+          "breakdown": "d|o|g|s",
+          "highlight": {
+            "type": "token",
+            "value": "s"
+          }
+        },
+        {
+          "word": "maps",
+          "breakdown": "m|a|p|s",
+          "highlight": {
+            "type": "token",
+            "value": "s"
+          }
+        },
+        {
+          "word": "hats",
+          "breakdown": "h|a|t|s",
+          "highlight": {
+            "type": "token",
+            "value": "s"
+          }
+        }
+      ]
+    },
+    {
+      "id": "suffix_change.double_final_consonant",
+      "category": "12_spelling_changes_suffixes",
+      "graphemes": [],
+      "focus": {
+        "type": "spelling_change",
+        "value": "suffix_change.double_final_consonant"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "Double the final consonant",
+        "name_cn": "双写词尾辅音"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "When a one-syllable word ends CVC (one vowel + one consonant), double the final consonant before adding a vowel suffix like -ing or -ed. Examples: hop→hopping, run→running, sit→sitting, plan→planning.",
+        "zh": "单音节词若以 CVC 结尾（一个元音后跟一个辅音），加 -ing/-ed 等以元音开头的后缀时，常双写词尾辅音。例：hop→hopping，run→running，sit→sitting，plan→planning。"
+      },
+      "notes": [
+        "Often taught as the 1-1-1 rule (one syllable, one vowel, one final consonant). Do not double w, x, y."
+      ],
+      "fewshot": [
+        "hopping",
+        "running",
+        "sitting",
+        "planning"
+      ],
+      "pairs": [
+        {
+          "base": "hop",
+          "derived": "hopping",
+          "suffix": "ing",
+          "breakdownBase": "h|o|p",
+          "breakdownDerived": "h|o|p|p|ing"
+        },
+        {
+          "base": "run",
+          "derived": "running",
+          "suffix": "ing",
+          "breakdownBase": "r|u|n",
+          "breakdownDerived": "r|u|n|n|ing"
+        },
+        {
+          "base": "sit",
+          "derived": "sitting",
+          "suffix": "ing",
+          "breakdownBase": "s|i|t",
+          "breakdownDerived": "s|i|t|t|ing"
+        },
+        {
+          "base": "plan",
+          "derived": "planning",
+          "suffix": "ing",
+          "breakdownBase": "p|l|a|n",
+          "breakdownDerived": "p|l|a|n|n|ing"
+        }
+      ]
+    },
+    {
+      "id": "suffix_change.drop_silent_e",
+      "category": "12_spelling_changes_suffixes",
+      "graphemes": [],
+      "focus": {
+        "type": "spelling_change",
+        "value": "suffix_change.drop_silent_e"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "Drop silent e",
+        "name_cn": "去掉魔法 e"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "If a base word ends with silent e, drop the e before adding a vowel suffix like -ing or -ed. Examples: make→making, ride→riding, hope→hoping, use→using.",
+        "zh": "词根以不发音的 e 结尾时，加 -ing/-ed 等以元音开头的后缀通常先去掉 e。例：make→making，ride→riding，hope→hoping，use→using。"
+      },
+      "notes": [
+        "Keep the e if the suffix starts with a consonant (e.g., hope→hopeful)."
+      ],
+      "fewshot": [
+        "making",
+        "riding",
+        "hoping",
+        "using"
+      ],
+      "pairs": [
+        {
+          "base": "make",
+          "derived": "making",
+          "suffix": "ing",
+          "breakdownBase": "m|a|k|e",
+          "breakdownDerived": "m|a|k|ing"
+        },
+        {
+          "base": "ride",
+          "derived": "riding",
+          "suffix": "ing",
+          "breakdownBase": "r|i|d|e",
+          "breakdownDerived": "r|i|d|ing"
+        },
+        {
+          "base": "hope",
+          "derived": "hoping",
+          "suffix": "ing",
+          "breakdownBase": "h|o|p|e",
+          "breakdownDerived": "h|o|p|ing"
+        },
+        {
+          "base": "use",
+          "derived": "using",
+          "suffix": "ing",
+          "breakdownBase": "u|s|e",
+          "breakdownDerived": "u|s|ing"
+        }
+      ]
+    },
+    {
+      "id": "suffix_change.y_to_i",
+      "category": "12_spelling_changes_suffixes",
+      "graphemes": [],
+      "focus": {
+        "type": "spelling_change",
+        "value": "suffix_change.y_to_i"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "Change y to i",
+        "name_cn": "y 变 i"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "If a word ends with consonant + y, change y to i before adding -es, -ed, -er, or -est. Examples: cry→cried, try→tries, happy→happier, carry→carried.",
+        "zh": "词尾是“辅音 + y”时，加 -es/-ed/-er/-est 通常先把 y 变成 i。例：cry→cried，try→tries，happy→happier，carry→carried。"
+      },
+      "notes": [
+        "If the word ends with vowel + y, keep y (play→played)."
+      ],
+      "fewshot": [
+        "cried",
+        "tries",
+        "happier",
+        "carried"
+      ],
+      "pairs": [
+        {
+          "base": "cry",
+          "derived": "cried",
+          "suffix": "ed",
+          "breakdownBase": "c|r|y",
+          "breakdownDerived": "c|r|i|ed"
+        },
+        {
+          "base": "try",
+          "derived": "tries",
+          "suffix": "es",
+          "breakdownBase": "t|r|y",
+          "breakdownDerived": "t|r|i|es"
+        },
+        {
+          "base": "happy",
+          "derived": "happier",
+          "suffix": "er",
+          "breakdownBase": "h|a|p|p|y",
+          "breakdownDerived": "h|a|p|p|i|er"
+        },
+        {
+          "base": "carry",
+          "derived": "carried",
+          "suffix": "ed",
+          "breakdownBase": "c|a|r|r|y",
+          "breakdownDerived": "c|a|r|r|i|ed"
+        }
+      ]
+    },
+    {
+      "id": "syllable.closed",
+      "category": "13_syllable_types",
+      "graphemes": [],
+      "focus": {
+        "type": "concept",
+        "value": "syllable.closed"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "Closed syllable",
+        "name_cn": "闭音节"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "A closed syllable ends in a consonant; the vowel is usually short. Examples: cat, basket, rabbit, sunset.",
+        "zh": "闭音节：音节以辅音结尾，元音通常读短音。 例词：cat，basket，rabbit，sunset。"
+      },
+      "notes": [],
+      "fewshot": [
+        "cat",
+        "basket",
+        "rabbit",
+        "sunset"
+      ],
+      "examples": [
+        {
+          "word": "cat",
+          "breakdown": "c|a|t",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "basket",
+          "breakdown": "b|a|s|k|e|t",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "rabbit",
+          "breakdown": "r|a|b|b|i|t",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "sunset",
+          "breakdown": "s|u|n|s|e|t",
+          "highlight": {
+            "type": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "syllable.consonant_le",
+      "category": "13_syllable_types",
+      "graphemes": [],
+      "focus": {
+        "type": "concept",
+        "value": "syllable.consonant_le"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "Consonant-le syllable",
+        "name_cn": "辅音+le音节"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Consonant + le at the end forms a syllable (…-le). Examples: table, apple, candle, turtle.",
+        "zh": "词尾“辅音+le”构成一个音节（…-le）。 例词：table，apple，candle，turtle。"
+      },
+      "notes": [],
+      "fewshot": [
+        "table",
+        "apple",
+        "candle",
+        "turtle"
+      ],
+      "examples": [
+        {
+          "word": "table",
+          "breakdown": "t|a|b|le",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "apple",
+          "breakdown": "a|p|p|le",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "candle",
+          "breakdown": "c|a|n|d|le",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "turtle",
+          "breakdown": "t|ur|t|le",
+          "highlight": {
+            "type": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "syllable.open",
+      "category": "13_syllable_types",
+      "graphemes": [],
+      "focus": {
+        "type": "concept",
+        "value": "syllable.open"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "Open syllable",
+        "name_cn": "开音节"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "An open syllable ends in a vowel; the vowel is usually long. Examples: me, go, hi, she.",
+        "zh": "开音节：音节以元音结尾，元音通常读长音。 例词：me，go，hi，she。"
+      },
+      "notes": [],
+      "fewshot": [
+        "me",
+        "go",
+        "hi",
+        "she"
+      ],
+      "examples": [
+        {
+          "word": "me",
+          "breakdown": "m|e",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "go",
+          "breakdown": "g|o",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "hi",
+          "breakdown": "h|i",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "she",
+          "breakdown": "sh|e",
+          "highlight": {
+            "type": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "syllable.r_controlled",
+      "category": "13_syllable_types",
+      "graphemes": [],
+      "focus": {
+        "type": "concept",
+        "value": "syllable.r_controlled"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "R-controlled syllable",
+        "name_cn": "R 控制音节"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "In an r-controlled syllable, the vowel is controlled by r. Examples: car, bird, corn, turn.",
+        "zh": "R 控制音节：元音受 r 影响，发音改变。 例词：car，bird，corn，turn。"
+      },
+      "notes": [],
+      "fewshot": [
+        "car",
+        "bird",
+        "corn",
+        "turn"
+      ],
+      "examples": [
+        {
+          "word": "car",
+          "breakdown": "c|ar",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "bird",
+          "breakdown": "b|ir|d",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "corn",
+          "breakdown": "c|or|n",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "turn",
+          "breakdown": "t|ur|n",
+          "highlight": {
+            "type": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "syllable.vce",
+      "category": "13_syllable_types",
+      "graphemes": [],
+      "focus": {
+        "type": "concept",
+        "value": "syllable.vce"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "VCe syllable",
+        "name_cn": "魔法E音节"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "A VCe syllable has a silent e that makes the vowel long. Examples: cake, bike, rope, cube.",
+        "zh": "VCe（魔法E）音节：词尾 e 不发音，让元音读长音。 例词：cake，bike，rope，cube。"
+      },
+      "notes": [],
+      "fewshot": [
+        "cake",
+        "bike",
+        "rope",
+        "cube"
+      ],
+      "examples": [
+        {
+          "word": "cake",
+          "breakdown": "c|a|k|e",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "bike",
+          "breakdown": "b|i|k|e",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "rope",
+          "breakdown": "r|o|p|e",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "cube",
+          "breakdown": "c|u|b|e",
+          "highlight": {
+            "type": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "syllable.vowel_team",
+      "category": "13_syllable_types",
+      "graphemes": [],
+      "focus": {
+        "type": "concept",
+        "value": "syllable.vowel_team"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "Vowel team syllable",
+        "name_cn": "元音组合音节"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "A vowel team syllable contains two vowels working together. Examples: rain, boat, seed, moon.",
+        "zh": "元音组合音节：两个元音一起表示一个元音音值。 例词：rain，boat，seed，moon。"
+      },
+      "notes": [],
+      "fewshot": [
+        "rain",
+        "boat",
+        "seed",
+        "moon"
+      ],
+      "examples": [
+        {
+          "word": "rain",
+          "breakdown": "r|ai|n",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "boat",
+          "breakdown": "b|oa|t",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "seed",
+          "breakdown": "s|ee|d",
+          "highlight": {
+            "type": "none"
+          }
+        },
+        {
+          "word": "moon",
+          "breakdown": "m|oo|n",
+          "highlight": {
+            "type": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "consonant.silent_gn",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "gn"
+      ],
+      "sound": {
+        "ipa": "/n/",
+        "name_en": "gn: g is often silent; gn says /n/",
+        "name_cn": "gn：g 常不发音，gn 读 /n/"
+      },
+      "position": [
+        "beginning",
+        "ending"
+      ],
+      "tts": {
+        "en": "Silent g in gn: In many words, gn says /n/. Examples: gnat, gnaw, sign, design.",
+        "zh": "gn 的弱/静音规则：很多词里 g 不发音，gn 读 /n/。例词：gnat，gnaw，sign，design。"
+      },
+      "notes": [
+        "Common at the beginning of some words (gnat, gnaw) and in some words ending with -gn (sign, design).",
+        "Not consistent in every word (e.g., magnet, signal); treat as a pattern with exceptions."
+      ],
+      "fewshot": [
+        "gnat",
+        "gnaw",
+        "sign",
+        "design"
+      ],
+      "examples": [
+        {
+          "word": "gnat",
+          "breakdown": "gn|a|t",
+          "highlight": {
+            "type": "token",
+            "value": "gn"
+          }
+        },
+        {
+          "word": "gnaw",
+          "breakdown": "gn|aw",
+          "highlight": {
+            "type": "token",
+            "value": "gn"
+          }
+        },
+        {
+          "word": "sign",
+          "breakdown": "s|i|gn",
+          "highlight": {
+            "type": "token",
+            "value": "gn"
+          }
+        },
+        {
+          "word": "design",
+          "breakdown": "d|e|s|i|gn",
+          "highlight": {
+            "type": "token",
+            "value": "gn"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "gn",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.digraph.gh_initial_g",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "gh"
+      ],
+      "sound": {
+        "ipa": "/g/",
+        "name_en": "gh at the beginning: gh says /g/",
+        "name_cn": "词首 gh：读 /g/"
+      },
+      "position": [
+        "beginning"
+      ],
+      "tts": {
+        "en": "At the beginning of a word, gh usually says /g/. Examples: ghost, ghoul, ghast, gherkin.",
+        "zh": "词首 gh 通常读 /g/。例词：ghost，ghoul，ghast，gherkin。"
+      },
+      "notes": [
+        "This spelling is uncommon; mostly appears at the beginning of a word."
+      ],
+      "fewshot": [
+        "ghost",
+        "ghoul",
+        "ghast",
+        "gherkin"
+      ],
+      "examples": [
+        {
+          "word": "ghost",
+          "breakdown": "gh|o|s|t",
+          "highlight": {
+            "type": "token",
+            "value": "gh"
+          }
+        },
+        {
+          "word": "ghoul",
+          "breakdown": "gh|ou|l",
+          "highlight": {
+            "type": "token",
+            "value": "gh"
+          }
+        },
+        {
+          "word": "ghast",
+          "breakdown": "gh|a|s|t",
+          "highlight": {
+            "type": "token",
+            "value": "gh"
+          }
+        },
+        {
+          "word": "gherkin",
+          "breakdown": "gh|er|k|i|n",
+          "highlight": {
+            "type": "token",
+            "value": "gh"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "gh",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.digraph.gh_f",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "gh"
+      ],
+      "sound": {
+        "ipa": "/f/",
+        "name_en": "gh can say /f/ in a small set of words",
+        "name_cn": "gh 在少量词中可读 /f/"
+      },
+      "position": [
+        "ending"
+      ],
+      "tts": {
+        "en": "In a small set of words, gh says /f/. Examples: laugh, rough, tough, enough.",
+        "zh": "在少量词里，gh 读 /f/。例词：laugh，rough，tough，enough。"
+      },
+      "notes": [
+        "This pattern is not very productive; best learned as a word list.",
+        "The vowel spellings in these words are irregular (e.g., -ough has multiple pronunciations)."
+      ],
+      "constraints": {
+        "wordListOnly": true
+      },
+      "fewshot": [
+        "laugh",
+        "rough",
+        "tough",
+        "enough"
+      ],
+      "examples": [
+        {
+          "word": "laugh",
+          "breakdown": "l|au|gh",
+          "highlight": {
+            "type": "token",
+            "value": "gh"
+          }
+        },
+        {
+          "word": "rough",
+          "breakdown": "r|ou|gh",
+          "highlight": {
+            "type": "token",
+            "value": "gh"
+          }
+        },
+        {
+          "word": "tough",
+          "breakdown": "t|ou|gh",
+          "highlight": {
+            "type": "token",
+            "value": "gh"
+          }
+        },
+        {
+          "word": "enough",
+          "breakdown": "e|n|ou|gh",
+          "highlight": {
+            "type": "token",
+            "value": "gh"
+          }
+        }
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "gh",
+        "match": "token"
+      }
+    },
+    {
+      "id": "consonant.digraph.gu_hard_g",
+      "category": "03_consonant_digraphs",
+      "graphemes": [
+        "gu"
+      ],
+      "focus": {
+        "type": "grapheme_with_context",
+        "value": "gu",
+        "match": "token",
+        "context": {
+          "en": "Often before e, i, or y; the u is silent and keeps g hard.",
+          "zh": "常在 e/i/y 前；u 不发音，用来“保护”g 保持硬音。"
+        }
+      },
+      "sound": {
+        "ipa": "/g/",
+        "name_en": "gu: u is silent; gu spells /g/",
+        "name_cn": "gu：u 不发音，gu 读 /g/"
+      },
+      "position": [
+        "before_e_i_y"
+      ],
+      "tts": {
+        "en": "Silent u in gu: The u is silent and keeps g saying /g/ before e or i. Examples: guess, guest, guide, guilt.",
+        "zh": "gu 的静音 u：u 不发音，用来让 g 在 e/i 前仍读 /g/。例词：guess，guest，guide，guilt。"
+      },
+      "notes": [
+        "Many programs teach this as 'u protects g' so g does not become soft before e/i/y.",
+        "Not every gu word has a silent u (e.g., language); treat as a helpful pattern."
+      ],
+      "fewshot": [
+        "guess",
+        "guest",
+        "guide",
+        "guilt"
+      ],
+      "examples": [
+        {
+          "word": "guess",
+          "breakdown": "gu|e|ss",
+          "highlight": {
+            "type": "token",
+            "value": "gu"
+          }
+        },
+        {
+          "word": "guest",
+          "breakdown": "gu|e|st",
+          "highlight": {
+            "type": "token",
+            "value": "gu"
+          }
+        },
+        {
+          "word": "guide",
+          "breakdown": "gu|i_e|d",
+          "highlight": {
+            "type": "token",
+            "value": "gu"
+          }
+        },
+        {
+          "word": "guilt",
+          "breakdown": "gu|i|l|t",
+          "highlight": {
+            "type": "token",
+            "value": "gu"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vowel.schwa_unstressed",
+      "category": "14_schwa",
+      "graphemes": [
+        "a",
+        "e",
+        "i",
+        "o",
+        "u",
+        "y"
+      ],
+      "focus": {
+        "type": "concept",
+        "value": "schwa",
+        "match": "concept"
+      },
+      "sound": {
+        "ipa": "/ə/",
+        "name_en": "Schwa /ə/ in unstressed syllables",
+        "name_cn": "非重读音节的 Schwa /ə/（弱读）"
+      },
+      "position": [
+        "unstressed_syllable"
+      ],
+      "tts": {
+        "en": "Schwa: In an unstressed syllable, a vowel often sounds like the relaxed 'uh' sound, schwa. Any vowel letter can spell schwa. Examples: about, pencil, lemon, circus.",
+        "zh": "Schwa 弱读：在非重读音节里，元音常读成放松的“uh”音，也就是 /ə/。任何元音字母都可能表示 schwa。例词：about，pencil，lemon，circus。"
+      },
+      "notes": [
+        "Schwa occurs in unstressed (unaccented) syllables; it's one of the most common vowel sounds.",
+        "Any vowel letter (a, e, i, o, u, y) can represent schwa, so decoding longer words often requires vocabulary support."
+      ],
+      "fewshot": [
+        "about",
+        "pencil",
+        "lemon",
+        "circus"
+      ],
+      "examples": [
+        {
+          "word": "about",
+          "breakdown": "a|b|ou|t",
+          "highlight": {
+            "type": "token",
+            "value": "a"
+          }
+        },
+        {
+          "word": "pencil",
+          "breakdown": "p|e|n|c|i|l",
+          "highlight": {
+            "type": "token",
+            "value": "i"
+          }
+        },
+        {
+          "word": "lemon",
+          "breakdown": "l|e|m|o|n",
+          "highlight": {
+            "type": "token",
+            "value": "o"
+          }
+        },
+        {
+          "word": "circus",
+          "breakdown": "c|ir|c|u|s",
+          "highlight": {
+            "type": "token",
+            "value": "u"
+          }
+        }
+      ],
+      "constraints": {
+        "conceptRule": true
+      }
+    },
+    {
+      "id": "syllable.divide.vcccv",
+      "category": "15_syllable_division",
+      "graphemes": [],
+      "focus": {
+        "type": "concept",
+        "value": "syllable.divide.vcccv",
+        "match": "concept"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "VCCCV: keep common blends/digraphs together",
+        "name_cn": "VCCCV：三个辅音夹在两个元音之间，优先保持常见复合辅音不被拆开"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Syllable division: VCCCV pattern. When three consonants are between two vowels, try to keep a common blend or digraph together. If the last two consonants form a blend like st, tr, gr, pl, divide after the first consonant: mon-ster, hun-dred. If not, divide after the second consonant: pump-kin. Do not split consonant digraphs like sh, ch, th.",
+        "zh": "音节划分：VCCCV。两个元音之间有三个辅音时，优先让常见复合辅音（如 st、tr、gr、pl）保持在一起。如果后两个辅音能组成常见复合辅音，就在第一个辅音后切分：mon-ster，hun-dred。否则通常在第二个辅音后切分：pump-kin。并且不要拆分 sh、ch、th 这类辅音字母组合。"
+      },
+      "notes": [
+        "Execution priority: check VCCCV before VCCV to avoid mis-parsing three-consonant clusters.",
+        "Heuristic: if C2+C3 is a common blend/digraph, prefer V C1 / C2C3 V; otherwise V C1C2 / C3 V.",
+        "This is a syllable-division strategy (concept rule), not a guaranteed pronunciation rule."
+      ],
+      "fewshot": [
+        "monster",
+        "hundred",
+        "pilgrim",
+        "pumpkin"
+      ],
+      "examples": [
+        {
+          "word": "monster",
+          "breakdown": "m|o|n|s|t|er",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "m|o|n",
+            "s|t|e|r"
+          ],
+          "boundaryAfterTokenIndex": 2
+        },
+        {
+          "word": "hundred",
+          "breakdown": "h|u|n|d|r|e|d",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "h|u|n",
+            "d|r|e|d"
+          ],
+          "boundaryAfterTokenIndex": 2
+        },
+        {
+          "word": "pilgrim",
+          "breakdown": "p|i|l|g|r|i|m",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "p|i|l",
+            "g|r|i|m"
+          ],
+          "boundaryAfterTokenIndex": 2
+        },
+        {
+          "word": "pumpkin",
+          "breakdown": "p|u|m|p|k|i|n",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "p|u|m|p",
+            "k|i|n"
+          ],
+          "boundaryAfterTokenIndex": 3
+        }
+      ]
+    },
+    {
+      "id": "syllable.divide.vccv",
+      "category": "15_syllable_division",
+      "graphemes": [],
+      "focus": {
+        "type": "concept",
+        "value": "syllable.divide.vccv",
+        "match": "concept"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "VCCV: divide between the two consonants",
+        "name_cn": "VCCV：两个辅音夹在两个元音之间，通常从中间切分"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Syllable division: VCCV pattern. When two consonants are between two vowels, usually divide between the consonants. Do not split a consonant digraph like sh, ch, th; treat it as a VCV case.",
+        "zh": "音节划分：VCCV。两个元音之间有两个辅音时，通常在两个辅音之间切分。注意：像 sh、ch、th 这类 digraph 不要拆开，遇到它更像 VCV 的情况处理。"
+      },
+      "notes": [
+        "Source-aligned heuristic used in common phonics programs: VCCV → VC/CV (two closed syllables).",
+        "Exception: if the two consonants form a digraph (one sound), do NOT split them."
+      ],
+      "fewshot": [
+        "rabbit",
+        "napkin",
+        "basket",
+        "submit"
+      ],
+      "examples": [
+        {
+          "word": "rabbit",
+          "breakdown": "r|a|b|b|i|t",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "r|a|b",
+            "b|i|t"
+          ],
+          "boundaryAfterTokenIndex": 2
+        },
+        {
+          "word": "napkin",
+          "breakdown": "n|a|p|k|i|n",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "n|a|p",
+            "k|i|n"
+          ],
+          "boundaryAfterTokenIndex": 2
+        },
+        {
+          "word": "basket",
+          "breakdown": "b|a|s|k|e|t",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "b|a|s",
+            "k|e|t"
+          ],
+          "boundaryAfterTokenIndex": 2
+        },
+        {
+          "word": "submit",
+          "breakdown": "s|u|b|m|i|t",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "s|u|b",
+            "m|i|t"
+          ],
+          "boundaryAfterTokenIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "syllable.divide.vcv_two_ways",
+      "category": "15_syllable_division",
+      "graphemes": [],
+      "focus": {
+        "type": "concept",
+        "value": "syllable.divide.vcv_two_ways",
+        "match": "concept"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "VCV: try V/CV first, then VC/V",
+        "name_cn": "VCV：先试 V/CV（开音节），不通再试 VC/V（闭音节）"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Syllable division: VCV pattern. With one consonant between vowels, first try dividing after the first vowel (V/CV), like o-pen. If that doesn't make a real word, try dividing after the consonant (VC/V), like cab-in.",
+        "zh": "音节划分：VCV。两个元音中间只有一个辅音时，先试在第一个元音后切分（V/CV，例如 o-pen）。如果读不通，再试在辅音后切分（VC/V，例如 cab-in）。"
+      },
+      "notes": [
+        "This is a decoding strategy (try both), not a 100% deterministic rule.",
+        "Often V/CV gives an open first syllable (long vowel); VC/V gives a closed first syllable (short vowel)."
+      ],
+      "fewshot": [
+        "open",
+        "human",
+        "cabin",
+        "camel"
+      ],
+      "examples": [
+        {
+          "word": "open",
+          "breakdown": "o|p|e|n",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "o",
+            "p|e|n"
+          ],
+          "boundaryAfterTokenIndex": 0
+        },
+        {
+          "word": "human",
+          "breakdown": "h|u|m|a|n",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "h|u",
+            "m|a|n"
+          ],
+          "boundaryAfterTokenIndex": 1
+        },
+        {
+          "word": "cabin",
+          "breakdown": "c|a|b|i|n",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "c|a|b",
+            "i|n"
+          ],
+          "boundaryAfterTokenIndex": 2
+        },
+        {
+          "word": "camel",
+          "breakdown": "c|a|m|e|l",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "c|a|m",
+            "e|l"
+          ],
+          "boundaryAfterTokenIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "syllable.divide.cle",
+      "category": "15_syllable_division",
+      "graphemes": [
+        "le"
+      ],
+      "focus": {
+        "type": "concept",
+        "value": "syllable.divide.cle",
+        "match": "concept"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "Consonant-le: divide before the consonant",
+        "name_cn": "辅音+le：在 le 前面的辅音处切分"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Syllable division: consonant-le. If a word ends with consonant plus L-E, divide right before that consonant: ta-ble, lit-tle, bum-ble, can-dle.",
+        "zh": "音节划分：辅音+le。单词末尾出现“辅音 + le”时，就在这个辅音前切分：ta-ble，lit-tle，bum-ble，can-dle。"
+      },
+      "notes": [
+        "The -le ending forms its own syllable (C-le).",
+        "Common teaching tip: count back three from the end and divide."
+      ],
+      "fewshot": [
+        "table",
+        "little",
+        "candle",
+        "bumble"
+      ],
+      "examples": [
+        {
+          "word": "table",
+          "breakdown": "t|a|b|l|e",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "t|a",
+            "b|l|e"
+          ],
+          "boundaryAfterTokenIndex": 1
+        },
+        {
+          "word": "little",
+          "breakdown": "l|i|t|t|l|e",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "l|i|t",
+            "t|l|e"
+          ],
+          "boundaryAfterTokenIndex": 2
+        },
+        {
+          "word": "candle",
+          "breakdown": "c|a|n|d|l|e",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "c|a|n",
+            "d|l|e"
+          ],
+          "boundaryAfterTokenIndex": 2
+        },
+        {
+          "word": "bumble",
+          "breakdown": "b|u|mb|l|e",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "b|u|m",
+            "b|l|e"
+          ],
+          "boundaryAfterTokenIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "syllable.divide.compound",
+      "category": "15_syllable_division",
+      "graphemes": [],
+      "focus": {
+        "type": "concept",
+        "value": "syllable.divide.compound",
+        "match": "concept"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "Compound words: split between the two words",
+        "name_cn": "复合词：在两个词之间切分"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Syllable division: compound words. If a long word is made of two smaller words, divide between the words: sun-set, rain-bow, base-ball, playground.",
+        "zh": "音节划分：复合词。如果一个长词由两个小词组成，就在两个词的边界切分：sun-set，rain-bow，base-ball，playground。"
+      },
+      "notes": [
+        "Look for two meaningful smaller words inside the long word.",
+        "This often corresponds to a clear syllable boundary."
+      ],
+      "fewshot": [
+        "sunset",
+        "rainbow",
+        "baseball",
+        "playground"
+      ],
+      "examples": [
+        {
+          "word": "sunset",
+          "breakdown": "s|u|n|s|e|t",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "s|u|n",
+            "s|e|t"
+          ],
+          "boundaryAfterTokenIndex": 2
+        },
+        {
+          "word": "rainbow",
+          "breakdown": "r|ai|n|b|ow",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "r|ai|n",
+            "b|ow"
+          ],
+          "boundaryAfterTokenIndex": 2
+        },
+        {
+          "word": "baseball",
+          "breakdown": "b|a|s|e|b|a|ll",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "b|a|s|e",
+            "b|a|ll"
+          ],
+          "boundaryAfterTokenIndex": 3
+        },
+        {
+          "word": "playground",
+          "breakdown": "p|l|ay|g|r|ou|n|d",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "p|l|ay",
+            "g|r|ou|n|d"
+          ],
+          "boundaryAfterTokenIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "syllable.divide.prefix_suffix",
+      "category": "15_syllable_division",
+      "graphemes": [],
+      "focus": {
+        "type": "concept",
+        "value": "syllable.divide.prefix_suffix",
+        "match": "concept"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "Prefixes and suffixes: divide at morpheme boundaries",
+        "name_cn": "前缀/后缀：按词根边界切分"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Syllable division: prefixes and suffixes. When you see a common prefix or suffix, divide at that boundary: re-play, un-happy, help-less, hope-ful.",
+        "zh": "音节划分：前缀/后缀。看到常见前缀或后缀时，可以在词根边界切分：re-play，un-happy，help-less，hope-ful。"
+      },
+      "notes": [
+        "This helps decoding and also connects to meaning.",
+        "Not every split is a perfect syllable boundary, but it is a strong starting point."
+      ],
+      "fewshot": [
+        "replay",
+        "unhappy",
+        "helpless",
+        "hopeful"
+      ],
+      "examples": [
+        {
+          "word": "replay",
+          "breakdown": "r|e|p|l|ay",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "r|e",
+            "p|l|ay"
+          ],
+          "boundaryAfterTokenIndex": 1
+        },
+        {
+          "word": "unhappy",
+          "breakdown": "u|n|h|a|pp|y",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "u|n",
+            "h|a|pp|y"
+          ],
+          "boundaryAfterTokenIndex": 1
+        },
+        {
+          "word": "helpless",
+          "breakdown": "h|e|l|p|l|e|ss",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "h|e|l|p",
+            "l|e|ss"
+          ],
+          "boundaryAfterTokenIndex": 3
+        },
+        {
+          "word": "hopeful",
+          "breakdown": "h|o|p|e|f|u|l",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "h|o|p|e",
+            "f|u|l"
+          ],
+          "boundaryAfterTokenIndex": 3
+        }
+      ]
+    },
+    {
+      "id": "syllable.divide.vv_split",
+      "category": "15_syllable_division",
+      "graphemes": [],
+      "focus": {
+        "type": "concept",
+        "value": "syllable.divide.vv_split",
+        "match": "concept"
+      },
+      "sound": {
+        "ipa": null,
+        "name_en": "VV: sometimes split between the vowels (hiatus)",
+        "name_cn": "双元音字母：少数词会在两个元音字母之间分开读（hiatus）"
+      },
+      "position": [
+        "any"
+      ],
+      "tts": {
+        "en": "Syllable division: two vowels together. Most of the time, two vowels act as one vowel team (one sound). But in some words, the vowels split into two syllables, like di-et, po-em, li-on, re-act.",
+        "zh": "音节划分：两个元音字母连在一起时，多数情况是一个元音组合（只发一个元音）。但也有少数词会拆成两个音节，例如 di-et，po-em，li-on，re-act。"
+      },
+      "notes": [
+        "Mark as lower productivity: this is a small set of words; avoid over-generalizing.",
+        "Useful for decoding words like diet/poem/lion where both vowels are heard separately."
+      ],
+      "fewshot": [
+        "diet",
+        "poem",
+        "lion",
+        "react"
+      ],
+      "examples": [
+        {
+          "word": "diet",
+          "breakdown": "d|ie|t",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "d|i",
+            "e|t"
+          ],
+          "boundaryAfterTokenIndex": 1
+        },
+        {
+          "word": "poem",
+          "breakdown": "p|oe|m",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "p|o",
+            "e|m"
+          ],
+          "boundaryAfterTokenIndex": 1
+        },
+        {
+          "word": "lion",
+          "breakdown": "l|i|o|n",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "l|i",
+            "o|n"
+          ],
+          "boundaryAfterTokenIndex": 1
+        },
+        {
+          "word": "react",
+          "breakdown": "r|ea|c|t",
+          "highlight": {
+            "type": "none"
+          },
+          "syllables": [
+            "r|e",
+            "a|c|t"
+          ],
+          "boundaryAfterTokenIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "consonant.s_between_vowels_z",
+      "category": "16_consonant_voicing",
+      "graphemes": [
+        "s"
+      ],
+      "focus": {
+        "type": "grapheme",
+        "value": "s",
+        "match": "token"
+      },
+      "sound": {
+        "ipa": "/z/",
+        "name_en": "S can say /z/ (voiced) between vowels",
+        "name_cn": "S 在某些环境下读 /z/（浊化）"
+      },
+      "position": [
+        "middle"
+      ],
+      "context": {
+        "betweenVowels": true,
+        "orBeforeM": true
+      },
+      "tts": {
+        "en": "Voicing: the letter S is often voiced to /z/ when it is between two vowels, or before an M. Examples: mu-sic, pri-son, rea-son, ri-se. This is common but not universal.",
+        "zh": "清浊变化：字母 s 在两个元音之间（或在 m 前）时，常读作浊音 /z/。例词：mu-sic，pri-son，rea-son，ri-se。注意：这是常见倾向，但不是百分之百。"
+      },
+      "notes": [
+        "Teaching note in several phonics/spelling programs: s between two vowels often says /z/ (and sometimes before m).",
+        "Mark as 'often' not always; there are exceptions (e.g., basic)."
+      ],
+      "fewshot": [
+        "music",
+        "prison",
+        "reason",
+        "rise"
+      ],
+      "examples": [
+        {
+          "word": "music",
+          "breakdown": "m|u|s|i|c",
+          "highlight": {
+            "type": "token",
+            "value": "s"
+          },
+          "syllables": [
+            "m|u",
+            "s|i|c"
+          ]
+        },
+        {
+          "word": "prison",
+          "breakdown": "p|r|i|s|o|n",
+          "highlight": {
+            "type": "token",
+            "value": "s"
+          },
+          "syllables": [
+            "p|r|i",
+            "s|o|n"
+          ]
+        },
+        {
+          "word": "reason",
+          "breakdown": "r|ea|s|o|n",
+          "highlight": {
+            "type": "token",
+            "value": "s"
+          },
+          "syllables": [
+            "r|ea",
+            "s|o|n"
+          ]
+        },
+        {
+          "word": "rise",
+          "breakdown": "r|i|s|e",
+          "highlight": {
+            "type": "token",
+            "value": "s"
+          },
+          "syllables": [
+            "r|i",
+            "s|e"
+          ],
+          "tokenFlags": [
+            {
+              "index": 3,
+              "flag": "silent"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scopeSequence": [
+    "consonant.single.b",
+    "consonant.single.c",
+    "consonant.single.d",
+    "consonant.single.f",
+    "consonant.single.g",
+    "consonant.single.h",
+    "consonant.single.j",
+    "consonant.single.k",
+    "consonant.single.l",
+    "consonant.single.m",
+    "consonant.single.n",
+    "consonant.single.p",
+    "consonant.single.qu",
+    "consonant.single.r",
+    "consonant.single.s",
+    "consonant.single.t",
+    "consonant.single.v",
+    "consonant.single.w",
+    "consonant.single.x",
+    "consonant.single.y_consonant",
+    "consonant.single.z",
+    "vowel.short.a",
+    "vowel.short.e",
+    "vowel.short.i",
+    "vowel.short.o",
+    "vowel.short.u",
+    "consonant.digraph.ch",
+    "consonant.digraph.ck",
+    "consonant.digraph.ng",
+    "consonant.digraph.nk",
+    "consonant.digraph.ph",
+    "consonant.digraph.sh",
+    "consonant.digraph.th_voiced",
+    "consonant.digraph.th_voiceless",
+    "consonant.digraph.wh",
+    "consonant.silent_kn",
+    "consonant.silent_mb",
+    "consonant.silent_wr",
+    "consonant.silent_gn",
+    "consonant.digraph.gh_initial_g",
+    "consonant.digraph.gh_f",
+    "consonant.digraph.gu_hard_g",
+    "consonant.blends.l",
+    "consonant.blends.r",
+    "consonant.blends.s",
+    "consonant.blends.thr_str",
+    "ending.consonant_le",
+    "ending.dge",
+    "ending.floss",
+    "ending.tch",
+    "vowel.vce.a_e",
+    "vowel.vce.e_e",
+    "vowel.vce.i_e",
+    "vowel.vce.o_e",
+    "vowel.vce.u_e",
+    "vowel.team.ai",
+    "vowel.team.ay",
+    "vowel.team.ea_long_e",
+    "vowel.team.ee",
+    "vowel.team.ie_long_i",
+    "vowel.team.igh",
+    "vowel.team.oa",
+    "vowel.team.ow_long_o",
+    "vowel.rcontrolled.ar",
+    "vowel.rcontrolled.er",
+    "vowel.rcontrolled.ir",
+    "vowel.rcontrolled.or",
+    "vowel.rcontrolled.ur",
+    "vowel.rcontrolled.wor",
+    "vowel.other.au",
+    "vowel.other.aw",
+    "vowel.other.ea_short_e",
+    "vowel.other.oi",
+    "vowel.other.oo_long",
+    "vowel.other.oo_short",
+    "vowel.other.ou",
+    "vowel.other.ow_diphthong",
+    "vowel.other.oy",
+    "consonant.soft_c",
+    "consonant.soft_g",
+    "vowel.y_final_long_e",
+    "vowel.y_final_long_i",
+    "vowel.y_middle_short_i",
+    "suffix.ed_d",
+    "suffix.ed_id",
+    "suffix.ed_t",
+    "suffix.ing",
+    "suffix.plural_es",
+    "suffix.plural_s",
+    "consonant.s_between_vowels_z",
+    "suffix_change.double_final_consonant",
+    "suffix_change.drop_silent_e",
+    "suffix_change.y_to_i",
+    "syllable.closed",
+    "syllable.consonant_le",
+    "syllable.open",
+    "syllable.r_controlled",
+    "syllable.vce",
+    "syllable.vowel_team",
+    "syllable.divide.vcccv",
+    "syllable.divide.vccv",
+    "syllable.divide.vcv_two_ways",
+    "syllable.divide.cle",
+    "syllable.divide.compound",
+    "syllable.divide.prefix_suffix",
+    "syllable.divide.vv_split",
+    "vowel.schwa_unstressed"
+  ],
+  "graphemeIndex": {
+    "b": [
+      "consonant.single.b"
+    ],
+    "c": [
+      "consonant.single.c",
+      "consonant.soft_c"
+    ],
+    "d": [
+      "consonant.single.d"
+    ],
+    "f": [
+      "consonant.single.f"
+    ],
+    "g": [
+      "consonant.single.g",
+      "consonant.soft_g"
+    ],
+    "h": [
+      "consonant.single.h"
+    ],
+    "j": [
+      "consonant.single.j"
+    ],
+    "k": [
+      "consonant.single.k"
+    ],
+    "l": [
+      "consonant.single.l"
+    ],
+    "m": [
+      "consonant.single.m"
+    ],
+    "n": [
+      "consonant.single.n"
+    ],
+    "p": [
+      "consonant.single.p"
+    ],
+    "qu": [
+      "consonant.single.qu"
+    ],
+    "r": [
+      "consonant.single.r"
+    ],
+    "s": [
+      "consonant.single.s",
+      "suffix.plural_s",
+      "consonant.s_between_vowels_z"
+    ],
+    "t": [
+      "consonant.single.t"
+    ],
+    "v": [
+      "consonant.single.v"
+    ],
+    "w": [
+      "consonant.single.w"
+    ],
+    "x": [
+      "consonant.single.x"
+    ],
+    "y": [
+      "consonant.single.y_consonant",
+      "vowel.y_final_long_e",
+      "vowel.y_final_long_i",
+      "vowel.y_middle_short_i",
+      "vowel.schwa_unstressed"
+    ],
+    "z": [
+      "consonant.single.z"
+    ],
+    "a": [
+      "vowel.short.a",
+      "vowel.schwa_unstressed"
+    ],
+    "e": [
+      "vowel.short.e",
+      "vowel.schwa_unstressed"
+    ],
+    "i": [
+      "vowel.short.i",
+      "vowel.schwa_unstressed"
+    ],
+    "o": [
+      "vowel.short.o",
+      "vowel.schwa_unstressed"
+    ],
+    "u": [
+      "vowel.short.u",
+      "vowel.schwa_unstressed"
+    ],
+    "ch": [
+      "consonant.digraph.ch"
+    ],
+    "ck": [
+      "consonant.digraph.ck"
+    ],
+    "ng": [
+      "consonant.digraph.ng"
+    ],
+    "nk": [
+      "consonant.digraph.nk"
+    ],
+    "ph": [
+      "consonant.digraph.ph"
+    ],
+    "sh": [
+      "consonant.digraph.sh"
+    ],
+    "th": [
+      "consonant.digraph.th_voiced",
+      "consonant.digraph.th_voiceless"
+    ],
+    "wh": [
+      "consonant.digraph.wh"
+    ],
+    "kn": [
+      "consonant.silent_kn"
+    ],
+    "mb": [
+      "consonant.silent_mb"
+    ],
+    "wr": [
+      "consonant.silent_wr"
+    ],
+    "bl": [
+      "consonant.blends.l"
+    ],
+    "cl": [
+      "consonant.blends.l"
+    ],
+    "fl": [
+      "consonant.blends.l"
+    ],
+    "gl": [
+      "consonant.blends.l"
+    ],
+    "pl": [
+      "consonant.blends.l"
+    ],
+    "sl": [
+      "consonant.blends.l",
+      "consonant.blends.s"
+    ],
+    "br": [
+      "consonant.blends.r"
+    ],
+    "cr": [
+      "consonant.blends.r"
+    ],
+    "dr": [
+      "consonant.blends.r"
+    ],
+    "fr": [
+      "consonant.blends.r"
+    ],
+    "gr": [
+      "consonant.blends.r"
+    ],
+    "pr": [
+      "consonant.blends.r"
+    ],
+    "tr": [
+      "consonant.blends.r"
+    ],
+    "sc": [
+      "consonant.blends.s"
+    ],
+    "sk": [
+      "consonant.blends.s"
+    ],
+    "sm": [
+      "consonant.blends.s"
+    ],
+    "sn": [
+      "consonant.blends.s"
+    ],
+    "sp": [
+      "consonant.blends.s"
+    ],
+    "st": [
+      "consonant.blends.s"
+    ],
+    "sw": [
+      "consonant.blends.s"
+    ],
+    "thr": [
+      "consonant.blends.thr_str"
+    ],
+    "str": [
+      "consonant.blends.thr_str"
+    ],
+    "spl": [
+      "consonant.blends.thr_str"
+    ],
+    "spr": [
+      "consonant.blends.thr_str"
+    ],
+    "scr": [
+      "consonant.blends.thr_str"
+    ],
+    "le": [
+      "ending.consonant_le"
+    ],
+    "dge": [
+      "ending.dge"
+    ],
+    "ff": [
+      "ending.floss"
+    ],
+    "ll": [
+      "ending.floss"
+    ],
+    "ss": [
+      "ending.floss"
+    ],
+    "zz": [
+      "ending.floss"
+    ],
+    "tch": [
+      "ending.tch"
+    ],
+    "a_e": [
+      "vowel.vce.a_e"
+    ],
+    "e_e": [
+      "vowel.vce.e_e"
+    ],
+    "i_e": [
+      "vowel.vce.i_e"
+    ],
+    "o_e": [
+      "vowel.vce.o_e"
+    ],
+    "u_e": [
+      "vowel.vce.u_e"
+    ],
+    "ai": [
+      "vowel.team.ai"
+    ],
+    "ay": [
+      "vowel.team.ay"
+    ],
+    "ea": [
+      "vowel.team.ea_long_e",
+      "vowel.other.ea_short_e"
+    ],
+    "ee": [
+      "vowel.team.ee"
+    ],
+    "ie": [
+      "vowel.team.ie_long_i"
+    ],
+    "igh": [
+      "vowel.team.igh"
+    ],
+    "oa": [
+      "vowel.team.oa"
+    ],
+    "ow": [
+      "vowel.team.ow_long_o",
+      "vowel.other.ow_diphthong"
+    ],
+    "ar": [
+      "vowel.rcontrolled.ar"
+    ],
+    "er": [
+      "vowel.rcontrolled.er"
+    ],
+    "ir": [
+      "vowel.rcontrolled.ir"
+    ],
+    "or": [
+      "vowel.rcontrolled.or"
+    ],
+    "ur": [
+      "vowel.rcontrolled.ur"
+    ],
+    "wor": [
+      "vowel.rcontrolled.wor"
+    ],
+    "au": [
+      "vowel.other.au"
+    ],
+    "aw": [
+      "vowel.other.aw"
+    ],
+    "oi": [
+      "vowel.other.oi"
+    ],
+    "oo": [
+      "vowel.other.oo_long",
+      "vowel.other.oo_short"
+    ],
+    "ou": [
+      "vowel.other.ou"
+    ],
+    "oy": [
+      "vowel.other.oy"
+    ],
+    "ed": [
+      "suffix.ed_d",
+      "suffix.ed_id",
+      "suffix.ed_t"
+    ],
+    "ing": [
+      "suffix.ing"
+    ],
+    "es": [
+      "suffix.plural_es"
+    ],
+    "gn": [
+      "consonant.silent_gn"
+    ],
+    "gh": [
+      "consonant.digraph.gh_initial_g",
+      "consonant.digraph.gh_f"
+    ],
+    "gu": [
+      "consonant.digraph.gu_hard_g"
+    ]
+  }
+}

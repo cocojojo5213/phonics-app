@@ -1,0 +1,558 @@
+/* 
+ * Phonics V2 Design System
+ * Focus: Clarity, Premium Aesthetics, and Smooth Interactions
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+    /* Color Palette - Premium & Soft */
+    --p-50: #eff6ff;
+    --p-100: #dbeafe;
+    --p-500: #3b82f6;
+    --p-600: #2563eb;
+    --p-700: #1d4ed8;
+
+    --slate-50: #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-400: #94a3b8;
+    --slate-600: #475569;
+    --slate-900: #0f172a;
+
+    /* Theme Tokens */
+    --bg-main: var(--slate-50);
+    --bg-card: #ffffff;
+    --text-main: var(--slate-900);
+    --text-muted: var(--slate-600);
+    --border-soft: var(--slate-200);
+    --accent: var(--p-600);
+
+    /* Phoneme Colors - 彩虹渐变风格 */
+    --phoneme-1: #3b82f6;
+    /* 蓝色 - 辅音 */
+    --phoneme-2: #10b981;
+    /* 绿色 - 元音 */
+    --phoneme-3: #f59e0b;
+    /* 橙色 */
+    --phoneme-4: #8b5cf6;
+    /* 紫色 - digraph */
+    --phoneme-5: #ef4444;
+    /* 红色 - 高亮 */
+    --phoneme-6: #06b6d4;
+    /* 青色 */
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    /* Animation */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+    --bg-main: #0b1120;
+    --bg-card: #1e293b;
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-soft: #334155;
+    --accent: #60a5fa;
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Base Reset --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    transition: var(--transition-smooth);
+}
+
+h1,
+h2,
+h3,
+.logo {
+    font-family: 'Outfit', sans-serif;
+}
+
+/* --- Layout --- */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.header {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-soft);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+[data-theme="dark"] .header {
+    background: rgba(30, 41, 59, 0.7);
+}
+
+.header-inner {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+/* --- Navigation --- */
+.nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.2rem;
+    position: relative;
+    transition: var(--transition-smooth);
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--accent);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: var(--transition-smooth);
+}
+
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* --- Hero Section --- */
+.hero {
+    padding: 100px 0 60px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    color: var(--text-main);
+}
+
+.hero p {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+}
+
+/* --- Cards & Components --- */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-smooth);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent);
+}
+
+
+/* --- Phonics Specific --- */
+.word-card {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.word-main {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.word-highlight {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 3px;
+}
+
+.word-meaning {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* --- Phoneme Breakdown Colors --- */
+.breakdown-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.phoneme {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    min-width: 2.5rem;
+    height: 2.8rem;
+    padding: 0 0.6rem;
+    border-radius: 12px;
+    color: white;
+    background: var(--phoneme-color, var(--phoneme-1));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
+}
+
+.phoneme:hover {
+    transform: scale(1.1);
+}
+
+/* 元音 - 圆角更大，略微不同的风格 */
+.phoneme-vowel {
+    background: linear-gradient(135deg, var(--phoneme-2), #059669);
+    border-radius: 50%;
+    min-width: 2.8rem;
+}
+
+/* Digraph - 双字母组合，略宽 */
+.phoneme-digraph {
+    background: linear-gradient(135deg, var(--phoneme-4), #7c3aed);
+    min-width: 3.2rem;
+    padding: 0 0.8rem;
+}
+
+/* 高亮部分（规则的 focus）- 闪亮效果 */
+.phoneme-focus {
+    background: linear-gradient(135deg, var(--phoneme-5), #dc2626) !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3), 0 4px 12px rgba(239, 68, 68, 0.4);
+    animation: pulse-focus 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-focus {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* 分隔符 */
+.phoneme-sep {
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    opacity: 0.3;
+    margin: 0 0.2rem;
+}
+
+/* --- Buttons --- */
+.btn {
+    padding: 0.8rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--p-700);
+    transform: translateY(-2px);
+}
+
+/* --- Pattern Chips & Box --- */
+.pattern-box {
+    display: none;
+    /* JS toggles to flex */
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    padding: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    margin-bottom: 2rem;
+}
+
+.pattern-chip {
+    padding: 0.6rem 1.2rem;
+    border-radius: 100px;
+    background: var(--bg-main);
+    border: 1px solid var(--border-soft);
+    color: var(--text-main);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+}
+
+.pattern-chip:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    background: var(--bg-card);
+}
+
+.pattern-chip.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.pattern-chip .p-ipa {
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+.pattern-chip.active .p-ipa {
+    opacity: 0.9;
+}
+
+/* --- Flashcard Navigation --- */
+.flashcard-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.flashcard {
+    flex: 1;
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 3rem !important;
+    border-radius: 32px !important;
+    background: var(--bg-card);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.flashcard:active {
+    transform: scale(0.98);
+}
+
+.nav-btn {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 1px solid var(--border-soft);
+    background: var(--bg-card);
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    flex-shrink: 0;
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    transform: scale(1.1);
+}
+
+.nav-btn:disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+}
+
+/* --- Sentence Info --- */
+.sentence-box {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 1.5rem;
+    background: var(--bg-main);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    border: 1px solid transparent;
+}
+
+.sentence-box:hover {
+    background: var(--p-50);
+    border-color: var(--p-100);
+}
+
+.sentence-en {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+}
+
+.sentence-cn {
+    font-size: 1rem;
+    color: var(--text-muted);
+}
+
+.play-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .header-inner {
+        height: 60px;
+    }
+
+    .hero {
+        padding: 60px 0 40px;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .container {
+        padding: 0 1.25rem;
+    }
+
+    /* 移动端卡片全宽，减少间距 */
+    .flashcard-wrapper {
+        gap: 0.5rem;
+        position: relative;
+    }
+
+    /* 手机端隐藏左右按钮，主要靠滑动 */
+    .nav-btn {
+        display: none;
+    }
+
+    .flashcard {
+        padding: 2.5rem 1.5rem !important;
+        min-height: 50vh;
+        border-radius: 24px !important;
+        box-shadow: var(--shadow-md);
+    }
+
+    .flashcard .word-main {
+        font-size: 3rem;
+    }
+
+    .practice-stage h1,
+    .practice-stage [style*="font-size: 5rem"] {
+        font-size: 3rem !important;
+        margin-top: 0.5rem;
+    }
+
+    #pattern-section {
+        margin-top: 1.5rem !important;
+    }
+
+    .pattern-box {
+        padding: 1rem;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .mobile-hint {
+        display: block !important;
+    }
+
+    .category-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+
+    /* 移除移动端点击后的“粘性”Hover效果 */
+    .card:hover,
+    .pattern-chip:hover {
+        transform: none !important;
+    }
+}
+
+/* --- Utils --- */
+.glass {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Phonics | 自然拼读学习工具</title>
+
+    <!-- Meta Tags -->
+    <meta name="description" content="系统学习 100+ 自然拼读规则，掌握见词能读、听音能写的核心能力。支持拼读分解、彩色高亮、语音朗读。">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Favicon & PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+
+<body>
+    <!-- App Container -->
+    <div id="app">
+        <!-- Persistent Navigation Header -->
+        <header class="header">
+            <div class="container header-inner">
+                <a href="#/" class="logo">
+                    <span style="color: var(--accent)">●</span> Phonics
+                </a>
+                <nav class="nav">
+                    <a href="#/" class="nav-link active" data-page="home">首页</a>
+                    <a href="#/learn" class="nav-link" data-page="learn">开始学习</a>
+                    <button onclick="app.toggleTheme()" class="btn-theme"
+                        style="background:none; border:none; cursor:pointer; font-size:0.85rem; margin-left:10px; color: var(--text-muted);">Dark</button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Dynamic Content -->
+        <main id="main">
+            <!-- Initial Hero State (will be replaced by JS) -->
+            <section class="hero">
+                <div class="container">
+                    <h1>自然拼读，从零开始</h1>
+                    <p>系统学习 100+ 发音规则，掌握「见词能读、听音能写」的核心能力。适合英语初学者和教学工作者。</p>
+                    <a href="#/learn" class="btn btn-primary">开始学习</a>
+                </div>
+            </section>
+        </main>
+
+        <!-- Global Toast/Notification Area (Optional) -->
+        <div id="toast-container"></div>
+    </div>
+
+    <!-- Core Scripts -->
+    <script src="js/data-loader.js"></script>
+    <script src="js/audio-loader.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- Service Worker for Offline First -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(console.error);
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+{
+    "name": "phonics-static",
+    "version": "2.3.0",
+    "description": "Phonics - Natural Phonics Learning Tool",
+    "scripts": {
+        "start": "npx serve .",
+        "studio": "node scripts/studio-server.js",
+        "gen": "node scripts/generate-words.js",
+        "tts": "node scripts/generate-tts.js",
+        "merge": "node scripts/merge-words.js",
+        "fix": "node scripts/fix-breakdown.js",
+        "deploy": "echo 'Push to main to deploy to Cloudflare Pages'"
+    },
+    "keywords": [
+        "phonics",
+        "english",
+        "learning",
+        "tts"
+    ],
+    "author": "cocojojo5213",
+    "license": "MIT",
+    "dependencies": {
+        "@google/genai": "^1.0.0",
+        "@google-cloud/text-to-speech": "^6.0.0",
+        "cors": "^2.8.5",
+        "dotenv": "^17.2.3",
+        "express": "^5.2.1"
+    }
+}
