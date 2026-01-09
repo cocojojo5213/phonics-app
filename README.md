@@ -201,4 +201,3 @@ gcloud auth application-default login
 
 如有问题，请在 [GitHub Issues](https://github.com/cocojojo5213/phonics-app/issues) 中反馈。
 
-<iframe style="width:100%;height:auto;min-width:600px;min-height:400px;" src="https://www.star-history.com/embed?secret=Z2l0aHViX3BhdF8xMUJWQUhJUEkwNHFFc1hUYjhhWlBkX3dsYUVUWldsUWRGSGg1bTJsMFRPRDNpaGsyRjBUVjdBOVoxaXJLRER2TlVKWEgyUFVCR3NVTGZvNmt1#cocojojo5213/phonics-app&type=timeline&legend=top-left" frameBorder="0"></iframe>
