@@ -5,8 +5,8 @@
  */
 
 // 尝试加载各 SDK（可选依赖）
-let GenAI, OpenAI, Anthropic;
-try { GenAI = require("@google/genai").GenAI; } catch { }
+let GoogleGenAI, OpenAI, Anthropic;
+try { GoogleGenAI = require("@google/genai").GoogleGenAI; } catch { }
 try { OpenAI = require("openai"); } catch { }
 try { Anthropic = require("@anthropic-ai/sdk"); } catch { }
 
@@ -73,9 +73,27 @@ class AIService {
     _initClient() {
         switch (this.provider) {
             case 'gemini':
-                if (!GenAI) throw new Error('请安装 @google/genai: npm install @google/genai');
-                const genaiConfig = this.apiKey ? { apiKey: this.apiKey } : {};
-                this.client = new GenAI.Client(genaiConfig);
+                if (!GoogleGenAI) throw new Error('请安装 @google/genai: npm install @google/genai');
+
+                // 检测是否使用 Vertex AI 模式
+                const useVertexAI = process.env.GOOGLE_GENAI_USE_VERTEXAI === 'true' ||
+                    process.env.GOOGLE_GENAI_USE_VERTEXAI === 'True';
+
+                let genaiConfig = {};
+                if (useVertexAI) {
+                    // Vertex AI 模式：使用 ADC 认证
+                    genaiConfig = {
+                        vertexai: true,
+                        project: process.env.GOOGLE_CLOUD_PROJECT,
+                        location: process.env.GOOGLE_CLOUD_LOCATION || 'global'
+                    };
+                    console.log(`[AI] 使用 Vertex AI 模式 (项目: ${genaiConfig.project}, 区域: ${genaiConfig.location})`);
+                } else if (this.apiKey) {
+                    // Google AI Studio 模式：使用 API Key
+                    genaiConfig = { apiKey: this.apiKey };
+                }
+
+                this.client = new GoogleGenAI(genaiConfig);
                 break;
 
             case 'openai':
