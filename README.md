@@ -9,6 +9,9 @@
 
 **在线体验**: [phonics.thetruetao.com](https://phonics.thetruetao.com)
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=cocojojo5213/phonics-app&type=timeline&legend=top-left)](https://www.star-history.com/#cocojojo5213/phonics-app&type=timeline&legend=top-left)
 ---
 
 ## 重要声明
