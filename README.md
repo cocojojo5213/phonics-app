@@ -168,9 +168,9 @@ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 
 ## 版本历史
 
-- **v2.4.0 (2026-01-09)** - 通用 AI 接口、实时词典验证、静音字母/音节显示、后台汉化
-- **v2.3.0 (2026-01-09)** - 完整重构：16分类规则库、彩色breakdown、Workshop工具
-- **v2.0.0 (2026-01-09)** - UI 全面重构，Flashcard 模式
+- **v2.4.0 ** - 通用 AI 接口、实时词典验证、静音字母/音节显示、后台汉化
+- **v2.3.0 ** - 完整重构：16分类规则库、彩色breakdown、Workshop工具
+- **v2.0.0 ** - UI 全面重构，Flashcard 模式
 - **v1.x** - 服务器版本（仅修bug）
 
 ---
