@@ -308,6 +308,34 @@ h3,
     margin: 0 0.2rem;
 }
 
+/* 静音字母（如 Magic E）— 灰色虚线边框 */
+.phoneme-silent {
+    background: transparent !important;
+    color: var(--text-muted);
+    opacity: 0.5;
+    border: 2px dashed var(--slate-400);
+    box-shadow: none;
+}
+
+.phoneme-silent:hover {
+    transform: none;
+    opacity: 0.7;
+}
+
+/* 音节分隔显示 */
+.syllables-display {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin: 0.5rem 0 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+    letter-spacing: 0.15em;
+}
+
 /* --- Buttons --- */
 .btn {
     padding: 0.8rem 2rem;

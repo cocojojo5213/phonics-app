@@ -230,9 +230,11 @@ function renderPracticeAction(data) {
                     
                     ${word.breakdown ? `
                         <div class="breakdown-display">
-                            ${formatBreakdown(word.breakdown, word.highlight, pInfo.pattern)}
+                            ${formatBreakdown(word.breakdown, word.highlight, pInfo.pattern, word.tokenFlags)}
                         </div>
                     ` : ''}
+                    
+                    ${formatSyllables(word.syllables)}
                     
                     <div class="word-meaning" style="font-size: 1.5rem; margin-bottom: 2rem; color: var(--text-muted);">${word.meaning || ''}</div>
                     
@@ -308,20 +310,36 @@ function formatWord(word, pattern, highlight) {
   return word.replace(regex, `<span class="word-highlight">$1</span>`);
 }
 
-function formatBreakdown(breakdown, highlight, pattern) {
+function formatBreakdown(breakdown, highlight, pattern, tokenFlags = []) {
   if (!breakdown) return '';
 
   const tokens = breakdown.split('|');
   const highlightValue = highlight?.value?.toLowerCase() || pattern?.toLowerCase() || '';
+  const highlightType = highlight?.type || 'token';
+  const highlightIndices = highlight?.indices || [];
+
+  // 创建静音索引 Set
+  const silentIndices = new Set();
+  if (tokenFlags && Array.isArray(tokenFlags)) {
+    tokenFlags.forEach(flag => {
+      if (flag.flag === 'silent') {
+        silentIndices.add(flag.index);
+      }
+    });
+  }
 
   return tokens.map((token, index) => {
     const tokenLower = token.toLowerCase();
-    let colorClass = '';
     let isHighlight = false;
+    let isSilent = silentIndices.has(index);
 
-    // 检查是否是高亮部分（规则的 focus）
-    if (highlightValue && tokenLower === highlightValue) {
-      isHighlight = true;
+    // 检查是否是高亮部分
+    if (highlightType === 'split') {
+      // Split digraph（如 a_e）：高亮 indices 数组中的位置
+      isHighlight = highlightIndices.includes(index);
+    } else {
+      // Token 类型：匹配完整 token
+      isHighlight = highlightValue && tokenLower === highlightValue;
     }
 
     // 分配颜色索引（循环使用）
@@ -335,8 +353,24 @@ function formatBreakdown(breakdown, highlight, pattern) {
       typeClass = 'phoneme-vowel';
     }
 
+    // 静音字母特殊处理
+    if (isSilent) {
+      typeClass = 'phoneme-silent';
+    }
+
     return `<span class="phoneme ${typeClass} ${isHighlight ? 'phoneme-focus' : ''}" style="--phoneme-color: ${PHONEME_COLORS[colorIndex]}">${token}</span>`;
   }).join('<span class="phoneme-sep">·</span>');
+}
+
+// 音节显示格式化
+function formatSyllables(syllables) {
+  if (!syllables || !Array.isArray(syllables) || syllables.length <= 1) {
+    return ''; // 单音节不显示
+  }
+
+  // 提取每个音节的字母（去掉 | 分隔符）
+  const syllableText = syllables.map(s => s.replace(/\|/g, '')).join(' · ');
+  return `<div class="syllables-display">${syllableText}</div>`;
 }
 
 function escapeRegex(str) {

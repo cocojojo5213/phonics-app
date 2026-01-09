@@ -6,6 +6,7 @@
         "start": "npx serve .",
         "studio": "node scripts/studio-server.js",
         "gen": "node scripts/generate-words.js",
+        "validate": "node scripts/validate-words.js",
         "tts": "node scripts/generate-tts.js",
         "merge": "node scripts/merge-words.js",
         "fix": "node scripts/fix-breakdown.js",
@@ -22,6 +23,7 @@
     "dependencies": {
         "@google/genai": "^1.0.0",
         "@google-cloud/text-to-speech": "^6.0.0",
+        "an-array-of-english-words": "^2.0.0",
         "cors": "^2.8.5",
         "dotenv": "^17.2.3",
         "express": "^5.2.1"
