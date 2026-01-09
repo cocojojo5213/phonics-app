@@ -4,7 +4,8 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PWA](https://img.shields.io/badge/PWA-ready-brightgreen.svg)](#pwa-支持)
 
-系统学习 100+ 自然拼读规则，掌握「见词能读、听音能写」的核心能力。适合英语初学者和教学工作者。（你可以自己修改提示词，获取属于自己的词库）
+系统学习 100+ 自然拼读规则，掌握「见词能读、听音能写」的核心能力。  
+适合英语初学者和教学工作者，支持自定义提示词以构建个人词库。
 
 **在线体验**: [phonics.thetruetao.com](https://phonics.thetruetao.com)
 
