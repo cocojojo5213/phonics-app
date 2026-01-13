@@ -42,7 +42,7 @@ class AIService {
         // 优先从环境变量读取配置（支持 admin 后台传递）
         this.apiKey = config.apiKey || process.env.AI_API_KEY;
         this.baseURL = config.baseURL || process.env.AI_BASE_URL;
-        this.modelKey = config.model || process.env.AI_MODEL || 'gemini-3-flash';
+        this.modelKey = config.model || process.env.AI_MODEL || 'gemini-3-flash-preview';
 
         // 自动识别提供商
         this.provider = this._detectProvider();
@@ -168,16 +168,50 @@ class AIService {
     }
 
     async _geminiGenerate(prompt, schema) {
-        const response = await this.client.models.generateContent({
-            model: this.modelName,
-            contents: [{ role: 'user', parts: [{ text: prompt }] }],
-            config: {
-                responseMimeType: 'application/json',
-                responseSchema: schema
-            }
-        });
+        const maxRetries = 3;
+        let lastError;
 
-        return JSON.parse(response.text());
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                // 30秒超时限制
+                const timeoutPromise = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('请求超时 (30s)')), 30000)
+                );
+
+                const responsePromise = this.client.models.generateContent({
+                    model: this.modelName,
+                    contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                    config: {
+                        responseMimeType: 'application/json',
+                        responseSchema: schema,
+                        // Gemini 3 Flash 思考等级: LOW = 快速且稳定
+                        thinkingConfig: {
+                            thinkingLevel: 'LOW'
+                        }
+                    }
+                });
+
+                const response = await Promise.race([responsePromise, timeoutPromise]);
+
+                // 新版 SDK: response.text 是属性，旧版是方法
+                const text = typeof response.text === 'function' ? response.text() : response.text;
+                if (!text) throw new Error('API 返回内容为空');
+                return JSON.parse(text);
+            } catch (error) {
+                lastError = error;
+                const errorName = error.name || 'Error';
+                const errorMsg = error.message || '';
+
+                if (attempt < maxRetries) {
+                    const delay = 3000 * attempt; // 3s, 6s... 指数级退避
+                    console.warn(`   ⚠️ [${this.modelName}] 第 ${attempt} 次重试中... 原因: ${errorName}: ${errorMsg.slice(0, 100)}`);
+                    await new Promise(r => setTimeout(r, delay));
+                }
+            }
+        }
+
+        console.error(`   ❌ [${this.modelName}] 最终处理失败:`, lastError.message);
+        throw lastError;
     }
 
     async _openaiGenerate(prompt, schema) {

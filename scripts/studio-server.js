@@ -1,3 +1,6 @@
+// 加载环境变量
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
@@ -235,7 +238,24 @@ app.post('/api/run', async (req, res) => {
 });
 
 /**
- * 停止任务
+ * 暂停任务（优雅暂停，保存进度）
+ */
+app.post('/api/pause', (req, res) => {
+    const { task } = req.body;
+
+    if (task === 'generate') {
+        // 创建信号文件，让脚本自己检测并暂停
+        const signalPath = path.join(__dirname, '../.stop-generate');
+        fs.writeFileSync(signalPath, new Date().toISOString());
+        broadcastLog(task, 'warn', '暂停信号已发送，等待当前规则处理完成后暂停...');
+        res.json({ success: true, message: '暂停信号已发送' });
+    } else {
+        res.json({ success: false, message: `任务 ${task} 不支持暂停` });
+    }
+});
+
+/**
+ * 强制停止任务（立即终止）
  */
 app.post('/api/stop', (req, res) => {
     const { task } = req.body;
@@ -244,7 +264,7 @@ app.post('/api/stop', (req, res) => {
         const child = runningTasks.get(task);
         child.kill('SIGTERM');
         runningTasks.delete(task);
-        broadcastLog(task, 'warn', `任务 ${task} 已被手动停止`);
+        broadcastLog(task, 'warn', `任务 ${task} 已被强制停止`);
         res.json({ success: true, message: `任务 ${task} 已停止` });
     } else {
         res.json({ success: false, message: `任务 ${task} 未在运行` });

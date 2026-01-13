@@ -7,7 +7,9 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { TextToSpeechClient } = require('@google-cloud/text-to-speech');
+
 
 // 配置
 const CONFIG = {
@@ -16,19 +18,20 @@ const CONFIG = {
     audioOutputPath: path.join(__dirname, '../audio'),
 
     // TTS 语音配置
+    // TTS 语音配置 (2025 最新推荐)
     wordVoice: {
         languageCode: 'en-US',
-        name: 'en-US-Journey-F', // 高质量女声
+        name: 'en-US-Studio-O', // Studio 语音：目前清晰度最高，最适合单词教学
         ssmlGender: 'FEMALE'
     },
     sentenceVoice: {
         languageCode: 'en-US',
-        name: 'en-US-Journey-F',
+        name: 'en-US-Neural2-H', // Neural2-H：用户选择，配额1000RPM
         ssmlGender: 'FEMALE'
     },
     audioConfig: {
         audioEncoding: 'MP3',
-        speakingRate: 0.9, // 稍慢，便于学习
+        speakingRate: 1.0, // 正常语速
         pitch: 0
     }
 };
@@ -39,6 +42,16 @@ function ensureDir(dirPath) {
         fs.mkdirSync(dirPath, { recursive: true });
     }
 }
+
+function normalizeSentence(text) {
+    return text.trim().replace(/\s+/g, ' ');
+}
+
+function getSentenceHash(text) {
+    const normalized = normalizeSentence(text);
+    return crypto.createHash('sha1').update(normalized, 'utf8').digest('hex');
+}
+
 
 // 生成单个音频文件
 async function generateAudio(client, text, outputPath, voiceConfig) {
@@ -131,11 +144,13 @@ async function main() {
 
         // 生成例句音频
         if ((mode === 'sentence' || mode === 'all') && item.sentence) {
-            const sentencePath = path.join(CONFIG.audioOutputPath, 'sentences', `${item.word.toLowerCase()}.mp3`);
+            const sentenceHash = getSentenceHash(item.sentence);
+            const sentencePath = path.join(CONFIG.audioOutputPath, 'sentences', `${sentenceHash}.mp3`);
             if (await generateAudio(client, item.sentence, sentencePath, CONFIG.sentenceVoice)) {
                 sentenceCount++;
             }
         }
+
 
         // 避免 API 限流
         await new Promise(resolve => setTimeout(resolve, 100));

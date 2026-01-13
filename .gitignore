@@ -1,0 +1,24 @@
+node_modules/
+.stop-generate
+data/*.backup.json
+.DS_Store
+Thumbs.db
+
+# 排除大文件和资源文件
+audio/
+fonts/
+bundles/
+library/
+.serena/
+
+# 排除环境配置
+.env
+.env.example
+
+# 排除部署相关文件
+google-cloud-setup.md
+ai-search-optimization.md
+ai-search-test.html
+robots.txt
+sitemap.xml
+package-lock.json

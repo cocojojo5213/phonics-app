@@ -36,13 +36,16 @@
 
 ## 快速开始
 
-### 静态版（推荐）
+### 本地运行
 
 直接把项目部署到任何静态托管服务（Cloudflare Pages、Vercel、GitHub Pages 等）：
 
 ```bash
+# 克隆项目
+git clone https://github.com/cocojojo5213/phonics-app.git
+cd phonics-app
+
 # 本地预览
-cd phonics-static
 npx serve .
 # 访问 http://localhost:3000
 ```
@@ -50,7 +53,6 @@ npx serve .
 ### Workshop 模式（AI 词汇生成）
 
 ```bash
-cd phonics-static
 npm install
 npm run studio
 # 访问 http://localhost:3000/admin.html
@@ -74,7 +76,7 @@ npm run studio
 ## 目录结构
 
 ```
-phonics-static/
+phonics-app/
 ├── index.html              # 主页面
 ├── admin.html              # Workshop 管理后台
 ├── css/
@@ -91,14 +93,12 @@ phonics-static/
 │   ├── generate-tts.js     # TTS 音频生成
 │   ├── merge-words.js      # 数据合并
 │   └── studio-server.js    # 本地服务器
-├── audio/
-│   ├── patterns/           # 真人发音
-│   ├── sentences/          # 例句音频
-│   └── spelling/           # 拼读音频
 ├── sw.js                   # Service Worker
 ├── manifest.json           # PWA 配置
 └── _headers                # CDN 缓存配置
 ```
+
+> **注意**: 音频文件需要单独生成或获取，本仓库为了减小体积不包含音频资源。
 
 ---
 

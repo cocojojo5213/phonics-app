@@ -8,7 +8,7 @@ let phonicsCategories = [];
 
 async function loadPhonicsData() {
     try {
-        const response = await fetch('./data/rules-master.json');
+        const response = await fetch('./data/rules-master.json', { cache: 'force-cache' });
         const rulesData = await response.json();
 
         // 提取分类信息
@@ -29,17 +29,21 @@ async function loadPhonicsData() {
             // 转换为前端期望的格式
             const patternData = {
                 id: rule.id,
-                pattern: rule.graphemes[0], // 主要的 grapheme 作为 pattern
-                pronunciation: rule.sound.ipa,
-                rule: rule.tts.zh,
-                ruleEn: rule.tts.en,
+                // 对于有 graphemes 的规则使用第一个 grapheme，否则使用 sound.name_cn
+                pattern: rule.graphemes && rule.graphemes.length > 0 
+                    ? rule.graphemes[0] 
+                    : (rule.sound?.name_cn || rule.id),
+                // 对于没有 IPA 的规则（如拼写变化、音节类型），使用 name_en 作为说明
+                pronunciation: rule.sound?.ipa || rule.sound?.name_en || '',
+                rule: rule.tts?.zh || '',
+                ruleEn: rule.tts?.en || '',
                 // 转换 examples 为 words 格式
                 words: (rule.examples || []).map(ex => ({
                     word: ex.word,
                     breakdown: ex.breakdown,
                     highlight: ex.highlight,
+                    tokenFlags: ex.tokenFlags || [],
                     syllables: ex.syllables || null,
-                    // 这些字段将由 AI 扩展填充
                     meaning: ex.meaning || '',
                     sentence: ex.sentence || '',
                     sentence_cn: ex.sentence_cn || ''

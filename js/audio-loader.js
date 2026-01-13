@@ -32,8 +32,9 @@ const AudioLoader = (function () {
     const config = {
         bundlesPath: 'bundles',
         audioPath: 'audio',
-        useBundles: true,  // 是否使用 bundle 模式
-        preloadEnabled: true
+        useBundles: false, // 默认关闭：仅在检测到 bundles 可用时开启
+        preloadEnabled: true,
+        bundleIndex: null
     };
 
     /**
@@ -72,22 +73,60 @@ const AudioLoader = (function () {
     }
 
     /**
-     * 检查 bundles 是否可用
+     * bundles 检测（懒加载 + 只检测一次）
+     *
+     * 目标：
+     * - 没有 bundles 时不产生 /bundles/... 404 噪音
+     * - 有 bundles 时才启用 bundle 加速
      */
+    let bundlesAvailabilityPromise = null;
+
     async function checkBundlesAvailable() {
         try {
-            const res = await fetch(`${config.bundlesPath}/index.json`);
-            if (res.ok) {
-                const index = await res.json();
-                // console.log('✅ Bundle 模式可用，分类:', Object.keys(index));
-                return true;
+            const res = await fetch(`${config.bundlesPath}/index.json`, { cache: 'force-cache' });
+            if (!res.ok) {
+                config.useBundles = false;
+                config.bundleIndex = null;
+                return false;
             }
+
+            const index = await res.json();
+            config.bundleIndex = index;
+
+            // 只有当 index 里确实声明了 bundles 时才开启
+            config.useBundles = !!index && typeof index === 'object' && Object.keys(index).length > 0;
+            return config.useBundles;
         } catch (e) {
-            console.log('⚠️ Bundle 不可用，使用直接加载模式');
+            config.useBundles = false;
+            config.bundleIndex = null;
+            return false;
         }
-        config.useBundles = false;
+    }
+
+    async function ensureBundlesChecked() {
+        if (!bundlesAvailabilityPromise) {
+            bundlesAvailabilityPromise = checkBundlesAvailable();
+        }
+        return bundlesAvailabilityPromise;
+    }
+
+    function isBundleAvailable(category, pattern) {
+        const index = config.bundleIndex;
+        if (!index || typeof index !== 'object') return false;
+
+        const fileName = pattern.replace('_', '-');
+        const entry = index[category];
+
+        // 支持几种常见 index 结构：
+        // - { [category]: true }
+        // - { [category]: ["a-e", "ai", ...] }
+        // - { [category]: { "a-e": true, "ai": true } }
+        if (entry === true) return true;
+        if (Array.isArray(entry)) return entry.includes(fileName) || entry.includes(pattern);
+        if (entry && typeof entry === 'object') return !!entry[fileName] || !!entry[pattern];
         return false;
     }
+
 
     /**
      * 加载指定 pattern 的 bundle
@@ -227,8 +266,9 @@ const AudioLoader = (function () {
      * 播放 pattern 发音
      */
     async function playPattern(category, pattern) {
-        // 尝试 bundle 模式
-        if (config.useBundles) {
+        // 尝试 bundle 模式（仅当 index 声明可用时才加载，避免 404）
+        await ensureBundlesChecked();
+        if (config.useBundles && category && pattern && isBundleAvailable(category, pattern)) {
             const bundle = await loadBundle(category, pattern);
             if (bundle && playFromBundle(bundle, '_pattern')) {
                 return;
@@ -248,8 +288,9 @@ const AudioLoader = (function () {
      * 播放规则讲解
      */
     async function playRule(category, pattern) {
-        // 尝试 bundle 模式
-        if (config.useBundles) {
+        // 尝试 bundle 模式（仅当 index 声明可用时才加载，避免 404）
+        await ensureBundlesChecked();
+        if (config.useBundles && category && pattern && isBundleAvailable(category, pattern)) {
             const bundle = await loadBundle(category, pattern);
             if (bundle && playFromBundle(bundle, '_rule')) {
                 return;
@@ -265,8 +306,9 @@ const AudioLoader = (function () {
      * 播放学习技巧
      */
     async function playTip(category, pattern) {
-        // 尝试 bundle 模式
-        if (config.useBundles) {
+        // 尝试 bundle 模式（仅当 index 声明可用时才加载，避免 404）
+        await ensureBundlesChecked();
+        if (config.useBundles && category && pattern && isBundleAvailable(category, pattern)) {
             const bundle = await loadBundle(category, pattern);
             if (bundle && playFromBundle(bundle, '_tip')) {
                 return;
@@ -284,8 +326,9 @@ const AudioLoader = (function () {
     async function playWord(category, pattern, word) {
         const wordLower = word.toLowerCase();
 
-        // 尝试 bundle 模式
-        if (config.useBundles && category && pattern) {
+        // 尝试 bundle 模式（仅当 index 声明可用时才加载，避免 404）
+        await ensureBundlesChecked();
+        if (config.useBundles && category && pattern && isBundleAvailable(category, pattern)) {
             const bundle = await loadBundle(category, pattern);
             if (bundle && playFromBundle(bundle, wordLower)) {
                 return;
@@ -299,22 +342,55 @@ const AudioLoader = (function () {
         );
     }
 
+    function normalizeSentence(text) {
+        return text.trim().replace(/\s+/g, ' ');
+    }
+
+    async function getSentenceHash(text) {
+        if (!text) {
+            return null;
+        }
+
+        const normalized = normalizeSentence(text);
+        if (!('crypto' in window) || !window.crypto.subtle) {
+            return null;
+        }
+
+        const data = new TextEncoder().encode(normalized);
+        const hashBuffer = await window.crypto.subtle.digest('SHA-1', data);
+        return Array.from(new Uint8Array(hashBuffer))
+            .map(byte => byte.toString(16).padStart(2, '0'))
+            .join('');
+    }
+
     /**
      * 播放例句
      */
     async function playSentence(category, pattern, word, sentenceText) {
-        // 尝试 bundle 模式
-        if (config.useBundles && category && pattern) {
-            const wordLower = (word || '').toLowerCase();
+        const wordLower = (word || '').toLowerCase();
+        const sentenceHash = sentenceText ? await getSentenceHash(sentenceText) : null;
+
+        // 尝试 bundle 模式（仅当 index 声明可用时才加载，避免 404）
+        await ensureBundlesChecked();
+        if (config.useBundles && category && pattern && isBundleAvailable(category, pattern)) {
             const bundle = await loadBundle(category, pattern);
+            if (bundle && sentenceHash && playFromBundle(bundle, sentenceHash)) {
+                return;
+            }
             if (bundle && wordLower && playFromBundle(bundle, `${wordLower}_sentence`)) {
                 return;
             }
         }
 
         // 回退：从音频目录加载
-        if (word) {
-            const wordLower = word.toLowerCase();
+        if (sentenceHash) {
+            const played = await playFromFile(`${config.audioPath}/sentences/${sentenceHash}.mp3`);
+            if (played) {
+                return;
+            }
+        }
+
+        if (wordLower) {
             const played = await playFromFile(`${config.audioPath}/sentences/${wordLower}.mp3`);
             if (!played && sentenceText) {
                 speakWithBrowser(sentenceText);
@@ -324,14 +400,16 @@ const AudioLoader = (function () {
         }
     }
 
+
     /**
      * 播放拼读音频 (r-ai-n -> "r...ai...n...rain")
      */
     async function playSpelling(category, pattern, word) {
         const wordLower = (word || '').toLowerCase();
 
-        // 尝试 bundle 模式
-        if (config.useBundles && category && pattern) {
+        // 尝试 bundle 模式（仅当 index 声明可用时才加载，避免 404）
+        await ensureBundlesChecked();
+        if (config.useBundles && category && pattern && isBundleAvailable(category, pattern)) {
             const bundle = await loadBundle(category, pattern);
             if (bundle && playFromBundle(bundle, `${wordLower}_spelling`)) {
                 return;
@@ -349,7 +427,12 @@ const AudioLoader = (function () {
      * 预加载 bundle（用于提前加载即将使用的内容）
      */
     function preloadBundle(category, pattern) {
-        if (config.useBundles && config.preloadEnabled) {
+        if (!config.preloadEnabled) return;
+
+        // 预加载不触发 bundles 检测，避免无意义网络请求
+        if (!bundlesAvailabilityPromise) return;
+
+        if (config.useBundles && category && pattern && isBundleAvailable(category, pattern)) {
             loadBundle(category, pattern);
         }
     }
@@ -377,8 +460,8 @@ const AudioLoader = (function () {
         console.log('Bundle 缓存已清空');
     }
 
-    // 初始化：检查 bundle 可用性
-    checkBundlesAvailable();
+    // 初始化：检查 bundles（只做一次，结果写入 config）
+    ensureBundlesChecked();
 
     // 预加载语音列表
     if ('speechSynthesis' in window) {

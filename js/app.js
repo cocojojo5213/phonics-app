@@ -23,11 +23,14 @@ const dom = {
 // --- Initializers ---
 async function init() {
   initTheme();
-
-  // 加载数据
-  state.dataLoaded = await loadPhonicsData();
-
   initRouter();
+
+  // 不阻塞首屏：路由先渲染，数据后台加载
+  loadPhonicsData().then((ok) => {
+    state.dataLoaded = ok;
+    // 数据加载完成后刷新当前页面（Home 统计 & Learn 列表）
+    handleRoute();
+  });
 }
 
 function initTheme() {
@@ -165,13 +168,17 @@ function selectCategory(catId) {
   }
 
   container.style.display = 'flex';
-  container.innerHTML = patterns.map(p => `
-        <button class="pattern-chip ${state.currentPattern === p.pattern ? 'active' : ''}" 
-                onclick="selectPattern('${p.pattern}')">
+  container.innerHTML = patterns.map(p => {
+    // 判断是否是概念类规则（中文长文本 pattern）
+    const isConceptChip = p.pattern.length > 4 || /[\u4e00-\u9fa5]/.test(p.pattern);
+    return `
+        <button class="pattern-chip ${isConceptChip ? 'concept-chip' : ''} ${state.currentPattern === p.pattern ? 'active' : ''}" 
+                onclick="selectPattern('${p.pattern.replace(/'/g, "\\'")}')">
             <span class="p-text">${p.pattern}</span>
             <span class="p-ipa">${p.pronunciation}</span>
         </button>
-    `).join('');
+    `;
+  }).join('');
 
   selectPattern(patterns[0].pattern);
 }
@@ -205,6 +212,9 @@ function renderPracticeAction(data) {
   const pInfo = data || getPatternInfo(state.currentCategory, state.currentPattern);
   if (!pInfo) return;
 
+  const isConceptPattern = pInfo.pattern.length > 4 || /[\u4e00-\u9fa5]/.test(pInfo.pattern);
+
+
   const word = state.allWords[state.currentWordIndex];
   if (!word) {
     container.innerHTML = `<div class="card" style="margin-top:2rem">请选择一个有效的发音模式</div>`;
@@ -212,12 +222,13 @@ function renderPracticeAction(data) {
   }
 
   container.innerHTML = `
-        <div class="practice-stage" style="margin-top: 3rem; position: relative;">
+        <div class="practice-stage">
             <!-- Header Info (Clickable for Real Human Voice) -->
-            <div style="text-align: center; margin-bottom: 3rem; cursor: pointer;" onclick="app.playPattern()">
-                <div style="font-size: 5rem; font-family: Outfit; font-weight: 800; line-height: 1; color: var(--text-main);">${pInfo.pattern}</div>
-                <div style="font-size: 1.5rem; color: var(--text-muted); font-weight: 300; margin-top: 0.5rem;">${pInfo.pronunciation}</div>
-            </div>
+             <div class="practice-header" onclick="app.playPattern()">
+                 <div class="practice-pattern ${isConceptPattern ? 'is-concept' : ''}">${pInfo.pattern}</div>
+                 <div class="practice-ipa">${pInfo.pronunciation}</div>
+                 ${pInfo.pattern.toLowerCase() === 'qu' ? '<div class="practice-note">(Q 几乎总是与 U 一起出现)</div>' : ''}
+             </div>
 
             <!-- Flashcard Frame -->
             <div class="flashcard-wrapper">
@@ -226,7 +237,7 @@ function renderPracticeAction(data) {
                 </button>
 
                 <div class="card flashcard active" id="current-flashcard" onclick="app.playWord('${word.word}')">
-                    <div class="word-main" style="font-size: 4rem; margin-bottom: 0.5rem;">${formatWord(word.word, pInfo.pattern)}</div>
+                     <div class="word-main">${formatWord(word.word, pInfo.pattern)}</div>
                     
                     ${word.breakdown ? `
                         <div class="breakdown-display">
@@ -234,9 +245,9 @@ function renderPracticeAction(data) {
                         </div>
                     ` : ''}
                     
-                    ${formatSyllables(word.syllables)}
+                    ${formatSyllables(word.syllables, word.word)}
                     
-                    <div class="word-meaning" style="font-size: 1.5rem; margin-bottom: 2rem; color: var(--text-muted);">${word.meaning || ''}</div>
+                     <div class="word-meaning">${word.meaning || ''}</div>
                     
                     ${word.sentence ? `
                         <div class="sentence-box" onclick="app.playSentence(event, '${word.word}', '${escapeHtml(word.sentence)}')">
@@ -252,10 +263,17 @@ function renderPracticeAction(data) {
                 </button>
             </div>
 
-            <div style="text-align: center; margin-top: 2rem; color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">
+            <div class="practice-actions" aria-label="练习操作">
+                <button class="btn nav-action" onclick="prevWord()" ${state.currentWordIndex === 0 ? 'disabled' : ''}>上一词</button>
+                <button class="btn btn-primary nav-action" onclick="app.playWord('${word.word}')">播放单词</button>
+                ${word.sentence ? `<button class="btn nav-action" onclick="app.playSentence(event, '${word.word}', '${escapeHtml(word.sentence)}')">播放例句</button>` : ''}
+                <button class="btn nav-action" onclick="nextWord()" ${state.currentWordIndex === state.allWords.length - 1 ? 'disabled' : ''}>下一词</button>
+            </div>
+
+            <div class="practice-progress">
                 ${state.currentWordIndex + 1} / ${state.allWords.length}
             </div>
-            <div class="mobile-hint" style="text-align: center; margin-top: 1rem; font-size: 0.8rem; color: var(--slate-400); display: none;">
+            <div class="mobile-hint">
                 左右滑动切换单词
             </div>
         </div>
@@ -265,44 +283,94 @@ function renderPracticeAction(data) {
 }
 
 let touchStartX = 0;
+let touchStartY = 0;
+let isScrolling = null; // null: unknown, true: vertical scroll, false: horizontal swipe
+
 function initTouchEvents() {
   const card = document.getElementById('current-flashcard');
   if (!card) return;
 
+  // Use passive: false to allow e.preventDefault()
   card.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-  }, { passive: true });
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    isScrolling = null; // Reset state
+  }, { passive: false });
+
+  card.addEventListener('touchmove', (e) => {
+    if (!touchStartX || !touchStartY) return;
+
+    const touchCurrentX = e.touches[0].clientX;
+    const touchCurrentY = e.touches[0].clientY;
+
+    const diffX = touchStartX - touchCurrentX;
+    const diffY = touchStartY - touchCurrentY;
+
+    // Determine intent on first significant move
+    if (isScrolling === null) {
+      if (Math.abs(diffX) > Math.abs(diffY)) {
+        isScrolling = false; // Intention is horizontal swipe
+      } else {
+        isScrolling = true; // Intention is vertical scroll
+      }
+    }
+
+    // If decided it's a horizontal swipe, block vertical scroll
+    if (isScrolling === false) {
+      if (e.cancelable) {
+        e.preventDefault();
+      }
+    }
+  }, { passive: false });
 
   card.addEventListener('touchend', (e) => {
-    const touchEndX = e.changedTouches[0].screenX;
-    handleSwipe(touchStartX, touchEndX);
-  }, { passive: true });
+    if (isScrolling === false) {
+      // Logic for horizontal swipe completion
+      const touchEndX = e.changedTouches[0].clientX;
+      handleSwipe(touchStartX, touchEndX);
+    }
+
+    // Reset
+    touchStartX = 0;
+    touchStartY = 0;
+    isScrolling = null;
+  }, { passive: false });
 }
 
 function handleSwipe(start, end) {
   const threshold = 50;
   if (start - end > threshold) {
-    nextWord(); // Swipe Left
+    nextWord(); // Swipe Left (Next)
   } else if (end - start > threshold) {
-    prevWord(); // Swipe Right
+    prevWord(); // Swipe Right (Prev)
   }
 }
 
-// 音素颜色配置
-const PHONEME_COLORS = [
-  'var(--phoneme-1)',  // 蓝色
-  'var(--phoneme-2)',  // 绿色
-  'var(--phoneme-3)',  // 橙色
-  'var(--phoneme-4)',  // 紫色
-  'var(--phoneme-5)',  // 红色
-  'var(--phoneme-6)',  // 青色
-];
+// 音素颜色配置 - 按类型固定颜色
+const PHONEME_COLORS = {
+  consonant: 'var(--phoneme-1)',  // 蓝色 - 辅音
+  vowel: 'var(--phoneme-2)',      // 绿色 - 元音
+  digraph: 'var(--phoneme-4)',    // 紫色 - 字母组合
+  focus: 'var(--phoneme-5)',      // 红色 - 高亮
+  silent: 'var(--slate-400)',     // 灰色 - 静音
+};
 
 // 元音和 digraph 的识别
-const VOWELS = ['a', 'e', 'i', 'o', 'u'];
-const DIGRAPHS = ['sh', 'ch', 'th', 'wh', 'ph', 'ck', 'ng', 'nk', 'tch', 'dge',
-  'ai', 'ay', 'ee', 'ea', 'oa', 'ow', 'oi', 'oy', 'ou', 'au', 'aw', 'oo', 'igh',
-  'ar', 'er', 'ir', 'or', 'ur'];
+const VOWELS = ['a', 'e', 'i', 'o', 'u', 'y'];
+const VOWEL_TEAMS = [
+  'ai', 'ay', 'ee', 'ea', 'oa', 'ow', 'oi', 'oy', 'ou', 'au', 'aw', 'oo',
+  'ie', 'ei', 'ue', 'ew', 'ey', 'ui', 'igh', 'eigh'
+];
+const CONSONANT_DIGRAPHS = [
+  'sh', 'ch', 'th', 'wh', 'ph', 'ck', 'ng', 'nk', 'qu', 'wr', 'kn', 'mb', 'gn',
+  'tch', 'dge', 'gh'
+];
+const R_CONTROLLED = ['ar', 'er', 'ir', 'or', 'ur'];
+const DOUBLE_CONSONANTS = ['ll', 'ss', 'ff', 'zz', 'dd', 'tt', 'pp', 'nn', 'mm', 'bb', 'gg', 'cc', 'rr'];
+const COMMON_ENDINGS = ['le', 'al', 'el', 'il', 'ol', 'ul', 'ing', 'ang', 'ong', 'ung', 'ink', 'ank', 'onk', 'unk', 'ed', 'es', 'tion', 'sion', 'ture'];
+
+// 合并所有 digraphs
+const DIGRAPHS = [...new Set([...VOWEL_TEAMS, ...CONSONANT_DIGRAPHS, ...R_CONTROLLED, ...DOUBLE_CONSONANTS, ...COMMON_ENDINGS])];
 
 function formatWord(word, pattern, highlight) {
   // 简单高亮模式（向后兼容）
@@ -335,42 +403,55 @@ function formatBreakdown(breakdown, highlight, pattern, tokenFlags = []) {
 
     // 检查是否是高亮部分
     if (highlightType === 'split') {
-      // Split digraph（如 a_e）：高亮 indices 数组中的位置
       isHighlight = highlightIndices.includes(index);
     } else {
-      // Token 类型：匹配完整 token
       isHighlight = highlightValue && tokenLower === highlightValue;
     }
 
-    // 分配颜色索引（循环使用）
-    const colorIndex = index % PHONEME_COLORS.length;
-
-    // 判断音素类型
+    // 判断音素类型并分配固定颜色
     let typeClass = 'phoneme-consonant';
-    if (DIGRAPHS.includes(tokenLower)) {
-      typeClass = 'phoneme-digraph';
-    } else if (VOWELS.includes(tokenLower)) {
-      typeClass = 'phoneme-vowel';
-    }
+    let color = PHONEME_COLORS.consonant;
 
-    // 静音字母特殊处理
     if (isSilent) {
       typeClass = 'phoneme-silent';
+      color = PHONEME_COLORS.silent;
+    } else if (isHighlight) {
+      color = PHONEME_COLORS.focus;
+    } else if (VOWEL_TEAMS.includes(tokenLower) || R_CONTROLLED.includes(tokenLower)) {
+      typeClass = 'phoneme-digraph phoneme-vowel-team';
+      color = PHONEME_COLORS.digraph;
+    } else if (CONSONANT_DIGRAPHS.includes(tokenLower) || DOUBLE_CONSONANTS.includes(tokenLower)) {
+      typeClass = 'phoneme-digraph';
+      color = PHONEME_COLORS.digraph;
+    } else if (VOWELS.includes(tokenLower)) {
+      typeClass = 'phoneme-vowel';
+      color = PHONEME_COLORS.vowel;
+    } else if (COMMON_ENDINGS.includes(tokenLower)) {
+      typeClass = 'phoneme-ending';
+      color = PHONEME_COLORS.digraph;
     }
 
-    return `<span class="phoneme ${typeClass} ${isHighlight ? 'phoneme-focus' : ''}" style="--phoneme-color: ${PHONEME_COLORS[colorIndex]}">${token}</span>`;
+    return `<span class="phoneme ${typeClass} ${isHighlight ? 'phoneme-focus' : ''}" style="--phoneme-color: ${color}">${token}</span>`;
   }).join('<span class="phoneme-sep">·</span>');
 }
 
 // 音节显示格式化
-function formatSyllables(syllables) {
+function formatSyllables(syllables, word) {
+  // 防御性检查：必须是数组且有多个音节才显示
   if (!syllables || !Array.isArray(syllables) || syllables.length <= 1) {
-    return ''; // 单音节不显示
+    return '';
   }
 
-  // 提取每个音节的字母（去掉 | 分隔符）
+  // 将每个音节的 | 分隔符去掉，得到完整音节文本
   const syllableText = syllables.map(s => s.replace(/\|/g, '')).join(' · ');
-  return `<div class="syllables-display">${syllableText}</div>`;
+  
+  // 验证：拼接后应该等于原单词（忽略大小写）
+  const joined = syllables.map(s => s.replace(/\|/g, '')).join('');
+  if (word && joined.toLowerCase() !== word.toLowerCase()) {
+    console.warn(`音节划分不匹配: ${word} vs ${joined}`);
+  }
+
+  return `<div class="syllables-display">音节划分：${syllableText}</div>`;
 }
 
 function escapeRegex(str) {

@@ -3,584 +3,1023 @@
  * Focus: Clarity, Premium Aesthetics, and Smooth Interactions
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
-
+/* Fonts: 微软雅黑优先（无外链）。
+ * 注意：微软雅黑在 iOS/macOS 不一定存在，会回退到苹方/系统字体。
+ */
 :root {
-    /* Color Palette - Premium & Soft */
-    --p-50: #eff6ff;
-    --p-100: #dbeafe;
-    --p-500: #3b82f6;
-    --p-600: #2563eb;
-    --p-700: #1d4ed8;
+  --font-sans: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans SC", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --font-display: var(--font-sans);
 
-    --slate-50: #f8fafc;
-    --slate-100: #f1f5f9;
-    --slate-200: #e2e8f0;
-    --slate-400: #94a3b8;
-    --slate-600: #475569;
-    --slate-900: #0f172a;
 
-    /* Theme Tokens */
-    --bg-main: var(--slate-50);
-    --bg-card: #ffffff;
-    --text-main: var(--slate-900);
-    --text-muted: var(--slate-600);
-    --border-soft: var(--slate-200);
-    --accent: var(--p-600);
+  /* Color Palette - Premium & Soft */
+  --p-50: #eff6ff;
+  --p-100: #dbeafe;
+  --p-500: #3b82f6;
+  --p-600: #2563eb;
+  --p-700: #1d4ed8;
 
-    /* Phoneme Colors - 彩虹渐变风格 */
-    --phoneme-1: #3b82f6;
-    /* 蓝色 - 辅音 */
-    --phoneme-2: #10b981;
-    /* 绿色 - 元音 */
-    --phoneme-3: #f59e0b;
-    /* 橙色 */
-    --phoneme-4: #8b5cf6;
-    /* 紫色 - digraph */
-    --phoneme-5: #ef4444;
-    /* 红色 - 高亮 */
-    --phoneme-6: #06b6d4;
-    /* 青色 */
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-400: #94a3b8;
+  --slate-600: #475569;
+  --slate-900: #0f172a;
 
-    /* Shadows */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  /* Theme Tokens */
+  --bg-main: var(--slate-50);
+  --bg-card: #ffffff;
+  --text-main: var(--slate-900);
+  --text-muted: var(--slate-600);
+  --border-soft: var(--slate-200);
+  --accent: var(--p-600);
 
-    /* Animation */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Phoneme Colors - 彩虹渐变风格 */
+  --phoneme-1: #3b82f6;
+  /* 蓝色 - 辅音 */
+  --phoneme-2: #10b981;
+  /* 绿色 - 元音 */
+  --phoneme-3: #f59e0b;
+  /* 橙色 */
+  --phoneme-4: #8b5cf6;
+  /* 紫色 - digraph */
+  --phoneme-5: #ef4444;
+  /* 红色 - 高亮 */
+  --phoneme-6: #06b6d4;
+  /* 青色 */
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Animation */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [data-theme="dark"] {
-    --bg-main: #0b1120;
-    --bg-card: #1e293b;
-    --text-main: #f1f5f9;
-    --text-muted: #94a3b8;
-    --border-soft: #334155;
-    --accent: #60a5fa;
-    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+  --bg-main: #0b1120;
+  --bg-card: #1e293b;
+  --text-main: #f1f5f9;
+  --text-muted: #cbd5e1;
+  /* Lighter muted text for better readability */
+  --border-soft: #334155;
+  --accent: #60a5fa;
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Force high contrast for sentence text in dark mode */
+[data-theme="dark"] .sentence-en {
+  color: #ffffff !important;
 }
 
 /* --- Base Reset --- */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--bg-main);
-    color: var(--text-main);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    transition: var(--transition-smooth);
+  font-family: var(--font-sans);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: var(--transition-smooth);
+  overflow-x: hidden;
 }
 
 h1,
 h2,
 h3,
 .logo {
-    font-family: 'Outfit', sans-serif;
+  font-family: var(--font-display);
 }
 
 /* --- Layout --- */
 .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: calc(2rem + env(safe-area-inset-left));
+  padding-right: calc(2rem + env(safe-area-inset-right));
 }
 
 .header {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border-soft);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-soft);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding-top: env(safe-area-inset-top);
 }
 
 [data-theme="dark"] .header {
-    background: rgba(30, 41, 59, 0.7);
+  background: rgba(30, 41, 59, 0.7);
 }
 
 .header-inner {
-    height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--accent);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
 }
 
 /* --- Navigation --- */
 .nav {
-    display: flex;
-    gap: 1.5rem;
+  display: flex;
+  gap: 1.5rem;
 }
 
 .nav-link {
-    text-decoration: none;
-    color: var(--text-muted);
-    font-weight: 500;
-    font-size: 0.95rem;
-    padding: 0.5rem 0.2rem;
-    position: relative;
-    transition: var(--transition-smooth);
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.2rem;
+  position: relative;
+  transition: var(--transition-smooth);
 }
 
-.nav-link:hover,
 .nav-link.active {
+  color: var(--accent);
+}
+
+@media (hover: hover) {
+  .nav-link:hover {
     color: var(--accent);
+  }
 }
 
 .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--accent);
-    transition: var(--transition-smooth);
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: var(--transition-smooth);
 }
 
 .nav-link.active::after {
-    width: 100%;
+  width: 100%;
 }
 
 /* --- Hero Section --- */
 .hero {
-    padding: 100px 0 60px;
-    text-align: center;
+  padding: 100px 0 60px;
+  text-align: center;
 }
 
 .hero h1 {
-    font-size: 3.5rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.5rem;
-    color: var(--text-main);
+  font-size: clamp(2.2rem, 4vw + 1rem, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+  color: var(--text-main);
 }
 
 .hero p {
-    font-size: 1.25rem;
-    color: var(--text-muted);
-    max-width: 600px;
-    margin: 0 auto 2.5rem;
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
 }
 
 /* --- Cards & Components --- */
 .category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin-top: 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
 }
 
 .card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-soft);
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: var(--shadow-sm);
-    transition: var(--transition-smooth);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-smooth);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
-.card:hover {
-    transform: translateY(-8px);
+@media (hover: hover) {
+  .card:hover {
+    /* transform: translateY(-8px); REMOVED */
     box-shadow: var(--shadow-lg);
     border-color: var(--accent);
+  }
 }
 
 
 /* --- Phonics Specific --- */
 .word-card {
-    text-align: center;
-    padding: 2.5rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* --- Practice View --- */
+.practice-stage {
+  margin-top: 3rem;
+  position: relative;
+}
+
+.practice-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  cursor: pointer;
+}
+
+.practice-pattern {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text-main);
+  max-width: 600px;
+  margin: 0 auto;
+  word-break: break-word;
+}
+
+.practice-pattern.is-concept {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.practice-ipa {
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  font-weight: 300;
+  margin-top: 0.5rem;
+}
+
+.practice-note {
+  font-size: 0.85rem;
+  color: var(--slate-400);
+  margin-top: 0.5rem;
+}
+
+.practice-actions {
+  display: none;
+}
+
+.practice-progress {
+  text-align: center;
+  margin-top: 2rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.flashcard .word-main {
+  font-size: 4rem;
+}
+
+.flashcard .word-meaning {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: var(--text-muted);
 }
 
 .word-main {
-    font-family: 'Outfit', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--text-main);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
 }
 
 .word-highlight {
-    color: var(--accent);
-    text-decoration: underline;
-    text-underline-offset: 6px;
-    text-decoration-thickness: 3px;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 3px;
 }
 
 .word-meaning {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    font-weight: 400;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  font-weight: 400;
 }
 
 /* --- Phoneme Breakdown Colors --- */
+/* --- Phoneme Breakdown Colors (Text Only Mode) --- */
 .breakdown-display {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.3rem;
-    margin: 1.5rem 0;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  margin: 1rem 0 2rem;
+  flex-wrap: wrap;
 }
 
 .phoneme {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Outfit', sans-serif;
-    font-size: 2rem;
-    font-weight: 700;
-    min-width: 2.5rem;
-    height: 2.8rem;
-    padding: 0 0.6rem;
-    border-radius: 12px;
-    color: white;
-    background: var(--phoneme-color, var(--phoneme-1));
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease;
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  /* Larger text since boxes are gone */
+  font-weight: 700;
+  padding: 0 0.2rem;
+  line-height: 1;
+  text-align: center;
+  color: var(--phoneme-color, var(--text-main));
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  min-width: auto;
+  height: auto;
+  /* Removed transition/transform */
 }
 
+/* Remove hover scale */
 .phoneme:hover {
-    transform: scale(1.1);
+  transform: none !important;
 }
 
-/* 元音 - 圆角更大，略微不同的风格 */
+/* Vowels - just inherit text color logic, no special shape */
 .phoneme-vowel {
-    background: linear-gradient(135deg, var(--phoneme-2), #059669);
-    border-radius: 50%;
-    min-width: 2.8rem;
+  border-radius: 0;
+  width: auto;
+  height: auto;
+  min-width: auto;
+  padding: 0 0.2rem;
 }
 
-/* Digraph - 双字母组合，略宽 */
+/* Digraph - just inherit text color logic */
 .phoneme-digraph {
-    background: linear-gradient(135deg, var(--phoneme-4), #7c3aed);
-    min-width: 3.2rem;
-    padding: 0 0.8rem;
+  min-width: auto;
+  height: auto;
+  padding: 0 0.2rem;
 }
 
-/* 高亮部分（规则的 focus）- 闪亮效果 */
+/* Highlight/Focus - maybe just a subtle underline or glow? User hated boxes. */
 .phoneme-focus {
-    background: linear-gradient(135deg, var(--phoneme-5), #dc2626) !important;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3), 0 4px 12px rgba(239, 68, 68, 0.4);
-    animation: pulse-focus 1.5s ease-in-out infinite;
+  text-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+  /* Glow instead of box */
+  /* transform: scale(1.05); REMOVED scale as requested */
+  animation: none;
+  /* User requested NO motion */
 }
 
-@keyframes pulse-focus {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-    }
-}
-
-/* 分隔符 */
+/* Separator */
 .phoneme-sep {
-    color: var(--text-muted);
-    font-size: 1.5rem;
-    opacity: 0.3;
-    margin: 0 0.2rem;
+  color: var(--border-soft);
+  font-size: 2rem;
+  font-weight: 300;
+  margin: 0 0.5rem;
+  display: inline-block;
+  vertical-align: middle;
 }
 
-/* 静音字母（如 Magic E）— 灰色虚线边框 */
+/* Silent letters - grayed out with better contrast */
 .phoneme-silent {
-    background: transparent !important;
-    color: var(--text-muted);
-    opacity: 0.5;
-    border: 2px dashed var(--slate-400);
-    box-shadow: none;
+  color: var(--slate-400) !important;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  opacity: 0.6;
+}
+
+[data-theme="dark"] .phoneme-silent {
+  color: var(--slate-400) !important;
+  opacity: 0.5;
 }
 
 .phoneme-silent:hover {
-    transform: none;
-    opacity: 0.7;
+  opacity: 1;
+  transform: none;
 }
 
 /* 音节分隔显示 */
 .syllables-display {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    margin: 0.5rem 0 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.3rem;
-    letter-spacing: 0.15em;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin: 0.5rem 0 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+  letter-spacing: 0.15em;
 }
 
 /* --- Buttons --- */
 .btn {
-    padding: 0.8rem 2rem;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: var(--transition-smooth);
-    border: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+  padding: 0.8rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .btn-primary {
-    background: var(--accent);
-    color: white;
+  background: var(--accent);
+  color: white;
 }
 
-.btn-primary:hover {
+@media (hover: hover) {
+  .btn-primary:hover {
     background: var(--p-700);
     transform: translateY(-2px);
+  }
 }
 
 /* --- Pattern Chips & Box --- */
 .pattern-box {
-    display: none;
-    /* JS toggles to flex */
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    padding: 1.5rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border-soft);
-    border-radius: 20px;
-    margin-bottom: 2rem;
+  display: none;
+  /* JS toggles to flex */
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  padding: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 20px;
+  margin-bottom: 2rem;
 }
 
 .pattern-chip {
-    padding: 0.6rem 1.2rem;
-    border-radius: 100px;
-    background: var(--bg-main);
-    border: 1px solid var(--border-soft);
-    color: var(--text-main);
-    cursor: pointer;
-    transition: var(--transition-smooth);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 500;
+  padding: 0.6rem 1.2rem;
+  border-radius: 100px;
+  background: var(--bg-main);
+  border: 1px solid var(--border-soft);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
 }
 
-.pattern-chip:hover {
+.pattern-chip .p-text {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* 当 pattern 是中文长文本时，调整样式 */
+.pattern-chip.concept-chip {
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+}
+
+.pattern-chip.concept-chip .p-text {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.pattern-chip.concept-chip .p-ipa {
+  display: none;
+}
+
+@media (hover: hover) {
+  .pattern-chip:hover {
     border-color: var(--accent);
-    transform: translateY(-2px);
+    /* transform: translateY(-2px); REMOVED */
     background: var(--bg-card);
+  }
 }
 
 .pattern-chip.active {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
 .pattern-chip .p-ipa {
-    font-size: 0.8rem;
-    opacity: 0.6;
+  font-size: 0.8rem;
+  opacity: 0.6;
+  color: rgba(255, 255, 255, 0.8) !important;
 }
 
 .pattern-chip.active .p-ipa {
-    opacity: 0.9;
+  opacity: 0.9;
 }
 
 /* --- Flashcard Navigation --- */
 .flashcard-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .flashcard {
-    flex: 1;
-    min-height: 450px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 3rem !important;
-    border-radius: 32px !important;
-    background: var(--bg-card);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  flex: 1;
+  min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3rem !important;
+  border-radius: 32px !important;
+  background: var(--bg-card);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.flashcard:active {
-    transform: scale(0.98);
-}
+
 
 .nav-btn {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    border: 1px solid var(--border-soft);
-    background: var(--bg-card);
-    color: var(--text-main);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: var(--transition-smooth);
-    flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px solid var(--border-soft);
+  background: var(--bg-card);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  flex-shrink: 0;
 }
 
-.nav-btn:hover:not(:disabled) {
+@media (hover: hover) {
+  .nav-btn:hover:not(:disabled) {
     background: var(--accent);
     color: white;
     border-color: var(--accent);
-    transform: scale(1.1);
+    /* transform: scale(1.1); REMOVED */
+  }
 }
 
 .nav-btn:disabled {
-    opacity: 0.2;
-    cursor: not-allowed;
+  opacity: 0.2;
+  cursor: not-allowed;
 }
 
 /* --- Sentence Info --- */
 .sentence-box {
-    width: 100%;
-    margin-top: 1rem;
-    padding: 1.5rem;
-    background: var(--bg-main);
-    border-radius: 20px;
-    cursor: pointer;
-    transition: var(--transition-smooth);
-    border: 1px solid transparent;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: var(--bg-main);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  border: 1px solid transparent;
 }
 
-.sentence-box:hover {
+@media (hover: hover) {
+  .sentence-box:hover {
     background: var(--p-50);
     border-color: var(--p-100);
+  }
+
+  /* Fix: Dark mode hover state should not be light */
+  [data-theme="dark"] .sentence-box:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent);
+  }
 }
 
 .sentence-en {
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: var(--text-main);
-    margin-bottom: 0.4rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-main);
+  margin-bottom: 0.4rem;
 }
 
 .sentence-cn {
-    font-size: 1rem;
-    color: var(--text-muted);
+  font-size: 1rem;
+  color: var(--text-muted);
 }
 
 .play-tag {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--accent);
-    margin-top: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
-    .header-inner {
-        height: 60px;
-    }
+  .header-inner {
+    height: 60px;
+  }
 
-    .hero {
-        padding: 60px 0 40px;
-    }
+  .hero {
+    padding: 60px 0 40px;
+  }
 
-    .hero h1 {
-        font-size: 2.2rem;
-    }
+  .hero h1 {
+    font-size: clamp(2rem, 4vw + 1rem, 2.2rem);
+  }
 
-    .container {
-        padding: 0 1.25rem;
-    }
+  .container {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: calc(1.25rem + env(safe-area-inset-left));
+    padding-right: calc(1.25rem + env(safe-area-inset-right));
+  }
 
-    /* 移动端卡片全宽，减少间距 */
-    .flashcard-wrapper {
-        gap: 0.5rem;
-        position: relative;
-    }
+  /* 移动端卡片全宽，减少间距 */
+  .flashcard-wrapper {
+    gap: 0.5rem;
+    position: relative;
+  }
 
-    /* 手机端隐藏左右按钮，主要靠滑动 */
-    .nav-btn {
-        display: none;
-    }
+  /* 手机端隐藏左右按钮，主要靠滑动 */
+  .nav-btn {
+    display: none;
+  }
 
+  /* 允许纵向滚动，横向手势交给 JS 处理 */
+  #current-flashcard {
+    touch-action: pan-y;
+  }
+
+
+  .flashcard {
+    padding: 2.5rem 1.5rem !important;
+    min-height: 50vh;
+    border-radius: 24px !important;
+    box-shadow: var(--shadow-md);
+  }
+
+  @supports (height: 1dvh) {
     .flashcard {
-        padding: 2.5rem 1.5rem !important;
-        min-height: 50vh;
-        border-radius: 24px !important;
-        box-shadow: var(--shadow-md);
+      min-height: 50dvh;
     }
+  }
 
-    .flashcard .word-main {
-        font-size: 3rem;
-    }
+  .flashcard .word-main {
+    font-size: clamp(2.2rem, 9vw, 3rem) !important;
+  }
 
-    .practice-stage h1,
-    .practice-stage [style*="font-size: 5rem"] {
-        font-size: 3rem !important;
-        margin-top: 0.5rem;
-    }
+  .practice-header {
+    margin-bottom: 2rem;
+  }
 
-    #pattern-section {
-        margin-top: 1.5rem !important;
-    }
+  .practice-pattern {
+    font-size: clamp(2.2rem, 9vw, 3rem);
+  }
 
-    .pattern-box {
-        padding: 1rem;
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
-    }
+  #pattern-section {
+    margin-top: 1.5rem !important;
+  }
 
-    .mobile-hint {
-        display: block !important;
-    }
+  .pattern-box {
+    padding: 1rem;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
 
-    .category-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
+  .mobile-hint {
+    display: block !important;
+  }
 
-    .card {
-        padding: 1.5rem;
-    }
+  .category-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 
-    /* 移除移动端点击后的“粘性”Hover效果 */
-    .card:hover,
-    .pattern-chip:hover {
-        transform: none !important;
-    }
+  .card {
+    padding: 1.5rem;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .header-inner {
+    height: 56px;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+  }
+
+  .nav {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .nav-link,
+  .btn-theme {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+  }
+
+  .hero {
+    padding: 44px 0 28px;
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+  }
+
+  .practice-stage {
+    margin-top: 1.75rem;
+    padding-bottom: calc(88px + env(safe-area-inset-bottom));
+  }
+
+  .practice-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .practice-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    padding-top: 0.75rem;
+    padding-left: calc(1.25rem + env(safe-area-inset-left));
+    padding-right: calc(1.25rem + env(safe-area-inset-right));
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid var(--border-soft);
+    z-index: 1100;
+  }
+
+  [data-theme="dark"] .practice-actions {
+    background: rgba(16, 21, 29, 0.7);
+  }
+
+  .practice-actions .nav-action {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .practice-actions .btn-primary {
+    grid-column: 1 / -1;
+  }
+
+  .flashcard {
+    padding: 1.75rem 1.25rem !important;
+    border-radius: 20px !important;
+  }
+
+  .breakdown-display {
+    margin: 0.75rem 0 1.25rem;
+  }
+
+  .phoneme-sep {
+    margin: 0 0.25rem;
+  }
+
+  .word-meaning {
+    font-size: 1.15rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  .sentence-box {
+    padding: 1.1rem;
+  }
+
+  .sentence-en {
+    font-size: 1.05rem;
+  }
+
+  .sentence-cn {
+    font-size: 0.95rem;
+  }
+
+  /* 手机端 pattern 列表改为横向滚动，避免撑太高 */
+  .pattern-box {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pattern-chip {
+    flex: 0 0 auto;
+    min-height: 44px;
+    padding: 0.55rem 0.9rem;
+  }
+
+  .btn {
+    min-height: 44px;
+  }
+}
+
+.seo-link-corner {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  opacity: 0.3;
+  text-decoration: none;
+  z-index: 9999;
+}
+
+@media (hover: hover) {
+  .seo-link-corner:hover {
+    opacity: 1;
+    color: var(--accent);
+  }
 }
 
 /* --- Utils --- */
 .glass {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ========================================= */
+/* MERGED UPDATES (Dark Mode Improvements)   */
+/* ========================================= */
+
+/* Dark mode text contrast improvements for English sentences */
+@media (prefers-color-scheme: dark) {
+
+  /* General English text - improve contrast */
+  body.dark-mode {
+    --text-color-primary: #ffffff;
+    --text-color-secondary: #e0e0e0;
+    --english-text-color: #ffffff;
+    --highlight-bg-dark: #1a3a1a;
+    --highlight-text-dark: #90ee90;
+  }
+
+  /* English sentence text with enhanced contrast */
+  .english-sentence,
+  .english-text,
+  [lang="en"] {
+    color: var(--english-text-color, #ffffff);
+    font-weight: 500;
+  }
+
+  /* Highlighted English text in dark mode */
+  .english-sentence mark,
+  .english-text mark,
+  [lang="en"] mark,
+  mark {
+    background-color: var(--highlight-bg-dark, #1a3a1a);
+    color: var(--highlight-text-dark, #90ee90);
+    font-weight: 600;
+    padding: 4px 6px;
+    border-radius: 4px;
+  }
+
+  /* Enhanced contrast for nested English elements */
+  .english-sentence strong,
+  .english-text strong,
+  [lang="en"] strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  /* English text in containers */
+  .dark-mode .english-sentence,
+  .dark-mode .english-text,
+  .dark-mode [lang="en"] {
+    color: var(--english-text-color, #ffffff);
+  }
+}
+
+/* Light mode (fallback) */
+@media (prefers-color-scheme: light) {
+  body {
+    --text-color-primary: #000000;
+    --text-color-secondary: #333333;
+    --english-text-color: #1a1a1a;
+    --highlight-bg-light: #fff3cd;
+    --highlight-text-light: #664d00;
+  }
+
+  .english-sentence,
+  .english-text,
+  [lang="en"] {
+    color: var(--english-text-color, #1a1a1a);
+  }
+
+  .english-sentence mark,
+  .english-text mark,
+  [lang="en"] mark,
+  mark {
+    background-color: var(--highlight-bg-light, #fff3cd);
+    color: var(--highlight-text-light, #664d00);
+    padding: 4px 6px;
+    border-radius: 4px;
+  }
+}
+
+/* Mobile header notch adaptation - Improved safe area support */
+header,
+.header {
+  padding-top: calc(1rem + env(safe-area-inset-top));
+  padding-left: calc(1rem + env(safe-area-inset-left));
+  padding-right: calc(1rem + env(safe-area-inset-right));
+}
+
+@media (max-width: 768px) {
+
+  header,
+  .header {
+    padding-top: calc(0.75rem + env(safe-area-inset-top));
+  }
+}
+
+@media (max-width: 480px) {
+
+  header,
+  .header {
+    padding-top: calc(0.5rem + env(safe-area-inset-top));
+  }
+}
+
+/* Sentence Click/Active State Visibility Fix */
+.sentence-box:active,
+.sentence-box.active {
+  background: var(--p-100);
+  /* Lighter background on click */
+  border-color: var(--p-600);
+}
+
+/* Ensure text remains visible when sentence box is active/clicked */
+.sentence-box:active .sentence-en,
+.sentence-box.active .sentence-en {
+  color: var(--p-700);
+  /* Darker blue for contrast */
+  font-weight: 600;
+}
+
+[data-theme="dark"] .sentence-box:active,
+[data-theme="dark"] .sentence-box.active {
+  background: var(--slate-800);
+  border-color: var(--accent);
+}
+
+[data-theme="dark"] .sentence-box:active .sentence-en,
+[data-theme="dark"] .sentence-box.active .sentence-en {
+  color: var(--accent);
+  /* Bright accent color for visibility in dark mode */
+}
+
+/* Accessibility improvements */
+@media (prefers-contrast: more) {
+  @media (prefers-color-scheme: dark) {
+
+    .english-sentence,
+    .english-text,
+    [lang="en"] {
+      color: #ffffff !important;
+      text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .english-sentence mark,
+    .english-text mark,
+    [lang="en"] mark {
+      background-color: #0d2d0d;
+      color: #ffff00;
+      font-weight: 700;
+    }
+  }
+}
+
+/* Print styles */
+@media print {
+
+  .english-sentence,
+  .english-text,
+  [lang="en"] {
+    color: #000000;
+  }
 }

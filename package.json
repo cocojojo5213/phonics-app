@@ -1,5 +1,5 @@
 {
-    "name": "phonics-static",
+    "name": "phonics-app",
     "version": "2.3.0",
     "description": "Phonics - Natural Phonics Learning Tool",
     "scripts": {
@@ -9,7 +9,9 @@
         "validate": "node scripts/validate-words.js",
         "tts": "node scripts/generate-tts.js",
         "merge": "node scripts/merge-words.js",
+        "seo": "node scripts/generate-seo.js",
         "fix": "node scripts/fix-breakdown.js",
+        "clean": "node scripts/clean-data.js",
         "deploy": "echo 'Push to main to deploy to Cloudflare Pages'"
     },
     "keywords": [
@@ -21,8 +23,8 @@
     "author": "cocojojo5213",
     "license": "MIT",
     "dependencies": {
-        "@google/genai": "^1.0.0",
         "@google-cloud/text-to-speech": "^6.0.0",
+        "@google/genai": "^1.35.0",
         "an-array-of-english-words": "^2.0.0",
         "cors": "^2.8.5",
         "dotenv": "^17.2.3",

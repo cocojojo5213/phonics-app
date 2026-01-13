@@ -51,6 +51,8 @@ function main() {
                     word: item.word,
                     breakdown: item.breakdown,
                     highlight: item.highlight || { type: 'token', value: rule.focus?.value || '' },
+                    tokenFlags: item.tokenFlags || [],
+                    syllables: item.syllables || [item.breakdown],
                     meaning: item.meaning,
                     sentence: item.sentence,
                     sentence_cn: item.sentence_cn
