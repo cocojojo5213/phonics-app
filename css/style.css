@@ -626,7 +626,261 @@ h3,
   letter-spacing: 0.1em;
 }
 
-/* --- Responsive --- */
+/* --- Responsive Design --- */
+/* 
+ * Device Breakpoints (2026 Updated):
+ * - Tablet Landscape: 1024px - 1280px
+ * - Tablet Portrait: 768px - 1024px  
+ * - Phone Landscape: 480px - 768px
+ * - Phone Portrait: < 480px
+ * 
+ * 设备断点（2026 更新）：
+ * - 平板横屏：1024px - 1280px
+ * - 平板竖屏：768px - 1024px
+ * - 手机横屏：480px - 768px
+ * - 手机竖屏：< 480px
+ */
+
+/* === Tablet Landscape (iPad Pro, Android Tablets) === */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    padding-left: calc(2.5rem + env(safe-area-inset-left));
+    padding-right: calc(2.5rem + env(safe-area-inset-right));
+  }
+  
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+  
+  .flashcard-wrapper {
+    max-width: 650px;
+  }
+  
+  .flashcard {
+    min-height: 400px;
+    padding: 2.5rem !important;
+  }
+  
+  .flashcard .word-main {
+    font-size: 3.5rem;
+  }
+  
+  .pattern-box {
+    justify-content: center;
+  }
+}
+
+/* === Tablet Portrait Mode === */
+@media (min-width: 600px) and (max-width: 768px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .flashcard {
+    min-height: 380px;
+  }
+}
+
+/* === Landscape Mode for Phones === */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero {
+    padding: 30px 0 20px;
+  }
+  
+  .hero h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .hero p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .practice-header {
+    margin-bottom: 1rem;
+  }
+  
+  .practice-pattern {
+    font-size: 2rem;
+  }
+  
+  .flashcard {
+    min-height: 250px !important;
+    padding: 1.25rem 1.5rem !important;
+  }
+  
+  .flashcard .word-main {
+    font-size: 2rem !important;
+  }
+  
+  .flashcard .word-meaning {
+    font-size: 1rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .breakdown-display {
+    margin: 0.5rem 0 0.75rem;
+  }
+  
+  .phoneme {
+    font-size: 1.5rem !important;
+  }
+  
+  .sentence-box {
+    padding: 0.75rem;
+  }
+  
+  .practice-actions {
+    padding-top: 0.5rem;
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* === iOS Specific Optimizations === */
+@supports (-webkit-touch-callout: none) {
+  /* Prevent iOS text selection on interactive elements */
+  .pattern-chip,
+  .card,
+  .btn,
+  .nav-btn,
+  .sentence-box {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  /* Fix iOS Safari 100vh issue */
+  .flashcard {
+    min-height: 50svh;
+  }
+  
+  /* Smooth momentum scrolling */
+  .pattern-box {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Fix iOS Safari input zoom */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* === Android Specific Optimizations === */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets for Android (48px minimum) */
+  .pattern-chip {
+    min-height: 48px;
+    min-width: 48px;
+  }
+  
+  .nav-link {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .btn {
+    min-height: 48px;
+  }
+  
+  .btn-theme {
+    min-height: 48px;
+    min-width: 48px;
+  }
+  
+  /* Remove hover effects on touch devices */
+  .card:hover {
+    transform: none;
+  }
+  
+  /* Add active states instead */
+  .card:active {
+    transform: scale(0.98);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent);
+  }
+  
+  .pattern-chip:active {
+    transform: scale(0.95);
+    background: var(--p-100);
+  }
+}
+
+/* === High DPI Displays (Retina, etc.) === */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .phoneme {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* === Dark Mode System Preference Auto-Switch === */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-main: #0b1120;
+    --bg-card: #1e293b;
+    --text-main: #f1f5f9;
+    --text-muted: #cbd5e1;
+    --border-soft: #334155;
+    --accent: #60a5fa;
+  }
+}
+
+/* === Reduced Motion Accessibility === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .flashcard {
+    transition: none;
+  }
+}
+
+/* === Small Phone Optimizations (iPhone SE, etc.) === */
+@media (max-width: 375px) {
+  .container {
+    padding-left: calc(1rem + env(safe-area-inset-left));
+    padding-right: calc(1rem + env(safe-area-inset-right));
+  }
+  
+  .logo {
+    font-size: 1.1rem;
+  }
+  
+  .nav {
+    gap: 0.5rem;
+  }
+  
+  .nav-link {
+    font-size: 0.85rem;
+  }
+  
+  .flashcard {
+    padding: 1.25rem 1rem !important;
+  }
+  
+  .flashcard .word-main {
+    font-size: 2rem !important;
+  }
+  
+  .phoneme {
+    font-size: 1.5rem !important;
+  }
+  
+  .pattern-chip {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* --- Legacy Responsive (Original) --- */
 @media (max-width: 768px) {
   .header-inner {
     height: 60px;
