@@ -1,4 +1,12 @@
-// 加载环境变量
+/**
+ * Workshop 服务器 / Workshop Server
+ * 提供 AI 词汇生成的 Web 管理界面
+ * Provides web admin interface for AI vocabulary generation
+ * 
+ * 用法 / Usage: npm run studio
+ */
+
+// 加载环境变量 / Load environment variables
 require('dotenv').config();
 
 const express = require('express');
@@ -14,12 +22,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../')));
 
-// 存储运行中的任务和日志
+// 存储运行中的任务和日志 / Store running tasks and logs
 const runningTasks = new Map();
 const taskLogs = new Map();
 const sseClients = new Set();
 
-// 广播日志到所有 SSE 客户端
+// 广播日志到所有 SSE 客户端 / Broadcast logs to all SSE clients
 function broadcastLog(task, type, message) {
     const logEntry = { task, type, message, timestamp: new Date().toISOString() };
 
@@ -139,7 +147,7 @@ app.get('/api/stats', (req, res) => {
  * 执行任务（带实时日志）
  */
 app.post('/api/run', async (req, res) => {
-    const { task, apiKey, baseURL, model } = req.body;
+    const { task, apiKey, baseURL, model, customPrompt } = req.body;
 
     broadcastLog(task, 'info', `接收任务: ${task}`);
     if (model) broadcastLog(task, 'info', `模型: ${model}`);
@@ -187,6 +195,7 @@ app.post('/api/run', async (req, res) => {
         if (apiKey) env.AI_API_KEY = apiKey;
         if (baseURL) env.AI_BASE_URL = baseURL;
         if (model) env.AI_MODEL = model;
+        if (customPrompt) env.AI_CUSTOM_PROMPT = customPrompt;
 
         // 清空之前的日志
         taskLogs.set(task, []);

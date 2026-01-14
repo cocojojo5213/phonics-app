@@ -1,8 +1,9 @@
 /**
- * 数据合并脚本
+ * 数据合并脚本 / Data Merge Script
  * 将 AI 生成的词汇合并回 rules-master.json
+ * Merges AI-generated vocabulary back into rules-master.json
  * 
- * 用法：node scripts/merge-words.js
+ * 用法 / Usage: node scripts/merge-words.js
  */
 
 const fs = require('fs');

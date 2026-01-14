@@ -1,17 +1,25 @@
-# Phonics - 自然拼读学习工具
+# Phonics - 自然拼读学习工具 | Phonics Learning Tool
+
+<p align="center">
+  <a href="#中文">🇨🇳 中文</a> | <a href="#english">🇺🇸 English</a>
+</p>
 
 [![Version](https://img.shields.io/badge/version-2.4.0-blue.svg)](https://github.com/cocojojo5213/phonics-app)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PWA](https://img.shields.io/badge/PWA-ready-brightgreen.svg)](#pwa-支持)
+
+---
+
+<a id="中文"></a>
+
+## 🇨🇳 中文
 
 系统学习 100+ 自然拼读规则，掌握「见词能读、听音能写」的核心能力。  
 适合英语初学者和教学工作者，支持自定义提示词以构建个人词库。
 
 **在线体验**: [phonics.thetruetao.com](https://phonics.thetruetao.com)
 
----
-
-## 重要声明
+### 重要声明
 
 > **如果你使用了本项目的代码或数据，请署名！**
 > 
@@ -20,9 +28,7 @@
 > 本项目基于 Phonics App (https://github.com/cocojojo5213/phonics-app) 开发
 > ```
 
----
-
-## 功能介绍
+### 功能介绍
 
 - **科学分类** - 16 大发音分类，从字母到音节，循序渐进
 - **拼读分解** - 每个单词标注音素拆解，彩色高亮核心发音
@@ -31,14 +37,9 @@
 - **例句学习** - 每个单词配有简单例句和中文翻译
 - **PWA 支持** - 可安装到手机主屏幕，支持离线访问
 - **Workshop 工具** - 内置 AI 词汇生成和 TTS 生成工具
+- **自定义 AI 提示词** - 可定制词汇生成规则
 
----
-
-## 快速开始
-
-### 本地运行
-
-直接把项目部署到任何静态托管服务（Cloudflare Pages、Vercel、GitHub Pages 等）：
+### 快速开始
 
 ```bash
 # 克隆项目
@@ -50,7 +51,7 @@ npx serve .
 # 访问 http://localhost:3000
 ```
 
-### Workshop 模式（AI 词汇生成）
+**Workshop 模式（AI 词汇生成）**：
 
 ```bash
 npm install
@@ -58,9 +59,7 @@ npm run studio
 # 访问 http://localhost:3000/admin.html
 ```
 
----
-
-## NPM 脚本
+### NPM 脚本
 
 | 命令 | 说明 |
 |:---|:---|
@@ -69,40 +68,38 @@ npm run studio
 | `npm run gen` | AI 生成词汇 |
 | `npm run tts` | 生成 TTS 音频 |
 | `npm run merge` | 合并生成的词汇到规则库 |
+| `npm run test` | 运行测试脚本 |
 | `npm run fix` | 修复 breakdown 格式 |
 
----
-
-## 目录结构
+### 目录结构
 
 ```
 phonics-app/
-├── index.html              # 主页面
-├── admin.html              # Workshop 管理后台
+├── index.html              # 主页面 / Main page
+├── admin.html              # Workshop 管理后台 / Admin panel
 ├── css/
-│   └── style.css           # 设计系统
+│   └── style.css           # 设计系统 / Design system
 ├── js/
-│   ├── app.js              # 核心逻辑
-│   ├── audio-loader.js     # 音频加载器
-│   └── data-loader.js      # 数据加载器
+│   ├── app.js              # 核心逻辑 / Core logic
+│   ├── audio-loader.js     # 音频加载器 / Audio loader
+│   └── data-loader.js      # 数据加载器 / Data loader
 ├── data/
-│   └── rules-master.json   # 规则库 (16分类, 100+规则)
+│   └── rules-master.json   # 规则库 / Rules database (16 categories, 100+ rules)
 ├── scripts/
-│   ├── ai-service.js       # AI 服务层
-│   ├── generate-words.js   # AI 词汇生成
-│   ├── generate-tts.js     # TTS 音频生成
-│   ├── merge-words.js      # 数据合并
-│   └── studio-server.js    # 本地服务器
+│   ├── ai-service.js       # AI 服务层 / AI service layer
+│   ├── generate-words.js   # AI 词汇生成 / AI word generation
+│   ├── generate-tts.js     # TTS 音频生成 / TTS audio generation
+│   ├── test-all.js         # 综合测试 / Comprehensive tests
+│   ├── merge-words.js      # 数据合并 / Data merging
+│   └── studio-server.js    # 本地服务器 / Local server
 ├── sw.js                   # Service Worker
-├── manifest.json           # PWA 配置
-└── _headers                # CDN 缓存配置
+├── manifest.json           # PWA 配置 / PWA config
+└── _headers                # CDN 缓存配置 / CDN cache config
 ```
 
 > **注意**: 音频文件需要单独生成或获取，本仓库为了减小体积不包含音频资源。
 
----
-
-## 规则库说明
+### 规则库说明
 
 `rules-master.json` 包含 16 个发音分类：
 
@@ -125,22 +122,9 @@ phonics-app/
 | 15 | 音节划分 | VCCV, VCV, C+le... |
 | 16 | 辅音清浊 | 发音倾向变化 |
 
----
+### 配置
 
-## PWA 支持
-
-- **安装到主屏幕** - 像原生 App 一样使用
-- **离线访问** - 缓存静态资源和音频
-- **iPhone 适配** - 支持全面屏安全区域
-- **音频缓存** - 常用单词发音自动缓存
-
----
-
-## 配置
-
-### Google Cloud TTS
-
-TTS 生成脚本使用 Google Cloud Text-to-Speech API。配置方式：
+#### Google Cloud TTS
 
 ```bash
 # 使用 ADC (推荐)
@@ -150,9 +134,7 @@ gcloud auth application-default login
 export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 ```
 
-### AI 功能（通用接口）
-
-词汇生成支持多种 AI 服务，在 Workshop 后台配置：
+#### AI 功能（通用接口）
 
 | 服务 | API 地址 | 模型名称 |
 |:---|:---|:---|
@@ -162,50 +144,143 @@ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 | **DeepSeek** | `https://api.deepseek.com` | `deepseek-chat` |
 | **本地 Ollama** | `http://localhost:11434/v1` | `llama3` |
 
-生成的单词会自动通过 27 万+英语词典验证，过滤假词。
+### 版本历史
+
+- **v2.4.0** - 通用 AI 接口、自定义提示词、综合测试脚本、双语文档
+- **v2.3.0** - 完整重构：16分类规则库、彩色breakdown、Workshop工具
+- **v2.0.0** - UI 全面重构，Flashcard 模式
+- **v1.x** - 服务器版本
 
 ---
 
-## 版本历史
+<a id="english"></a>
 
-- **v2.4.0 ** - 通用 AI 接口、实时词典验证、静音字母/音节显示、后台汉化
-- **v2.3.0 ** - 完整重构：16分类规则库、彩色breakdown、Workshop工具
-- **v2.0.0 ** - UI 全面重构，Flashcard 模式
-- **v1.x** - 服务器版本（仅修bug）
+## 🇺🇸 English
 
----
+Learn 100+ phonics rules systematically. Master the core skills of "read on sight, write by ear".  
+Perfect for English beginners and educators, with custom AI prompts for building your own vocabulary.
 
-## 版权与署名
+**Live Demo**: [phonics.thetruetao.com](https://phonics.thetruetao.com)
 
-本项目采用 MIT 许可证。
+### Important Notice
 
-### 署名要求
+> **If you use this project's code or data, please give credit!**
+> 
+> Add to your project README, about page, or footer:
+> ```
+> Based on Phonics App (https://github.com/cocojojo5213/phonics-app)
+> ```
 
-如果您使用了本项目的代码、数据或设计，请在以下任一位置添加署名：
+### Features
 
-- 项目 README 文件
-- 网站页脚或关于页面
-- 应用内的设置或关于界面
+- **Scientific Classification** - 16 pronunciation categories, progressive learning from letters to syllables
+- **Phonics Breakdown** - Each word marked with phoneme breakdown, color-highlighted core sounds
+- **High-Quality Audio** - Google Cloud TTS synthesis, supports word and sentence reading
+- **Flashcard Mode** - One word at a time, focused learning with swipe navigation
+- **Sentence Learning** - Each word includes a simple sentence with translation
+- **PWA Support** - Install to home screen, offline access available
+- **Workshop Tools** - Built-in AI vocabulary generation and TTS tools
+- **Custom AI Prompts** - Customize vocabulary generation rules
 
-**署名格式**：
+### Quick Start
+
+```bash
+# Clone the project
+git clone https://github.com/cocojojo5213/phonics-app.git
+cd phonics-app
+
+# Local preview
+npx serve .
+# Visit http://localhost:3000
 ```
-基于 Phonics App (https://github.com/cocojojo5213/phonics-app) 开发
+
+**Workshop Mode (AI Vocabulary Generation)**:
+
+```bash
+npm install
+npm run studio
+# Visit http://localhost:3000/admin.html
 ```
 
-### 禁止行为
+### NPM Scripts
 
-- 直接复制并声称为原创作品
-- 移除或修改原始版权声明
-- 用于商业培训机构而不署名
+| Command | Description |
+|:---|:---|
+| `npm run start` | Start static preview server |
+| `npm run studio` | Start Workshop admin panel |
+| `npm run gen` | AI vocabulary generation |
+| `npm run tts` | Generate TTS audio |
+| `npm run merge` | Merge generated words to rules |
+| `npm run test` | Run test scripts |
+| `npm run fix` | Fix breakdown format |
+
+### Rules Database
+
+`rules-master.json` contains 16 pronunciation categories:
+
+| # | Category | Examples |
+|:---:|:---|:---|
+| 1 | Single Consonants | b, c, d, f, g... |
+| 2 | Short Vowels | a, e, i, o, u |
+| 3 | Consonant Digraphs | ch, sh, th, wh... |
+| 4 | Consonant Blends | bl, cl, dr, tr... |
+| 5 | Common Endings | -ck, -ff, -ll, -ss... |
+| 6 | Magic E | a_e, i_e, o_e... |
+| 7 | Long Vowel Teams | ai, ay, ee, ea... |
+| 8 | R-Controlled | ar, er, ir, or, ur |
+| 9 | Other Vowel Teams | oi, oy, ou, ow... |
+| 10 | Soft C/G | ce, ci, ge, gi... |
+| 11 | Word Endings | -s, -es, -ed, -ing |
+| 12 | Suffix Spelling | doubling, drop e, y to i |
+| 13 | 6 Syllable Types | open/closed/VCe/vowel team/R-controlled/C+le |
+| 14 | Schwa Sound | unstressed syllables |
+| 15 | Syllable Division | VCCV, VCV, C+le... |
+| 16 | Voiced/Voiceless | pronunciation tendency |
+
+### Configuration
+
+#### Google Cloud TTS
+
+```bash
+# Using ADC (recommended)
+gcloud auth application-default login
+
+# Or set service account
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
+```
+
+#### AI Integration (Universal Interface)
+
+| Service | API URL | Model |
+|:---|:---|:---|
+| **Gemini** | Leave empty | `gemini-3-flash` |
+| **OpenAI** | `https://api.openai.com/v1` | `gpt-4o` |
+| **Claude** | `https://api.anthropic.com` | `claude-3-5-sonnet-20241022` |
+| **DeepSeek** | `https://api.deepseek.com` | `deepseek-chat` |
+| **Local Ollama** | `http://localhost:11434/v1` | `llama3` |
+
+### Version History
+
+- **v2.4.0** - Universal AI interface, custom prompts, comprehensive tests, bilingual docs
+- **v2.3.0** - Full rewrite: 16-category rules, colored breakdown, Workshop tools
+- **v2.0.0** - Complete UI redesign, Flashcard mode
+- **v1.x** - Server version
 
 ---
+
+## License / 许可证
+
+MIT License
+
+## Contributing / 贡献
+
+Issues and Pull Requests are welcome!  
+欢迎提交 Issue 和 Pull Request！
+
+[GitHub Issues](https://github.com/cocojojo5213/phonics-app/issues)
+
+---
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=cocojojo5213/phonics-app&type=timeline&legend=top-left)](https://www.star-history.com/#cocojojo5213/phonics-app&type=timeline&legend=top-left)
-
-## 贡献
-
-欢迎提交 Issue 和 Pull Request！
-
-如有问题，请在 [GitHub Issues](https://github.com/cocojojo5213/phonics-app/issues) 中反馈。
-

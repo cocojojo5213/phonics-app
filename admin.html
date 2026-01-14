@@ -201,6 +201,22 @@
                         • Claude: api.anthropic.com<br>
                         • DeepSeek: api.deepseek.com
                     </div>
+
+                    <details style="margin-top: 15px;">
+                        <summary
+                            style="cursor: pointer; font-size: 0.75rem; font-weight: 700; color: var(--accent); padding: 8px 0;">
+                            ▸ 自定义提示词 (可选)
+                        </summary>
+                        <div style="margin-top: 10px;">
+                            <textarea id="custom-prompt" rows="4" placeholder="例如：生成更简单的单词 / 优先选择动物类词汇 / 避免复杂拼写"
+                                style="width: 100%; padding: 10px; border: 1px solid var(--border-soft); border-radius: 8px; font-size: 0.85rem; resize: vertical; font-family: inherit;"></textarea>
+                            <div style="display: flex; justify-content: space-between; margin-top: 8px;">
+                                <button type="button" onclick="clearCustomPrompt()"
+                                    style="background: none; border: none; font-size: 0.75rem; color: var(--text-muted); cursor: pointer;">清空</button>
+                                <span style="font-size: 0.7rem; color: var(--text-muted);">将追加到系统提示词</span>
+                            </div>
+                        </div>
+                    </details>
                 </div>
 
                 <div style="margin-bottom: 30px;">
@@ -345,6 +361,12 @@
             const baseURL = document.getElementById('api-base').value.trim();
             const apiKey = document.getElementById('api-key').value.trim();
             const model = document.getElementById('api-model').value.trim() || 'gemini-3-flash';
+            const customPrompt = document.getElementById('custom-prompt').value.trim();
+
+            // 保存配置到本地存储
+            localStorage.setItem('phonics-api-base', baseURL);
+            localStorage.setItem('phonics-api-model', model);
+            localStorage.setItem('phonics-custom-prompt', customPrompt);
 
             const taskNames = {
                 'generate': '生成词汇',
@@ -354,6 +376,9 @@
                 'clean': '清空'
             };
             log(`开始执行：${taskNames[taskName] || taskName}...`, 'info');
+            if (customPrompt) {
+                log(`自定义提示词: ${customPrompt.substring(0, 50)}${customPrompt.length > 50 ? '...' : ''}`, 'info');
+            }
 
             try {
                 const res = await fetch('/api/run', {
@@ -363,7 +388,8 @@
                         task: taskName,
                         apiKey: apiKey,
                         baseURL: baseURL,
-                        model: model
+                        model: model,
+                        customPrompt: customPrompt
                     })
                 });
                 const data = await res.json();
@@ -373,6 +399,12 @@
             } catch (e) {
                 log('服务器连接失败，请运行：npm run studio', 'error');
             }
+        }
+
+        function clearCustomPrompt() {
+            document.getElementById('custom-prompt').value = '';
+            localStorage.removeItem('phonics-custom-prompt');
+            log('已清空自定义提示词', 'info');
         }
 
         async function pauseTask(taskName) {
@@ -411,6 +443,14 @@
 
         // 页面加载时初始化
         window.onload = () => {
+            // 恢复保存的配置
+            const savedBase = localStorage.getItem('phonics-api-base');
+            const savedModel = localStorage.getItem('phonics-api-model');
+            const savedPrompt = localStorage.getItem('phonics-custom-prompt');
+            if (savedBase) document.getElementById('api-base').value = savedBase;
+            if (savedModel) document.getElementById('api-model').value = savedModel;
+            if (savedPrompt) document.getElementById('custom-prompt').value = savedPrompt;
+
             loadStats();
             connectSSE();
             log('工作台已初始化，等待任务执行...', 'info');

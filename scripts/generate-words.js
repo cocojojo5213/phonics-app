@@ -1,25 +1,25 @@
 /**
- * AI 词汇生成脚本
- * 使用 Gemini 3 Flash 为每个规则扩展词汇
+ * AI 词汇生成脚本 / AI Word Generation Script
+ * 使用 AI 为每个规则扩展词汇 / Expands vocabulary for each phonics rule using AI
  * 
- * 用法：node scripts/generate-words.js [ruleId]
- * 如果不指定 ruleId，将处理所有规则
+ * 用法 / Usage: node scripts/generate-words.js [ruleId]
+ * 如果不指定 ruleId，将处理所有规则 / If no ruleId specified, processes all rules
  */
 
-// 加载环境变量
+// 加载环境变量 / Load environment variables
 require('dotenv').config();
 
 const fs = require('fs');
 const path = require('path');
 const AIService = require('./ai-service');
 
-// 配置
+// 配置 / Configuration
 const CONFIG = {
     rulesPath: path.join(__dirname, '../data/rules-master.json'),
     outputPath: path.join(__dirname, '../data/generated-words.json'),
-    wordsPerBatch: 5,          // 每次 API 调用生成的词数
-    targetWordsPerRule: 25,    // 每条规则的目标词数
-    concurrency: 20,           // 并发数（DSQ动态配额，大胆试）
+    wordsPerBatch: 5,          // 每次 API 调用生成的词数 / Words generated per API call
+    targetWordsPerRule: 25,    // 每条规则的目标词数 / Target word count per rule
+    concurrency: 20,           // 并发数 / Concurrency level
     model: process.env.AI_MODEL || 'gemini-3-flash-preview'
 };
 
@@ -61,7 +61,7 @@ async function generateWordsForRule(ai, rule, dictionary, existingWords = []) {
         : '';
 
     const prompt = `${SYSTEM_PROMPT}
-
+${process.env.AI_CUSTOM_PROMPT ? `\n## 用户自定义要求\n${process.env.AI_CUSTOM_PROMPT}\n` : ''}
 N=${CONFIG.wordsPerBatch}
 RULE_JSON=${JSON.stringify(rule, null, 2)}${excludeList}`;
 

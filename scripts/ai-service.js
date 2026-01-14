@@ -1,7 +1,7 @@
 /**
- * 通用 AI Service Manager
- * 支持多个 AI 提供商：Gemini、OpenAI、Claude、DeepSeek 等
- * 统一接口，按需切换
+ * 通用 AI Service Manager / Universal AI Service Manager
+ * 支持多个 AI 提供商 / Supports multiple AI providers: Gemini, OpenAI, Claude, DeepSeek
+ * 统一接口，按需切换 / Unified interface with on-demand switching
  */
 
 // 尝试加载各 SDK（可选依赖）

@@ -1,6 +1,6 @@
 {
     "name": "phonics-app",
-    "version": "2.3.0",
+    "version": "2.4.0",
     "description": "Phonics - Natural Phonics Learning Tool",
     "scripts": {
         "start": "npx serve .",
@@ -12,6 +12,7 @@
         "seo": "node scripts/generate-seo.js",
         "fix": "node scripts/fix-breakdown.js",
         "clean": "node scripts/clean-data.js",
+        "test": "node scripts/test-all.js",
         "deploy": "echo 'Push to main to deploy to Cloudflare Pages'"
     },
     "keywords": [

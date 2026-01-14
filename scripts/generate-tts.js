@@ -1,8 +1,9 @@
 /**
- * TTS 音频生成脚本
+ * TTS 音频生成脚本 / TTS Audio Generation Script
  * 使用 Google Cloud TTS 为单词和例句生成发音
+ * Uses Google Cloud TTS to generate pronunciation for words and sentences
  * 
- * 用法：node scripts/generate-tts.js [word|sentence|all]
+ * 用法 / Usage: node scripts/generate-tts.js [word|sentence|all]
  */
 
 const fs = require('fs');
@@ -18,7 +19,7 @@ const CONFIG = {
     audioOutputPath: path.join(__dirname, '../audio'),
 
     // TTS 语音配置
-    // TTS 语音配置 (2025 最新推荐)
+    // TTS 语音配置 (2026 最新推荐)
     wordVoice: {
         languageCode: 'en-US',
         name: 'en-US-Studio-O', // Studio 语音：目前清晰度最高，最适合单词教学
