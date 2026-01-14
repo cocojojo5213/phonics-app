@@ -139,7 +139,7 @@ function loadCategories() {
   if (!container) return;
 
   container.innerHTML = categories.map(cat => `
-        <div class="card" onclick="selectCategory('${cat.id}')">
+        <div class="card" onclick="selectCategory('${escapeHtml(cat.id)}')">
             <h3 style="margin-bottom: 0.4rem;">${cat.name}</h3>
             <p style="font-size: 0.85rem; color: var(--text-muted)">${cat.desc}</p>
         </div>
@@ -236,7 +236,7 @@ function renderPracticeAction(data) {
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
                 </button>
 
-                <div class="card flashcard active" id="current-flashcard" onclick="app.playWord('${word.word}')">
+                <div class="card flashcard active" id="current-flashcard" onclick="app.playWord('${escapeHtml(word.word)}')">
                      <div class="word-main">${formatWord(word.word, pInfo.pattern)}</div>
                     
                     ${word.breakdown ? `
@@ -250,7 +250,7 @@ function renderPracticeAction(data) {
                      <div class="word-meaning">${word.meaning || ''}</div>
                     
                     ${word.sentence ? `
-                        <div class="sentence-box" onclick="app.playSentence(event, '${word.word}', '${escapeHtml(word.sentence)}')">
+                        <div class="sentence-box" onclick="app.playSentence(event, '${escapeHtml(word.word)}', '${escapeHtml(word.sentence)}')">
                             <div class="sentence-en">${word.sentence}</div>
                             <div class="sentence-cn">${word.sentence_cn || ''}</div>
                             <div class="play-tag">🔊 点击阅读例句</div>
@@ -265,8 +265,8 @@ function renderPracticeAction(data) {
 
             <div class="practice-actions" aria-label="练习操作">
                 <button class="btn nav-action" onclick="prevWord()" ${state.currentWordIndex === 0 ? 'disabled' : ''}>上一词</button>
-                <button class="btn btn-primary nav-action" onclick="app.playWord('${word.word}')">播放单词</button>
-                ${word.sentence ? `<button class="btn nav-action" onclick="app.playSentence(event, '${word.word}', '${escapeHtml(word.sentence)}')">播放例句</button>` : ''}
+                <button class="btn btn-primary nav-action" onclick="app.playWord('${escapeHtml(word.word)}')">播放单词</button>
+                ${word.sentence ? `<button class="btn nav-action" onclick="app.playSentence(event, '${escapeHtml(word.word)}', '${escapeHtml(word.sentence)}')">播放例句</button>` : ''}
                 <button class="btn nav-action" onclick="nextWord()" ${state.currentWordIndex === state.allWords.length - 1 ? 'disabled' : ''}>下一词</button>
             </div>
 
@@ -459,8 +459,16 @@ function escapeRegex(str) {
 }
 
 function escapeHtml(str) {
-  return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
+  return String(str)
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/"/g, '\\"')
+    .replace(/\r/g, '\\r')
+    .replace(/\n/g, '\\n')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029');
 }
+
 
 // --- Global App Object ---
 window.app = {
