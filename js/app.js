@@ -173,7 +173,7 @@ function selectCategory(catId) {
     const isConceptChip = p.pattern.length > 4 || /[\u4e00-\u9fa5]/.test(p.pattern);
     return `
         <button class="pattern-chip ${isConceptChip ? 'concept-chip' : ''} ${state.currentPattern === p.pattern ? 'active' : ''}" 
-                onclick="selectPattern('${p.pattern.replace(/'/g, "\\'")}')">
+                onclick="selectPattern('${escapeHtml(p.pattern)}')">
             <span class="p-text">${p.pattern}</span>
             <span class="p-ipa">${p.pronunciation}</span>
         </button>
